@@ -40,6 +40,10 @@ public sealed class GameScene : Scene
                 _game.ApplyCommand(new DummyCommand("SUNRISE"));
             }
         }
+        if (Raylib.IsKeyPressed(KeyboardKey.Z))
+        {
+            _game.ApplyCommand(new DummyCommand("SPAWN_ZOMBIE"));
+        }
 
         _game.Update(delta);
     }

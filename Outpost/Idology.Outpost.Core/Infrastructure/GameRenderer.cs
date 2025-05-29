@@ -63,7 +63,16 @@ public sealed class GameRenderer
                     (int)((region.Coordinates.Y + 3) * GameConstants.TileSize),
                     (int)(2 * GameConstants.TileSize),
                     (int)(2 * GameConstants.TileSize),
-                    Color.Red);
+                    Color.Blue);
+            }
+
+            foreach (var spawner in region.SpawnerLocations)
+            {
+                Raylib.DrawCircle(
+                    (int)spawner.X,
+                    (int)spawner.Y,
+                    GameConstants.PersonRadius * 2,
+                    Color.Magenta);
             }
         }
 
@@ -80,5 +89,26 @@ public sealed class GameRenderer
                 Raylib.DrawLine((int)p.Position.X, (int)p.Position.Y, (int)p.TargetPosition.X, (int)p.TargetPosition.Y, Color.White);
             }
         }
+
+        foreach (var z in _gameData.Town.Zombies)
+        {
+            Raylib.DrawCircle(
+                (int)z.Position.X,
+                (int)z.Position.Y,
+                GameConstants.PersonRadius * 1.5f,
+                z.Mode == ZombieMode.Wandering ? Color.Pink : Color.Maroon);
+
+            if (z.Position != z.TargetPosition && z.TargetPosition is not null)
+            {
+                Raylib.DrawLine((int)z.Position.X, (int)z.Position.Y, (int)z.TargetPosition.Value.X, (int)z.TargetPosition.Value.Y, Color.White);
+            }
+        }
+
+        Raylib.DrawLine(
+            (int)(-GameConstants.TileSize * 7),
+            (int)(-GameConstants.TileSize * 20),
+            (int)(-GameConstants.TileSize * 7),
+            (int)(+GameConstants.TileSize * 20),
+            Color.Magenta);
     }
 }

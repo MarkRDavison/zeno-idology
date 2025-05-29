@@ -5,4 +5,5 @@ public sealed class TownRegion
     public Vector2 Coordinates { get; set; }
     public bool Unlocked { get; set; }
     public List<Vector2> GuardPositions { get; set; } = [];
+    public List<Vector2> SpawnerLocations { get; set; } = [];
 }

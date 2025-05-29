@@ -21,7 +21,7 @@ public sealed class PersonMovementService : IPersonMovementService
     {
         var homeRegion = _gameData.Town.Regions.First(_ => _.Coordinates == new Vector2());
 
-        _gameData.Town.People.Clear(); // TODO: Temp, need to make day shift go home then despawn
+        // TODO: Temp only spawn allocated guards
         _gameData.Town.People
             .AddRange(Enumerable.Range(0, homeRegion.GuardPositions.Count)
             .Select(_ => new Person
@@ -41,7 +41,9 @@ public sealed class PersonMovementService : IPersonMovementService
         {
             var maxMovement = delta * SPEED;
             var offset = p.TargetPosition - p.Position;
-            if (offset.Length() <= SPEED * delta)
+            var distanceToTarget = offset.Length();
+
+            if (distanceToTarget <= maxMovement)
             {
                 p.TargetPosition = p.Position;
                 HandlePersonReachingTarget(p);
@@ -50,7 +52,7 @@ public sealed class PersonMovementService : IPersonMovementService
             {
                 var direction = Vector2.Normalize(offset);
 
-                p.Position += direction * SPEED * delta;
+                p.Position += direction * maxMovement;
             }
         }
 
@@ -67,7 +69,7 @@ public sealed class PersonMovementService : IPersonMovementService
 
     private static Func<Person, bool> RequiresMovementFunc => _ => _.TargetPosition != _.Position;
     private static Func<Person, bool> IsGuard => _ => _.Class == "GUARD";
-    private static Vector2 MusterPoint => new Vector2(
-                (int)(3 * GameConstants.TileSize),
-                (int)(4 * GameConstants.TileSize));
+    private static Vector2 MusterPoint => new(
+        (int)(3 * GameConstants.TileSize),
+        (int)(4 * GameConstants.TileSize));
 }

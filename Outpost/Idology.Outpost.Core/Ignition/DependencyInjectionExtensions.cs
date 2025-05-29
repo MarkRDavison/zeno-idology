@@ -13,7 +13,10 @@ public static class DependencyInjectionExtensions
             .AddScoped<GameData>();
 
         services
-            .AddScoped<IPersonMovementService, PersonMovementService>();
+            .AddScoped<IPersonMovementService, PersonMovementService>()
+            .AddScoped<IZombieSpawnService, ZombieSpawnService>()
+            .AddScoped<IZombieWanderService, ZombieWanderService>()
+            .AddScoped<IZombieMovementService, ZombieMovementService>();
 
         return services;
     }
