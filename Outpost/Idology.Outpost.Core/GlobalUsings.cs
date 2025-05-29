@@ -1,0 +1,11 @@
+﻿global using Idology.Engine.Core;
+global using Idology.Engine.Ignition;
+global using Idology.Outpost.Core.Commands;
+global using Idology.Outpost.Core.Data;
+global using Idology.Outpost.Core.Enums;
+global using Idology.Outpost.Core.Infrastructure;
+global using Idology.Outpost.Core.Scenes;
+global using Idology.Outpost.Core.Services.People;
+global using Microsoft.Extensions.DependencyInjection;
+global using Raylib_cs;
+global using System.Numerics;
