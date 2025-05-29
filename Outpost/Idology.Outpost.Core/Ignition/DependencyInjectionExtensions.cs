@@ -14,6 +14,8 @@ public static class DependencyInjectionExtensions
 
         services
             .AddScoped<IPersonMovementService, PersonMovementService>()
+            .AddScoped<IPersonSpawnService, PersonSpawnService>()
+            .AddScoped<IPersonWorkService, PersonWorkService>()
             .AddScoped<IZombieSpawnService, ZombieSpawnService>()
             .AddScoped<IZombieWanderService, ZombieWanderService>()
             .AddScoped<IZombieMovementService, ZombieMovementService>();

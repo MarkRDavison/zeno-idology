@@ -111,5 +111,11 @@ public sealed class GameRenderer
             (int)(-GameConstants.TileSize * 7),
             (int)(+GameConstants.TileSize * 20),
             Color.Magenta);
+
+        Raylib.DrawCircle(
+            (int)GameConstants.HuntLocation.X,
+            (int)GameConstants.HuntLocation.Y,
+            GameConstants.PersonRadius * 5.0f,
+            Color.DarkPurple);
     }
 }

@@ -5,6 +5,8 @@ public sealed class Game
 {
     private readonly GameData _gameData;
     private readonly IPersonMovementService _personMovementService;
+    private readonly IPersonSpawnService _personSpawnService;
+    private readonly IPersonWorkService _personWorkService;
     private readonly IZombieSpawnService _zombieSpawnService;
     private readonly IZombieWanderService _zombieWanderService;
     private readonly IZombieMovementService _zombieMovementService;
@@ -12,6 +14,8 @@ public sealed class Game
     public Game(
         GameData gameData,
         IPersonMovementService personMovementService,
+        IPersonSpawnService personSpawnService,
+        IPersonWorkService personWorkService,
         IZombieSpawnService zombieSpawnService,
         IZombieWanderService zombieWanderService,
         IZombieMovementService zombieMovementService)
@@ -27,6 +31,8 @@ public sealed class Game
             new TownRegion { Coordinates = new Vector2(1, +1) }]);
 
         _personMovementService = personMovementService;
+        _personSpawnService = personSpawnService;
+        _personWorkService = personWorkService;
         _zombieSpawnService = zombieSpawnService;
         _zombieWanderService = zombieWanderService;
         _zombieMovementService = zombieMovementService;
@@ -56,6 +62,7 @@ public sealed class Game
     private void HandleSunrise()
     {
         _gameData.Town.TimeOfDay = TimeOfDay.Day;
+        _personSpawnService.HandleSunrise();
         _personMovementService.HandleSunrise();
         _gameData.Town.Zombies.Clear();
     }
@@ -63,12 +70,14 @@ public sealed class Game
     private void HandleSunset()
     {
         _gameData.Town.TimeOfDay = TimeOfDay.Night;
+        _personSpawnService.HandleSunset();
         _personMovementService.HandleSunset();
     }
 
     public void Update(float delta)
     {
         _personMovementService.Update(delta);
+        _personWorkService.Update(delta);
         _zombieMovementService.Update(delta);
         _zombieWanderService.Wander(delta);
     }
