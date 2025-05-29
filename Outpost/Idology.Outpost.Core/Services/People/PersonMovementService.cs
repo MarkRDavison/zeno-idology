@@ -61,6 +61,13 @@ public sealed class PersonMovementService : IPersonMovementService
 
     private void HandlePersonReachingTarget(Person p)
     {
+        if (p.Waypoints.Count > 0)
+        {
+            p.TargetPosition = p.Waypoints.Peek();
+            p.Waypoints.Dequeue();
+            return;
+        }
+
         if (_gameData.Town.TimeOfDay == TimeOfDay.Day && p.Class == "GUARD")
         {
             p.RequiresRemoval = true;

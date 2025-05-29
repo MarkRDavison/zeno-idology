@@ -104,6 +104,7 @@ public sealed class GameRenderer
             }
         }
 
+        // TODO: Temp -> basic zombie attraction threshold.
         Raylib.DrawLine(
             (int)(-GameConstants.TileSize * 7),
             (int)(-GameConstants.TileSize * 20),

@@ -1,5 +1,4 @@
-﻿
-namespace Idology.Outpost.Core.Services.Zombies;
+﻿namespace Idology.Outpost.Core.Services.Zombies;
 
 public sealed class ZombieMovementService : IZombieMovementService
 {
@@ -37,6 +36,10 @@ public sealed class ZombieMovementService : IZombieMovementService
             {
                 z.Mode = ZombieMode.Attacking;
                 z.TargetPosition = new Vector2(-2 * GameConstants.PersonRadius * 1.5f, z.Position.Y);
+                /* TODO: Assign the region that the zombie is attacking to it?
+                 * So we round robin the guards to the regions so ideally at least one each
+                 * Then ask for closest attacking zombie in the guards region
+                 */
             }
         }
     }
@@ -47,6 +50,10 @@ public sealed class ZombieMovementService : IZombieMovementService
         {
             z.TargetPosition = null;
             z.IdleTime = 0;
+        }
+        else if (z.Mode == ZombieMode.Attacking)
+        {
+
         }
     }
 }

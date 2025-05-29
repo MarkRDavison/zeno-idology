@@ -57,6 +57,7 @@ public sealed class Game
     {
         _gameData.Town.TimeOfDay = TimeOfDay.Day;
         _personMovementService.HandleSunrise();
+        _gameData.Town.Zombies.Clear();
     }
 
     private void HandleSunset()
