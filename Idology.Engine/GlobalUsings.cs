@@ -1,0 +1,13 @@
+﻿global using Idology.Engine.Core;
+global using Idology.Engine.Ecs.Components;
+global using Idology.Engine.Ecs.Systems;
+global using Idology.Engine.Resources;
+global using Idology.Engine.Resources.Data;
+global using Idology.Engine.UiComponents;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Options;
+global using Raylib_cs;
+global using System.Diagnostics;
+global using System.Numerics;
+global using System.Security.Cryptography;
+global using System.Xml.Linq;

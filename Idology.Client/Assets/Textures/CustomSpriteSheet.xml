@@ -1,0 +1,7 @@
+﻿<TextureAtlas imagePath="CustomSpriteSheet.png">
+	<SubTexture name="BerryBush.png" x="0" y="0" width="64" height="64"/>
+	<SubTexture name="BerryBushFull.png" x="64" y="0" width="64" height="64"/>
+	<SubTexture name="BasicTent.png" x="128" y="0" width="64" height="64"/>
+	<SubTexture name="BasicField.png" x="192" y="0" width="64" height="64"/>
+	<SubTexture name="Bakery.png" x="256" y="0" width="64" height="64"/>
+</TextureAtlas>
