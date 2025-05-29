@@ -8,4 +8,8 @@
     <UseVSTest>true</UseVSTest>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Idology.Outpost.Core\Idology.Outpost.Core.csproj" />
+  </ItemGroup>
+
 </Project>

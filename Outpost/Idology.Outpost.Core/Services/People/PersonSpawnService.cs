@@ -13,6 +13,7 @@ public sealed class PersonSpawnService : IPersonSpawnService
     {
         const int Hunters = 4;
 
+        // TODO: Need helper for this, need to spotanteously dispatch another when changing allocations etc
         _gameData.Town.People
             .AddRange(Enumerable.Range(0, Hunters)
             .Select(_ =>

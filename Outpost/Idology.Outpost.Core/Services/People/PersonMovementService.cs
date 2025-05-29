@@ -23,7 +23,8 @@ public sealed class PersonMovementService : IPersonMovementService
         foreach (var g in _gameData.Town.People.Where(IsNotGuard))
         {
             g.Waypoints.Clear();
-            g.TargetPosition = GameConstants.MusterPoint; // TODO: Waypoints to get through gate
+            // TODO: Helper to create waypoints home via gate etc
+            g.TargetPosition = GameConstants.MusterPoint;
             g.Mode = WorkerMode.ReturningHome;
         }
     }
