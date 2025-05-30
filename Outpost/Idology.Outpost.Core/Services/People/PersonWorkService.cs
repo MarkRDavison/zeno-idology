@@ -26,7 +26,7 @@ public sealed class PersonWorkService : IPersonWorkService
 
                 if (!p.Inventory.ContainsKey(resource))
                 {
-                    throw new InvalidOperationException();
+                    throw new InvalidOperationException(); // TODO: Validate this at prototype loading stage
                 }
 
                 var range = p.Inventory[resource];

@@ -4,4 +4,7 @@ public interface IPersonSpawnService
 {
     void HandleSunrise();
     void HandleSunset();
+
+    Person SpawnHunterAtSunrise();
+    Person SpawnLumberjackAtSunrise();
 }

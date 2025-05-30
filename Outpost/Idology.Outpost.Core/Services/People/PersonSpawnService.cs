@@ -18,39 +18,13 @@ public sealed class PersonSpawnService : IPersonSpawnService
         const int Hunters = 1;
         const int Lumberjacks = 2;
 
-        // TODO: Need helper for this, need to spotanteously dispatch another when changing allocations etc
         _gameData.Town.People
             .AddRange(Enumerable.Range(0, Hunters)
-            .Select(_ =>
-            {
-                var person = _personPrototypeService.CreateEntity(PrototypeConstants.Hunter);
-                person.Mode = WorkerMode.TravellingToWork;
-                person.Position = GameConstants.MusterPoint + new Vector2(15, 0) + Wiggle();
-                person.TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -1, 0) + Wiggle();
+            .Select(_ => SpawnHunterAtSunrise()));
 
-                person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -8, 0) + Wiggle(3));
-                person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, 0) + Wiggle(4));
-                person.Waypoints.Enqueue(GameConstants.HuntLocation + Wiggle(2));
-
-                return person;
-            }));
-
-        // TODO: Need helper for this, need to spotanteously dispatch another when changing allocations etc
         _gameData.Town.People
             .AddRange(Enumerable.Range(0, Lumberjacks)
-            .Select(_ =>
-            {
-                var person = _personPrototypeService.CreateEntity(PrototypeConstants.Lumberjack);
-                person.Mode = WorkerMode.TravellingToWork;
-                person.Position = GameConstants.MusterPoint + new Vector2(15, 0) + Wiggle();
-                person.TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -1, 0) + Wiggle();
-
-                person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -8, 1) + Wiggle(3));
-                person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, -1) + Wiggle(4));
-                person.Waypoints.Enqueue(GameConstants.ForestLocation + Wiggle(2));
-
-                return person;
-            }));
+            .Select(_ => SpawnLumberjackAtSunrise()));
 
     }
 
@@ -68,6 +42,34 @@ public sealed class PersonSpawnService : IPersonSpawnService
                 person.TargetPosition = homeRegion.GuardPositions[_];
                 return person;
             }));
+    }
+
+    public Person SpawnHunterAtSunrise()
+    {
+        var person = _personPrototypeService.CreateEntity(PrototypeConstants.Hunter);
+        person.Mode = WorkerMode.TravellingToWork;
+        person.Position = GameConstants.MusterPoint + new Vector2(15, 0) + Wiggle();
+        person.TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -1, 0) + Wiggle();
+
+        person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -8, 0) + Wiggle(3));
+        person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, 0) + Wiggle(4));
+        person.Waypoints.Enqueue(GameConstants.HuntLocation + Wiggle(2));
+
+        return person;
+    }
+
+    public Person SpawnLumberjackAtSunrise()
+    {
+        var person = _personPrototypeService.CreateEntity(PrototypeConstants.Lumberjack);
+        person.Mode = WorkerMode.TravellingToWork;
+        person.Position = GameConstants.MusterPoint + new Vector2(15, 0) + Wiggle();
+        person.TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -1, 0) + Wiggle();
+
+        person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -8, 1) + Wiggle(3));
+        person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, -1) + Wiggle(4));
+        person.Waypoints.Enqueue(GameConstants.ForestLocation + Wiggle(2));
+
+        return person;
     }
 
     private static Vector2 Wiggle(int multiplier = 1) => new Vector2(
