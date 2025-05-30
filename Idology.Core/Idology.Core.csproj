@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Idology.Engine\Idology.Engine.csproj" />
+    <ProjectReference Include="..\Idology.Game\Idology.Game.csproj" />
   </ItemGroup>
 
 </Project>

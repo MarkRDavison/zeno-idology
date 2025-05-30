@@ -1,5 +1,4 @@
-﻿
-namespace Idology.Outpost.Core.Infrastructure;
+﻿namespace Idology.Outpost.Core.Infrastructure;
 
 public sealed class Game
 {

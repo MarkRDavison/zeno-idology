@@ -3,10 +3,14 @@
 public sealed class PersonSpawnService : IPersonSpawnService
 {
     private readonly GameData _gameData;
+    private readonly IPrototypeService<PersonPrototype, Person> _personPrototypeService;
 
-    public PersonSpawnService(GameData gameData)
+    public PersonSpawnService(
+        GameData gameData,
+        IPrototypeService<PersonPrototype, Person> personPrototypeService)
     {
         _gameData = gameData;
+        _personPrototypeService = personPrototypeService;
     }
 
     public void HandleSunrise()
@@ -19,19 +23,10 @@ public sealed class PersonSpawnService : IPersonSpawnService
             .AddRange(Enumerable.Range(0, Hunters)
             .Select(_ =>
             {
-                var person = new Person
-                {
-                    Mode = WorkerMode.TravellingToWork,
-                    Class = "HUNTER",
-                    Position = GameConstants.MusterPoint + new Vector2(
-                    15 + Random.Shared.Next(-15, +15),
-                    Random.Shared.Next(-15, +15)),
-                    TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -1, 0) + Wiggle(),
-                    Inventory =
-                    {
-                        { "MEAT", new AmountRange { Min = 0, Current = 0, Max = 4 } }
-                    }
-                };
+                var person = _personPrototypeService.CreateEntity(PrototypeConstants.Hunter);
+                person.Mode = WorkerMode.TravellingToWork;
+                person.Position = GameConstants.MusterPoint + new Vector2(15, 0) + Wiggle();
+                person.TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -1, 0) + Wiggle();
 
                 person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -8, 0) + Wiggle(3));
                 person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, 0) + Wiggle(4));
@@ -45,19 +40,10 @@ public sealed class PersonSpawnService : IPersonSpawnService
             .AddRange(Enumerable.Range(0, Lumberjacks)
             .Select(_ =>
             {
-                var person = new Person
-                {
-                    Mode = WorkerMode.TravellingToWork,
-                    Class = "LUMBERJACK",
-                    Position = GameConstants.MusterPoint + new Vector2(
-                    15 + Random.Shared.Next(-15, +15),
-                    Random.Shared.Next(-15, +15)),
-                    TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -1, 0) + Wiggle(),
-                    Inventory =
-                    {
-                        { "WOOD", new AmountRange { Min = 0, Current = 0, Max = 5 } }
-                    }
-                };
+                var person = _personPrototypeService.CreateEntity(PrototypeConstants.Lumberjack);
+                person.Mode = WorkerMode.TravellingToWork;
+                person.Position = GameConstants.MusterPoint + new Vector2(15, 0) + Wiggle();
+                person.TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -1, 0) + Wiggle();
 
                 person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -8, 1) + Wiggle(3));
                 person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, -1) + Wiggle(4));
@@ -75,13 +61,12 @@ public sealed class PersonSpawnService : IPersonSpawnService
         // TODO: Temp only spawn allocated guards
         _gameData.Town.People
             .AddRange(Enumerable.Range(0, homeRegion.GuardPositions.Count)
-            .Select(_ => new Person
+            .Select(_ =>
             {
-                Class = "GUARD",
-                Position = GameConstants.MusterPoint + new Vector2(
-                    15 + Random.Shared.Next(-15, +15),
-                    Random.Shared.Next(-15, +15)),
-                TargetPosition = homeRegion.GuardPositions[_]
+                var person = _personPrototypeService.CreateEntity(PrototypeConstants.Guard);
+                person.Position = GameConstants.MusterPoint + new Vector2(15, 0) + Wiggle();
+                person.TargetPosition = homeRegion.GuardPositions[_];
+                return person;
             }));
     }
 

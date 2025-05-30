@@ -3,10 +3,14 @@
 public sealed class PersonWorkService : IPersonWorkService
 {
     private readonly GameData _gameData;
+    private readonly IPrototypeService<PersonPrototype, Person> _personPrototypeService;
 
-    public PersonWorkService(GameData gameData)
+    public PersonWorkService(
+        GameData gameData,
+        IPrototypeService<PersonPrototype, Person> personPrototypeService)
     {
         _gameData = gameData;
+        _personPrototypeService = personPrototypeService;
     }
 
     public void Update(float _delta)
@@ -18,7 +22,7 @@ public sealed class PersonWorkService : IPersonWorkService
             if (p.ElapsedWork >= classThreshold)
             {
                 p.ElapsedWork -= classThreshold;
-                var resource = GetClassWorkResult(p.Class);
+                var (resource, amount) = GetClassWorkResult(p.Class);
 
                 if (!p.Inventory.ContainsKey(resource))
                 {
@@ -27,7 +31,7 @@ public sealed class PersonWorkService : IPersonWorkService
 
                 var range = p.Inventory[resource];
 
-                range.Current++;
+                range.Current = Math.Min(range.Max, range.Current + amount);
                 if (range.Current >= range.Max)
                 {
                     p.Mode = WorkerMode.ReturningResources;
@@ -45,34 +49,20 @@ public sealed class PersonWorkService : IPersonWorkService
         }
     }
 
-    private static float GetClassWorkThreshold(string workerClass)
+    private float GetClassWorkThreshold(string workerClass)
     {
-        switch (workerClass)
-        {
-            case "HUNTER":
-                return 2.5f;
-            case "LUMBERJACK":
-                return 1.5f;
-            default:
-                return 1.0f;
-        }
+        var prototype = _personPrototypeService.GetPrototype(workerClass);
+        return prototype.BaseWorkTime;
     }
 
-    private static string GetClassWorkResult(string workerClass)
+    private (string, int) GetClassWorkResult(string workerClass)
     {
-        switch (workerClass)
-        {
-            case "HUNTER":
-                return "MEAT";
-            case "LUMBERJACK":
-                return "WOOD";
-            default:
-                throw new NotImplementedException();
-        }
+        var prototype = _personPrototypeService.GetPrototype(workerClass);
+        return (prototype.WorkResult.First().Key, prototype.WorkResult.First().Value); // TODO: BAD
     }
 
     public Func<Person, bool> IsWorkingWorker => _ =>
-        _.Class != "GUARD" && // TODO: Non guard unit helper
+        _.Class != PrototypeConstants.Guard && // TODO: Non guard unit helper
         _.Mode == WorkerMode.Working;
 
     private static Vector2 Wiggle(int multiplier = 1) => new Vector2(

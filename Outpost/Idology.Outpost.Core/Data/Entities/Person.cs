@@ -1,7 +1,9 @@
-﻿namespace Idology.Outpost.Core.Data;
+﻿namespace Idology.Outpost.Core.Data.Entities;
 
-public sealed class Person
+public sealed class Person : IEntity
 {
+    public Guid Id { get; set; }
+    public Guid PrototypeId { get; set; }
     public WorkerMode Mode { get; set; } = WorkerMode.TravellingToWork;
     public bool RequiresRemoval { get; set; }
     public string Class { get; set; } = string.Empty;
@@ -9,5 +11,5 @@ public sealed class Person
     public Vector2 TargetPosition { get; set; }
     public Queue<Vector2> Waypoints { get; } = [];
     public float ElapsedWork { get; set; }
-    public Dictionary<string, AmountRange> Inventory { get; } = [];
+    public Dictionary<string, AmountRange> Inventory { get; init; } = [];
 }

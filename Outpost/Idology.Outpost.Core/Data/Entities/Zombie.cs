@@ -1,7 +1,9 @@
-﻿namespace Idology.Outpost.Core.Data;
+﻿namespace Idology.Outpost.Core.Data.Entities;
 
-public sealed class Zombie
+public sealed class Zombie : IEntity
 {
+    public Guid Id { get; set; }
+    public Guid PrototypeId { get; set; }
     public Vector2 Position { get; set; }
     public Vector2? TargetPosition { get; set; }
     public float IdleTime { get; set; }

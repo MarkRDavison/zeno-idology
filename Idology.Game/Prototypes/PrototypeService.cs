@@ -1,4 +1,4 @@
-﻿namespace Idology.Core.Services;
+﻿namespace Idology.Game.Prototypes;
 
 public abstract class PrototypeService<TPrototype, TEntity> : IPrototypeService<TPrototype, TEntity>
     where TPrototype : class, IPrototype

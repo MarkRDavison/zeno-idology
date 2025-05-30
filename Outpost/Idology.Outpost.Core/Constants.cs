@@ -25,4 +25,13 @@ public static class GameConstants
 
 public static class ResourceConstants
 {
+    public const string Wood = nameof(Wood);
+    public const string Meat = nameof(Meat);
+}
+
+public static class PrototypeConstants
+{
+    public const string Hunter = nameof(Hunter);
+    public const string Lumberjack = nameof(Lumberjack);
+    public const string Guard = nameof(Guard);
 }

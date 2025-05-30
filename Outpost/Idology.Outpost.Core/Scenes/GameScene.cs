@@ -3,12 +3,12 @@
 public sealed class GameScene : Scene
 {
     private Camera2D _camera;
-    private readonly Game _game;
+    private readonly Infrastructure.Game _game;
     private readonly GameRenderer _gameRenderer;
     private readonly GameData _gameData;
 
     public GameScene(
-        Game game,
+        Infrastructure.Game game,
         GameRenderer gameRenderer,
         GameData gameData)
     {
@@ -17,9 +17,8 @@ public sealed class GameScene : Scene
         _gameRenderer = gameRenderer;
         _gameData = gameData;
 
-        _gameData.Resources.Add("GOLD", new AmountRange { Min = 0, Current = 100 });
-        _gameData.Resources.Add("MEAT", new AmountRange { Min = 0, Current = 5, Max = 20 });
-        _gameData.Resources.Add("WOOD", new AmountRange { Min = 0, Current = 100, Max = 200 });
+        _gameData.Resources.Add(ResourceConstants.Meat, new AmountRange { Min = 0, Current = 5, Max = 20 });
+        _gameData.Resources.Add(ResourceConstants.Wood, new AmountRange { Min = 0, Current = 100, Max = 200 });
     }
 
     public override void Init()

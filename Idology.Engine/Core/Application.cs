@@ -46,7 +46,7 @@ public class Application
                 break;
             }
 
-            CurrentScene?.Update(Raylib.GetFrameTime());
+            CurrentScene?.Update(1.0f / 60.0f);// Raylib.GetFrameTime());
 
             CurrentScene?.Draw();
         }

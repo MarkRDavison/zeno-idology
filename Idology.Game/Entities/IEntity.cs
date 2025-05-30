@@ -1,4 +1,4 @@
-﻿namespace Idology.Core.Components.Interfaces;
+﻿namespace Idology.Game.Entities;
 
 public interface IEntity
 {

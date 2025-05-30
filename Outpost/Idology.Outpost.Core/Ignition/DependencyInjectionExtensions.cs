@@ -8,14 +8,16 @@ public static class DependencyInjectionExtensions
             .RegisterScene<GameScene>();
 
         services
-            .AddScoped<Game>()
+            .AddScoped<Infrastructure.Game>()
             .AddScoped<GameRenderer>()
             .AddScoped<GameData>();
 
         services
+            .AddScoped<IPrototypeService<PersonPrototype, Person>, PersonPrototypeService>()
             .AddScoped<IPersonMovementService, PersonMovementService>()
             .AddScoped<IPersonSpawnService, PersonSpawnService>()
             .AddScoped<IPersonWorkService, PersonWorkService>()
+            .AddScoped<IPrototypeService<ZombiePrototype, Zombie>, ZombiePrototypeService>()
             .AddScoped<IZombieSpawnService, ZombieSpawnService>()
             .AddScoped<IZombieWanderService, ZombieWanderService>()
             .AddScoped<IZombieMovementService, ZombieMovementService>()

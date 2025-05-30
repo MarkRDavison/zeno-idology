@@ -1,4 +1,4 @@
-﻿namespace Idology.Core.Components.Interfaces;
+﻿namespace Idology.Game.Prototypes;
 
 public interface IPrototype
 {

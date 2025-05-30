@@ -1,5 +1,4 @@
 ﻿global using Idology.Core.Components;
-global using Idology.Core.Components.Interfaces;
 global using Idology.Core.Data;
 global using Idology.Core.Helpers;
 global using Idology.Core.Ignition;
@@ -16,6 +15,8 @@ global using Idology.Engine.Ignition;
 global using Idology.Engine.Resources;
 global using Idology.Engine.UiComponents;
 global using Idology.Engine.Utility;
+global using Idology.Game.Entities;
+global using Idology.Game.Prototypes;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;
 global using Raylib_cs;

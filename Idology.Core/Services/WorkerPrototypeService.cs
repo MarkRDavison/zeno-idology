@@ -1,5 +1,4 @@
-﻿
-namespace Idology.Core.Services;
+﻿namespace Idology.Core.Services;
 
 public sealed class WorkerPrototypeService : PrototypeService<WorkerPrototype, WorkerComponent>, IWorkerPrototypeService
 {

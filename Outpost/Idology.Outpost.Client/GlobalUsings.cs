@@ -1,6 +1,11 @@
 ﻿global using Idology.Engine.Core;
 global using Idology.Engine.Ignition;
 global using Idology.Engine.Resources;
+global using Idology.Engine.Utility;
+global using Idology.Game.Prototypes;
+global using Idology.Outpost.Core;
+global using Idology.Outpost.Core.Data.Entities;
+global using Idology.Outpost.Core.Data.Prototypes;
 global using Idology.Outpost.Core.Ignition;
 global using Idology.Outpost.Core.Scenes;
 global using Microsoft.Extensions.DependencyInjection;

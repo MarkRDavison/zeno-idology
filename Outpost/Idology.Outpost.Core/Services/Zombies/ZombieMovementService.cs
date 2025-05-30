@@ -1,4 +1,6 @@
-﻿namespace Idology.Outpost.Core.Services.Zombies;
+﻿using Idology.Outpost.Core.Data.Entities;
+
+namespace Idology.Outpost.Core.Services.Zombies;
 
 public sealed class ZombieMovementService : IZombieMovementService
 {

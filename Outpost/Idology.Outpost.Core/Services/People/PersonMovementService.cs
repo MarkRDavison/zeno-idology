@@ -4,13 +4,16 @@ public sealed class PersonMovementService : IPersonMovementService
 {
     private readonly GameData _gameData;
     private readonly IResourceService _resourceService;
+    private readonly IPrototypeService<PersonPrototype, Person> _personPrototypeService;
 
     public PersonMovementService(
         GameData gameData,
-        IResourceService resourceService)
+        IResourceService resourceService,
+        IPrototypeService<PersonPrototype, Person> personPrototypeService)
     {
         _gameData = gameData;
         _resourceService = resourceService;
+        _personPrototypeService = personPrototypeService;
     }
 
     public void HandleSunrise()
@@ -68,17 +71,16 @@ public sealed class PersonMovementService : IPersonMovementService
         }
 
         // TODO: Worker vs military etc
-        if (_gameData.Town.TimeOfDay == TimeOfDay.Day && p.Class == "GUARD")
+        if (_gameData.Town.TimeOfDay == TimeOfDay.Day && p.Class == PrototypeConstants.Guard)
         {
             p.RequiresRemoval = true;
         }
 
-        if (p.Class != "GUARD" && p.Mode == WorkerMode.TravellingToWork)
+        if (p.Class != PrototypeConstants.Guard && p.Mode == WorkerMode.TravellingToWork)
         {
             p.Mode = WorkerMode.Working;
-            Console.WriteLine("{0} is now working", p.Class);
         }
-        else if (p.Class != "GUARD" && p.Mode == WorkerMode.ReturningResources)
+        else if (p.Class != PrototypeConstants.Guard && p.Mode == WorkerMode.ReturningResources)
         {
             foreach (var (r, range) in p.Inventory)
             {
@@ -96,27 +98,20 @@ public sealed class PersonMovementService : IPersonMovementService
             p.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, 0) + Wiggle(4));
             p.Waypoints.Enqueue(GetWorkLocation(p.Class) + Wiggle(2));
         }
-        else if (p.Class != "GUARD" && p.Mode == WorkerMode.ReturningHome)
+        else if (p.Class != PrototypeConstants.Guard && p.Mode == WorkerMode.ReturningHome)
         {
             p.RequiresRemoval = true;
         }
     }
 
     private static Func<Person, bool> RequiresMovementFunc => _ => _.TargetPosition != _.Position;
-    private static Func<Person, bool> IsGuard => _ => _.Class == "GUARD";
-    private static Func<Person, bool> IsNotGuard => _ => _.Class != "GUARD";
+    private static Func<Person, bool> IsGuard => _ => _.Class == PrototypeConstants.Guard;
+    private static Func<Person, bool> IsNotGuard => _ => _.Class != PrototypeConstants.Guard;
 
-    private static Vector2 GetWorkLocation(string workerClass)
+    private Vector2 GetWorkLocation(string workerClass)
     {
-        switch (workerClass)
-        {
-            case "HUNTER":
-                return GameConstants.HuntLocation;
-            case "LUMBERJACK":
-                return GameConstants.ForestLocation;
-            default:
-                throw new NotImplementedException();
-        }
+        var prototype = _personPrototypeService.GetPrototype(workerClass);
+        return prototype.WorkLocations[Random.Shared.Next(0, prototype.WorkLocations.Count - 1)];
     }
 
     private static Vector2 Wiggle(int multiplier = 1) => new Vector2(

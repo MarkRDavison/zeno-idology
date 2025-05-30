@@ -1,4 +1,6 @@
-﻿namespace Idology.Outpost.Core.Data;
+﻿using Idology.Outpost.Core.Data.Entities;
+
+namespace Idology.Outpost.Core.Data;
 
 public sealed class Town
 {
