@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Idology.Engine\Idology.Engine.csproj" />
-    <ProjectReference Include="..\Idology.UserInterface\Idology.UserInterface.csproj" />
-  </ItemGroup>
-
 </Project>

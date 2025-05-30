@@ -1,13 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="MSTest.Sdk/3.6.4">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UseVSTest>true</UseVSTest>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Idology.Engine\Idology.Engine.csproj" />
     <ProjectReference Include="..\Idology.UserInterface\Idology.UserInterface.csproj" />
   </ItemGroup>
 

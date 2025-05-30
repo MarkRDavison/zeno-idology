@@ -1,4 +1,9 @@
-﻿namespace Idology.Outpost.Core.Infrastructure;
+﻿using Idology.UserInterface.Elements;
+using Idology.UserInterface.Elements.Controls;
+using Idology.UserInterface.Enums;
+using Idology.UserInterface.Layout;
+
+namespace Idology.Outpost.Core.Infrastructure;
 
 public sealed class GameRenderer
 {
@@ -11,6 +16,43 @@ public sealed class GameRenderer
     {
         _gameData = gameData;
         _resourceService = resourceService;
+    }
+
+    private UiElement OpenAndCloseRecursive(UiElement? parent, UiElement element)
+    {
+        if (parent is null && element.WidthSizing.Type is not SizingType.Fixed)
+        {
+            throw new InvalidOperationException("Root width must be fixed");
+        }
+        if (parent is null && element.HeightSizing.Type is not SizingType.Fixed)
+        {
+            throw new InvalidOperationException("Root height must be fixed");
+        }
+
+        SizingSystem.OpenElement(parent, element);
+
+        foreach (var c in element.Children)
+        {
+            OpenAndCloseRecursive(element, c);
+        }
+
+        SizingSystem.CloseElement(element, true);
+
+        SizingSystem.GrowAndShrinkChildElements(
+            element,
+            true,
+            element.Children.Where(_ => _.WidthSizing.Type == SizingType.Grow || _.WidthSizing.Type == SizingType.Fit).ToList(),
+            element.Children.Where(_ => _.WidthSizing.Type == SizingType.Fit).ToList());
+
+        SizingSystem.CloseElement(element, false);
+
+        SizingSystem.GrowAndShrinkChildElements(
+            element,
+            false,
+            element.Children.Where(_ => _.HeightSizing.Type == SizingType.Grow || _.HeightSizing.Type == SizingType.Fit).ToList(),
+            element.Children.Where(_ => _.HeightSizing.Type == SizingType.Fit).ToList());
+
+        return element;
     }
 
     public void Draw(Camera2D camera)
@@ -139,6 +181,86 @@ public sealed class GameRenderer
         {
             Raylib.DrawText($"{r} x{rng.Current}", 10, 32 * i + 32, 24, Color.Black);
             i++;
+        }
+
+
+        var root = OpenAndCloseRecursive(null, new Panel
+        {
+            Name = "Root",
+            Colour = [1.0f, 1.0f, 1.0f, 1.0f],
+            WidthSizing = Sizing.Fixed(600.0f),
+            HeightSizing = Sizing.Fixed(600.0f),
+            Padding = new() { Left = 16.0f, Right = 16.0f, Top = 16.0f, Bottom = 16.0f, },
+            ChildGap = 16.0f,
+            Children =
+            [
+                new Panel
+                {
+                    Name = "Left",
+                    Colour = [1.0f, 0.0f, 0.0f, 1.0f],
+                    WidthSizing = Sizing.Fixed(100.0f)
+                },
+                new Panel
+                {
+                    Name = "Middle",
+                    Colour = [0.0f, 1.0f, 0.0f, 1.0f],
+                    WidthSizing = Sizing.Grow(),
+                    HeightSizing = Sizing.Fit(100.0f, 200.0f)
+                },
+                new Panel
+                {
+                    Name = "Right",
+                    Colour = [0.0f, 0.0f, 1.0f, 1.0f],
+                    WidthSizing = Sizing.Fixed(100.0f)
+                },
+            ]
+        });
+
+        RenderRecursiveUi(root, new Vector2(128, 128));
+    }
+
+    void RenderRecursiveUi(UiElement element, Vector2 position)
+    {
+        var col = element.Name switch
+        {
+            "Root" => Color.White,
+            "Left" => Color.Red,
+            "Middle" => Color.Blue,
+            "Right" => Color.Green,
+            _ => Color.Magenta
+        };
+
+        Raylib.DrawRectangle(
+            (int)position.X,
+            (int)position.Y,
+            (int)element.Width,
+            (int)element.Height,
+            col);
+
+        var currentPosition = position;
+        currentPosition.X += element.Padding.Left;
+        currentPosition.Y += element.Padding.Top;
+        foreach (var c in element.Children)
+        {
+            if (element.LayoutDirection == LayoutDirection.LeftToRight)
+            {
+                currentPosition.X += c.Padding.Left;
+            }
+            else
+            {
+                currentPosition.Y += c.Padding.Top;
+            }
+
+            RenderRecursiveUi(c, currentPosition);
+
+            if (element.LayoutDirection == LayoutDirection.LeftToRight)
+            {
+                currentPosition.X += c.Width + c.Padding.Right + element.ChildGap;
+            }
+            else
+            {
+                currentPosition.Y += c.Height + c.Padding.Bottom + element.ChildGap;
+            }
         }
     }
 }

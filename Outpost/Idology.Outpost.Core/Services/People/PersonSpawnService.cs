@@ -35,13 +35,7 @@ public sealed class PersonSpawnService : IPersonSpawnService
         // TODO: Temp only spawn allocated guards
         _gameData.Town.People
             .AddRange(Enumerable.Range(0, homeRegion.GuardPositions.Count)
-            .Select(_ =>
-            {
-                var person = _personPrototypeService.CreateEntity(PrototypeConstants.Guard);
-                person.Position = GameConstants.MusterPoint + new Vector2(15, 0) + Wiggle();
-                person.TargetPosition = homeRegion.GuardPositions[_];
-                return person;
-            }));
+            .Select(_ => SpawnGuardAtSunset(_, homeRegion)));
     }
 
     public Person SpawnHunterAtSunrise()
@@ -69,6 +63,14 @@ public sealed class PersonSpawnService : IPersonSpawnService
         person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, -1) + Wiggle(4));
         person.Waypoints.Enqueue(GameConstants.ForestLocation + Wiggle(2));
 
+        return person;
+    }
+
+    public Person SpawnGuardAtSunset(int index, TownRegion homeRegion)
+    {
+        var person = _personPrototypeService.CreateEntity(PrototypeConstants.Guard);
+        person.Position = GameConstants.MusterPoint + new Vector2(15, 0) + Wiggle();
+        person.TargetPosition = homeRegion.GuardPositions[index];
         return person;
     }
 

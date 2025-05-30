@@ -26,6 +26,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idology.Outpost.Core.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idology.Game", "Idology.Game\Idology.Game.csproj", "{A2C17FEF-6FE9-4404-9ABB-EE5C44423036}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idology.UserInterface", "Idology.UserInterface\Idology.UserInterface.csproj", "{8D5FD433-58DC-4803-94F5-03D2AA853846}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idology.UserInterface.Tests", "Idology.UserInterface.Tests\Idology.UserInterface.Tests.csproj", "{289D1532-3D1E-4155-9DB9-20AACC13E596}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,6 +64,14 @@ Global
 		{A2C17FEF-6FE9-4404-9ABB-EE5C44423036}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2C17FEF-6FE9-4404-9ABB-EE5C44423036}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2C17FEF-6FE9-4404-9ABB-EE5C44423036}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D5FD433-58DC-4803-94F5-03D2AA853846}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D5FD433-58DC-4803-94F5-03D2AA853846}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D5FD433-58DC-4803-94F5-03D2AA853846}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D5FD433-58DC-4803-94F5-03D2AA853846}.Release|Any CPU.Build.0 = Release|Any CPU
+		{289D1532-3D1E-4155-9DB9-20AACC13E596}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{289D1532-3D1E-4155-9DB9-20AACC13E596}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{289D1532-3D1E-4155-9DB9-20AACC13E596}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{289D1532-3D1E-4155-9DB9-20AACC13E596}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
