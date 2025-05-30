@@ -3,10 +3,14 @@
 public sealed class PersonMovementService : IPersonMovementService
 {
     private readonly GameData _gameData;
+    private readonly IResourceService _resourceService;
 
-    public PersonMovementService(GameData gameData)
+    public PersonMovementService(
+        GameData gameData,
+        IResourceService resourceService)
     {
         _gameData = gameData;
+        _resourceService = resourceService;
     }
 
     public void HandleSunrise()
@@ -76,15 +80,23 @@ public sealed class PersonMovementService : IPersonMovementService
         }
         else if (p.Class != "GUARD" && p.Mode == WorkerMode.ReturningResources)
         {
+            foreach (var (r, range) in p.Inventory)
+            {
+                _resourceService.IncreaseResources(new Dictionary<string, int>
+                {
+                    { r, range.Current }
+                });
+                range.Current = 0;
+            }
+
             p.Mode = WorkerMode.TravellingToWork;
-            Console.WriteLine("{0} has dropped off resources :) - now going back to work!", p.Class);
 
             p.TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -1, 0) + Wiggle();
             p.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -8, 0) + Wiggle(3));
             p.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, 0) + Wiggle(4));
             p.Waypoints.Enqueue(GameConstants.HuntLocation + Wiggle(2));
         }
-        if (p.Class != "GUARD" && p.Mode == WorkerMode.ReturningHome)
+        else if (p.Class != "GUARD" && p.Mode == WorkerMode.ReturningHome)
         {
             p.RequiresRemoval = true;
         }

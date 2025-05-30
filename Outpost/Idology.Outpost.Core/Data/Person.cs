@@ -9,4 +9,5 @@ public sealed class Person
     public Vector2 TargetPosition { get; set; }
     public Queue<Vector2> Waypoints { get; } = [];
     public float ElapsedWork { get; set; }
+    public Dictionary<string, AmountRange> Inventory { get; } = [];
 }

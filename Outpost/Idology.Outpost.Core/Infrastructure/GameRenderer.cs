@@ -3,14 +3,20 @@
 public sealed class GameRenderer
 {
     private readonly GameData _gameData;
+    private readonly IResourceService _resourceService;
 
-    public GameRenderer(GameData gameData)
+    public GameRenderer(
+        GameData gameData,
+        IResourceService resourceService)
     {
         _gameData = gameData;
+        _resourceService = resourceService;
     }
 
     public void Draw(Camera2D camera)
     {
+        Raylib.BeginMode2D(camera);
+
         foreach (var region in _gameData.Town.Regions)
         {
             Raylib.DrawRectangle(
@@ -117,5 +123,16 @@ public sealed class GameRenderer
             (int)GameConstants.HuntLocation.Y,
             GameConstants.PersonRadius * 5.0f,
             Color.DarkPurple);
+
+        Raylib.EndMode2D();
+
+        // UI
+
+        var i = 0;
+        foreach (var (r, rng) in _resourceService.GetResources())
+        {
+            Raylib.DrawText($"{r} x{rng.Current}", 10, 32 * i + 32, 24, Color.Black);
+            i++;
+        }
     }
 }

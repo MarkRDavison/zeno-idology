@@ -16,6 +16,9 @@ public sealed class GameScene : Scene
         _camera = new Camera2D();
         _gameRenderer = gameRenderer;
         _gameData = gameData;
+
+        _gameData.Resources.Add("GOLD", new AmountRange { Min = 0, Current = 100 });
+        _gameData.Resources.Add("MEAT", new AmountRange { Min = 0, Current = 5, Max = 20 });
     }
 
     public override void Init()
@@ -55,11 +58,7 @@ public sealed class GameScene : Scene
 
         Raylib.DrawFPS(10, 10);
 
-        Raylib.BeginMode2D(_camera);
-
         _gameRenderer.Draw(_camera);
-
-        Raylib.EndMode2D();
 
         Raylib.EndDrawing();
     }

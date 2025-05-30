@@ -18,15 +18,29 @@ public sealed class PersonWorkService : IPersonWorkService
             if (p.ElapsedWork >= classThreshold)
             {
                 p.ElapsedWork -= classThreshold;
-                p.Mode = WorkerMode.ReturningResources;
-                // TODO: Verify
-                /*
-                 * Is this the right place to plan the walk back?
-                 */
-                p.TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, 0) + Wiggle(4);
+                var resource = GetClassWorkResult(p.Class);
 
-                p.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -8, 0) + Wiggle(3));
-                p.Waypoints.Enqueue(GameConstants.MusterPoint);
+                if (!p.Inventory.ContainsKey(resource))
+                {
+                    throw new InvalidOperationException();
+                }
+
+                var range = p.Inventory[resource];
+
+                range.Current++;
+                if (range.Current >= range.Max)
+                {
+                    p.Mode = WorkerMode.ReturningResources;
+                    // TODO: Verify
+                    /*
+                     * Is this the right place to plan the walk back?
+                     */
+                    p.TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, 0) + Wiggle(4);
+
+                    p.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -8, 0) + Wiggle(3));
+                    p.Waypoints.Enqueue(GameConstants.MusterPoint);
+                }
+
             }
         }
     }
@@ -39,6 +53,17 @@ public sealed class PersonWorkService : IPersonWorkService
                 return 2.5f;
             default:
                 return 1.0f;
+        }
+    }
+
+    private static string GetClassWorkResult(string workerClass)
+    {
+        switch (workerClass)
+        {
+            case "HUNTER":
+                return "MEAT";
+            default:
+                throw new NotImplementedException();
         }
     }
 

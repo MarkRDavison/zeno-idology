@@ -25,7 +25,11 @@ public sealed class PersonSpawnService : IPersonSpawnService
                     Position = GameConstants.MusterPoint + new Vector2(
                     15 + Random.Shared.Next(-15, +15),
                     Random.Shared.Next(-15, +15)),
-                    TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -1, 0) + Wiggle()
+                    TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -1, 0) + Wiggle(),
+                    Inventory =
+                    {
+                        { "MEAT", new AmountRange { Min = 0, Current = 0, Max = 4 } }
+                    }
                 };
 
                 person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -8, 0) + Wiggle(3));
