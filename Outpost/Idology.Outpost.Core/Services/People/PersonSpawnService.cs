@@ -11,7 +11,8 @@ public sealed class PersonSpawnService : IPersonSpawnService
 
     public void HandleSunrise()
     {
-        const int Hunters = 4;
+        const int Hunters = 1;
+        const int Lumberjacks = 2;
 
         // TODO: Need helper for this, need to spotanteously dispatch another when changing allocations etc
         _gameData.Town.People
@@ -35,6 +36,32 @@ public sealed class PersonSpawnService : IPersonSpawnService
                 person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -8, 0) + Wiggle(3));
                 person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, 0) + Wiggle(4));
                 person.Waypoints.Enqueue(GameConstants.HuntLocation + Wiggle(2));
+
+                return person;
+            }));
+
+        // TODO: Need helper for this, need to spotanteously dispatch another when changing allocations etc
+        _gameData.Town.People
+            .AddRange(Enumerable.Range(0, Lumberjacks)
+            .Select(_ =>
+            {
+                var person = new Person
+                {
+                    Mode = WorkerMode.TravellingToWork,
+                    Class = "LUMBERJACK",
+                    Position = GameConstants.MusterPoint + new Vector2(
+                    15 + Random.Shared.Next(-15, +15),
+                    Random.Shared.Next(-15, +15)),
+                    TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -1, 0) + Wiggle(),
+                    Inventory =
+                    {
+                        { "WOOD", new AmountRange { Min = 0, Current = 0, Max = 5 } }
+                    }
+                };
+
+                person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -8, 1) + Wiggle(3));
+                person.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, -1) + Wiggle(4));
+                person.Waypoints.Enqueue(GameConstants.ForestLocation + Wiggle(2));
 
                 return person;
             }));

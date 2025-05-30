@@ -51,6 +51,8 @@ public sealed class PersonWorkService : IPersonWorkService
         {
             case "HUNTER":
                 return 2.5f;
+            case "LUMBERJACK":
+                return 1.5f;
             default:
                 return 1.0f;
         }
@@ -62,6 +64,8 @@ public sealed class PersonWorkService : IPersonWorkService
         {
             case "HUNTER":
                 return "MEAT";
+            case "LUMBERJACK":
+                return "WOOD";
             default:
                 throw new NotImplementedException();
         }

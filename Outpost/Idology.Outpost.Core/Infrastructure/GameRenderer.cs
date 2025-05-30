@@ -124,6 +124,12 @@ public sealed class GameRenderer
             GameConstants.PersonRadius * 5.0f,
             Color.DarkPurple);
 
+        Raylib.DrawCircle(
+            (int)GameConstants.ForestLocation.X,
+            (int)GameConstants.ForestLocation.Y,
+            GameConstants.PersonRadius * 5.0f,
+            Color.DarkGreen);
+
         Raylib.EndMode2D();
 
         // UI

@@ -19,6 +19,7 @@ public sealed class GameScene : Scene
 
         _gameData.Resources.Add("GOLD", new AmountRange { Min = 0, Current = 100 });
         _gameData.Resources.Add("MEAT", new AmountRange { Min = 0, Current = 5, Max = 20 });
+        _gameData.Resources.Add("WOOD", new AmountRange { Min = 0, Current = 100, Max = 200 });
     }
 
     public override void Init()

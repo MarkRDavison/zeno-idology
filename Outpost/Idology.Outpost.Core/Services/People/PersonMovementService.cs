@@ -94,7 +94,7 @@ public sealed class PersonMovementService : IPersonMovementService
             p.TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -1, 0) + Wiggle();
             p.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -8, 0) + Wiggle(3));
             p.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, 0) + Wiggle(4));
-            p.Waypoints.Enqueue(GameConstants.HuntLocation + Wiggle(2));
+            p.Waypoints.Enqueue(GetWorkLocation(p.Class) + Wiggle(2));
         }
         else if (p.Class != "GUARD" && p.Mode == WorkerMode.ReturningHome)
         {
@@ -105,6 +105,19 @@ public sealed class PersonMovementService : IPersonMovementService
     private static Func<Person, bool> RequiresMovementFunc => _ => _.TargetPosition != _.Position;
     private static Func<Person, bool> IsGuard => _ => _.Class == "GUARD";
     private static Func<Person, bool> IsNotGuard => _ => _.Class != "GUARD";
+
+    private static Vector2 GetWorkLocation(string workerClass)
+    {
+        switch (workerClass)
+        {
+            case "HUNTER":
+                return GameConstants.HuntLocation;
+            case "LUMBERJACK":
+                return GameConstants.ForestLocation;
+            default:
+                throw new NotImplementedException();
+        }
+    }
 
     private static Vector2 Wiggle(int multiplier = 1) => new Vector2(
                     Random.Shared.Next(-15 * multiplier, +15 * multiplier),
