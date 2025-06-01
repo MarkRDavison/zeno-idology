@@ -19,4 +19,8 @@
 		</Content>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Update="Assets\Textures\arrow.png" Link="Assets\Textures\arrow.png" />
+	</ItemGroup>
+
 </Project>

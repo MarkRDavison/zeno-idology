@@ -1,4 +1,5 @@
-﻿using Idology.UserInterface;
+﻿using Idology.Engine.Resources;
+using Idology.UserInterface.Components;
 
 namespace Idology.Outpost.Core.Infrastructure;
 
@@ -6,21 +7,61 @@ public sealed class GameRenderer
 {
     private readonly GameData _gameData;
     private readonly IResourceService _resourceService;
-    private readonly TheInterface _shitInterface;
+    private readonly IList<UiComponentBase> _components = [];
 
     public GameRenderer(
         GameData gameData,
         IResourceService resourceService,
-        TheInterface shitInterface)
+        ITextureManager textureManager)
     {
         _gameData = gameData;
         _resourceService = resourceService;
-        _shitInterface = shitInterface;
+
+
+        _components.Add(new IconButton
+        {
+            TextureManager = textureManager,
+            Size = new Vector2(64, 64),
+            Position = new Vector2(400, 0),
+            Icon = "arrow"
+        });
+        _components.Add(new LabelButton
+        {
+            TextureManager = textureManager,
+            Label = "Click me!",
+            Size = new Vector2(192, 64),
+            Position = new Vector2(192, 0)
+        });
+        _components.Add(new ResourceGroup
+        {
+            TextureManager = textureManager,
+            Position = new Vector2(512, 0),
+            Resources = [
+                (35, "test"),
+                (0, "icon"),
+                (35, "test"),
+                (53, "icon"),
+                (35, "test"),
+                (53, "icon")
+            ]
+        });
+
+        ((ButtonBase)_components[0]).OnClick += (s, e) =>
+        {
+            Console.WriteLine("LABEL BUTTON ACTIVATED");
+        };
+        ((ButtonBase)_components[1]).OnClick += (s, e) =>
+        {
+            Console.WriteLine("ICON BUTTON ACTIVATED");
+        };
     }
 
-    public void Update(float _delta)
+    public void Update(float delta)
     {
-
+        foreach (var c in _components)
+        {
+            c.Update(delta);
+        }
     }
 
     public void Draw(Camera2D camera)
@@ -116,7 +157,12 @@ public sealed class GameRenderer
 
             if (z.Position != z.TargetPosition && z.TargetPosition is not null)
             {
-                Raylib.DrawLine((int)z.Position.X, (int)z.Position.Y, (int)z.TargetPosition.Value.X, (int)z.TargetPosition.Value.Y, Color.White);
+                Raylib.DrawLine(
+                    (int)z.Position.X,
+                    (int)z.Position.Y,
+                    (int)z.TargetPosition.Value.X,
+                    (int)z.TargetPosition.Value.Y,
+                    Color.White);
             }
         }
 
@@ -151,6 +197,9 @@ public sealed class GameRenderer
             i++;
         }
 
-        _shitInterface.Draw();
+        foreach (var c in _components)
+        {
+            c.Draw();
+        }
     }
 }
