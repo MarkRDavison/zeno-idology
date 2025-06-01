@@ -1,4 +1,6 @@
-﻿namespace Idology.Outpost.Core.Ignition;
+﻿using Idology.UserInterface;
+
+namespace Idology.Outpost.Core.Ignition;
 
 public static class DependencyInjectionExtensions
 {
@@ -22,6 +24,8 @@ public static class DependencyInjectionExtensions
             .AddScoped<IZombieWanderService, ZombieWanderService>()
             .AddScoped<IZombieMovementService, ZombieMovementService>()
             .AddScoped<IResourceService, ResourceService>();
+
+        services.AddSingleton<TheInterface>(); // TODO: Temp
 
         return services;
     }

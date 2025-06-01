@@ -8,26 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Assets\Fonts\calibrib.ttf" />
-    <None Remove="Assets\Fonts\Kenney-Mini.ttf" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Idology.Outpost.Core\Idology.Outpost.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Assets\Music\" />
-    <Folder Include="Assets\Sounds\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Assets\Fonts\calibrib.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\Fonts\Kenney-Mini.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Assets\**">
+			<Link>Assets\%(RecursiveDir)\%(Filename)%(Extension)</Link>
+			<TargetPath>Assets\%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
 </Project>

@@ -3,10 +3,14 @@
 public sealed class ZombieSpawnService : IZombieSpawnService
 {
     private readonly GameData _gameData;
+    private readonly IPrototypeService<ZombiePrototype, Zombie> _zombiePrototypeService;
 
-    public ZombieSpawnService(GameData gameData)
+    public ZombieSpawnService(
+        GameData gameData,
+        IPrototypeService<ZombiePrototype, Zombie> zombiePrototypeService)
     {
         _gameData = gameData;
+        _zombiePrototypeService = zombiePrototypeService;
     }
 
     public void SpawnTestZombie()
@@ -20,15 +24,13 @@ public sealed class ZombieSpawnService : IZombieSpawnService
 
         foreach (var spawnerLocation in _gameData.Town.Regions.SelectMany(_ => _.SpawnerLocations))
         {
-            var pos = spawnerLocation + new Vector2(
+            var zombie = _zombiePrototypeService.CreateEntity(PrototypeConstants.Zombie);
+
+            zombie.Position = spawnerLocation + new Vector2(
                 Random.Shared.Next(-range / 2, range / 2),
                 Random.Shared.Next(-range / 2, range / 2));
 
-            _gameData.Town.Zombies.Add(new Zombie
-            {
-                Position = pos,
-                TargetPosition = null
-            });
+            _gameData.Town.Zombies.Add(zombie);
         }
     }
 }

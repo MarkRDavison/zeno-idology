@@ -49,6 +49,7 @@ public sealed class GameScene : Scene
         }
 
         _game.Update(delta);
+        _gameRenderer.Update(delta);
     }
 
     public override void Draw()

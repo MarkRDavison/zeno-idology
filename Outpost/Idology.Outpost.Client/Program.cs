@@ -55,6 +55,14 @@ public class Worker : BackgroundService
 
         var spriteManager = scope.ServiceProvider.GetRequiredService<ISpriteSheetManager>();
 
+        var textureManager = scope.ServiceProvider.GetRequiredService<ITextureManager>();
+        foreach (var f in Directory.GetFiles("Assets/Textures"))
+        {
+            var path = Path.GetFullPath(f);
+            var filename = Path.GetFileNameWithoutExtension(path);
+            textureManager.LoadTexture(filename, path);
+        }
+
         // TODO: Config
         scope.ServiceProvider
             .GetRequiredService<ISceneService>()
@@ -96,9 +104,16 @@ public class Worker : BackgroundService
 
         {
             var zombiePrototypeService = scope.ServiceProvider.GetRequiredService<IPrototypeService<ZombiePrototype, Zombie>>();
-
-
+            zombiePrototypeService.RegisterPrototype(
+                PrototypeConstants.Zombie,
+                new ZombiePrototype
+                {
+                    Id = StringHash.Hash(PrototypeConstants.Zombie),
+                    Name = PrototypeConstants.Zombie
+                });
         }
+
+        Console.WriteLine("https://mrscauthd.github.io/Bliss/docs/getting-started.html");
 
         await app.Start(token);
 
