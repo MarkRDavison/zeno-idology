@@ -21,6 +21,7 @@
 
 	<ItemGroup>
 	  <Content Update="Assets\Textures\arrow.png" Link="Assets\Textures\arrow.png" />
+	  <Content Update="Assets\Textures\tools_icon.png" Link="Assets\Textures\tools_icon.png" />
 	</ItemGroup>
 
 </Project>

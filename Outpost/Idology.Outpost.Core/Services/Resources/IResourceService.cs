@@ -10,5 +10,5 @@ public interface IResourceService
     bool TryIncreaseResources(IDictionary<string, int> resourceAmounts);
     void IncreaseResources(IDictionary<string, int> resourceAmounts);
     bool CanIncreaseResources(IDictionary<string, int> resourceAmounts);
-
+    event EventHandler OnResourcesChanged;
 }

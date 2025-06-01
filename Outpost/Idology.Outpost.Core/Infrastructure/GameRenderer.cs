@@ -9,6 +9,8 @@ public sealed class GameRenderer
     private readonly IResourceService _resourceService;
     private readonly IList<UiComponentBase> _components = [];
 
+    private bool _resourcesChanged;
+
     public GameRenderer(
         GameData gameData,
         IResourceService resourceService,
@@ -16,51 +18,55 @@ public sealed class GameRenderer
     {
         _gameData = gameData;
         _resourceService = resourceService;
+        _resourceService.OnResourcesChanged += _resourceService_OnResourcesChanged;
 
-
-        _components.Add(new IconButton
-        {
-            TextureManager = textureManager,
-            Size = new Vector2(64, 64),
-            Position = new Vector2(400, 0),
-            Icon = "arrow"
-        });
-        _components.Add(new LabelButton
-        {
-            TextureManager = textureManager,
-            Label = "Click me!",
-            Size = new Vector2(192, 64),
-            Position = new Vector2(192, 0)
-        });
+        //_components.Add(new IconButton
+        //{
+        //    TextureManager = textureManager,
+        //    Size = new Vector2(64, 64),
+        //    Position = new Vector2(400, 0),
+        //    Icon = "arrow"
+        //});
+        //_components.Add(new LabelButton
+        //{
+        //    TextureManager = textureManager,
+        //    Label = "Click me!",
+        //    Size = new Vector2(192, 64),
+        //    Position = new Vector2(192, 0)
+        //});
         _components.Add(new ResourceGroup
         {
             TextureManager = textureManager,
             Position = new Vector2(512, 0),
-            Resources = [
-                (35, "test"),
-                (0, "icon"),
-                (35, "test"),
-                (53, "icon"),
-                (35, "test"),
-                (53, "icon")
-            ]
+            Resources = GetResources()
         });
 
-        ((ButtonBase)_components[0]).OnClick += (s, e) =>
-        {
-            Console.WriteLine("LABEL BUTTON ACTIVATED");
-        };
-        ((ButtonBase)_components[1]).OnClick += (s, e) =>
-        {
-            Console.WriteLine("ICON BUTTON ACTIVATED");
-        };
+        _resourcesChanged = true;
     }
+
+    private void _resourceService_OnResourcesChanged(object? sender, EventArgs e)
+    {
+        _resourcesChanged = true;
+    }
+
+    private IList<(int, string)> GetResources() => [.. _resourceService.GetResources().Select(_ => (_.Value.Current, _.Key.ToLower() + "_icon"))];
 
     public void Update(float delta)
     {
         foreach (var c in _components)
         {
             c.Update(delta);
+        }
+
+        if (_resourcesChanged && _components.FirstOrDefault(_ => _ is ResourceGroup) is ResourceGroup rg)
+        {
+            rg.Resources = GetResources();
+
+            var bounds = rg.Measure();
+
+            rg.Position = new Vector2(Raylib.GetScreenWidth() / 2 - bounds.Width / 2, 0);
+
+            _resourcesChanged = false;
         }
     }
 
@@ -189,13 +195,6 @@ public sealed class GameRenderer
         Raylib.EndMode2D();
 
         // UI
-
-        var i = 0;
-        foreach (var (r, rng) in _resourceService.GetResources())
-        {
-            Raylib.DrawText($"{r} x{rng.Current}", 10, 32 * i + 32, 24, Color.Black);
-            i++;
-        }
 
         foreach (var c in _components)
         {

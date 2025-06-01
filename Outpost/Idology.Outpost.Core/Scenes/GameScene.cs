@@ -16,9 +16,6 @@ public sealed class GameScene : Scene
         _camera = new Camera2D();
         _gameRenderer = gameRenderer;
         _gameData = gameData;
-
-        _gameData.Resources.Add(ResourceConstants.Meat, new AmountRange { Min = 0, Current = 5, Max = 20 });
-        _gameData.Resources.Add(ResourceConstants.Wood, new AmountRange { Min = 0, Current = 100, Max = 200 });
     }
 
     public override void Init()

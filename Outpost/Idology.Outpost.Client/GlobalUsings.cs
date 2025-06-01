@@ -8,6 +8,7 @@ global using Idology.Outpost.Core.Data.Entities;
 global using Idology.Outpost.Core.Data.Prototypes;
 global using Idology.Outpost.Core.Ignition;
 global using Idology.Outpost.Core.Scenes;
+global using Idology.UserInterface.Ignition;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;

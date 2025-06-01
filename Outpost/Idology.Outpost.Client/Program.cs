@@ -1,4 +1,6 @@
-﻿namespace Idology.Outpost.Client;
+﻿using Idology.Outpost.Core.Data;
+
+namespace Idology.Outpost.Client;
 
 public class Program
 {
@@ -15,6 +17,7 @@ public class Program
             services
                 .AddHostedService<Worker>()
                 .AddEngine()
+                .AddUserInterface()
                 .AddClient();
         })
         .ConfigureLogging(logging =>
@@ -62,6 +65,12 @@ public class Worker : BackgroundService
             var filename = Path.GetFileNameWithoutExtension(path);
             textureManager.LoadTexture(filename, path);
         }
+
+        var gameData = scope.ServiceProvider.GetRequiredService<GameData>();
+        gameData.Resources.Add(ResourceConstants.Meat, new AmountRange { Min = 0, Current = 5, Max = 20 });
+        gameData.Resources.Add(ResourceConstants.Wood, new AmountRange { Min = 0, Current = 100, Max = 200 });
+        gameData.Resources.Add(ResourceConstants.Wheat, new AmountRange { Min = 0, Current = 0, Max = 100 });
+        gameData.Resources.Add(ResourceConstants.Tools, new AmountRange { Min = 0, Current = 0, Max = 20 });
 
         // TODO: Config
         scope.ServiceProvider

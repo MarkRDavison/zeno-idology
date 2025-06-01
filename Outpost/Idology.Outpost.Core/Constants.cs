@@ -27,6 +27,8 @@ public static class ResourceConstants
 {
     public const string Wood = nameof(Wood);
     public const string Meat = nameof(Meat);
+    public const string Wheat = nameof(Wheat);
+    public const string Tools = nameof(Tools);
 }
 
 public static class PrototypeConstants

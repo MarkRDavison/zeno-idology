@@ -4,6 +4,8 @@ public sealed class ResourceService : IResourceService
 {
     private readonly GameData _gameData;
 
+    public event EventHandler OnResourcesChanged = default!;
+
     public ResourceService(GameData gameData)
     {
         _gameData = gameData;
@@ -37,6 +39,7 @@ public sealed class ResourceService : IResourceService
 
             var r = _gameData.Resources[resource];
             r.Current = Math.Max(r.Current - amount, r.Min);
+            OnResourcesChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -77,6 +80,7 @@ public sealed class ResourceService : IResourceService
 
             var r = _gameData.Resources[resource];
             r.Current = Math.Min(r.Current + amount, r.Max);
+            OnResourcesChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
