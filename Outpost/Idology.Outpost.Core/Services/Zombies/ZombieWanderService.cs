@@ -9,11 +9,11 @@ public sealed class ZombieWanderService : IZombieWanderService
         _gameData = gameData;
     }
 
-    public void Wander(float delta)
+    public void Update(float delta)
     {
         const float WanderThreshold = 3.5f;
         const int range = (int)GameConstants.TileSize * 2;
-        foreach (var z in _gameData.Town.Zombies)
+        foreach (var z in _gameData.Town.Zombies.Where(_ => _.Mode == ZombieMode.Wandering))
         {
             if (z.TargetPosition is null)
             {

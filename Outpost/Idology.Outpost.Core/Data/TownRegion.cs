@@ -6,4 +6,5 @@ public sealed class TownRegion
     public bool Unlocked { get; set; }
     public List<Vector2> GuardPositions { get; set; } = [];
     public List<Vector2> SpawnerLocations { get; set; } = [];
+    public int WallHealth { get; set; } = 600;
 }

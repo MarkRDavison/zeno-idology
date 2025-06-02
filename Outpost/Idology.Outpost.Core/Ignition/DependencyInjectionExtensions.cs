@@ -21,6 +21,7 @@ public static class DependencyInjectionExtensions
             .AddScoped<IZombieSpawnService, ZombieSpawnService>()
             .AddScoped<IZombieWanderService, ZombieWanderService>()
             .AddScoped<IZombieMovementService, ZombieMovementService>()
+            .AddScoped<IZombieAttackService, ZombieAttackService>()
             .AddScoped<IResourceService, ResourceService>();
 
         return services;

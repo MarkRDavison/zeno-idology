@@ -94,33 +94,35 @@ public sealed class GameRenderer
                         Color.White);
                 }
 
-                // Home region
-                if (_gameData.Town.TimeOfDay == TimeOfDay.Day)
+                if (region.WallHealth > 0)
                 {
-                    Raylib.DrawRectangle(
-                        -GameConstants.WallWidth,
-                        0,
-                        GameConstants.WallWidth,
-                        (int)((GameConstants.RegionHeight * GameConstants.TileSize) - GameConstants.GateHeight) / 2,
-                        Color.Brown);
+                    // Home region
+                    if (_gameData.Town.TimeOfDay == TimeOfDay.Day)
+                    {
+                        Raylib.DrawRectangle(
+                            -GameConstants.WallWidth,
+                            0,
+                            GameConstants.WallWidth,
+                            (int)((GameConstants.RegionHeight * GameConstants.TileSize) - GameConstants.GateHeight) / 2,
+                            Color.Brown);
 
-                    Raylib.DrawRectangle(
-                        -GameConstants.WallWidth,
-                        (int)((GameConstants.RegionHeight * GameConstants.TileSize) - GameConstants.GateHeight) / 2 + GameConstants.GateHeight,
-                        GameConstants.WallWidth,
-                        (int)((GameConstants.RegionHeight * GameConstants.TileSize) - GameConstants.GateHeight) / 2,
-                        Color.Brown);
+                        Raylib.DrawRectangle(
+                            -GameConstants.WallWidth,
+                            (int)((GameConstants.RegionHeight * GameConstants.TileSize) - GameConstants.GateHeight) / 2 + GameConstants.GateHeight,
+                            GameConstants.WallWidth,
+                            (int)((GameConstants.RegionHeight * GameConstants.TileSize) - GameConstants.GateHeight) / 2,
+                            Color.Brown);
+                    }
+                    else
+                    {
+                        Raylib.DrawRectangle(
+                            -GameConstants.WallWidth,
+                            0,
+                            GameConstants.WallWidth,
+                            (int)(GameConstants.RegionHeight * GameConstants.TileSize),
+                            Color.Brown);
+                    }
                 }
-                else
-                {
-                    Raylib.DrawRectangle(
-                        -GameConstants.WallWidth,
-                        0,
-                        GameConstants.WallWidth,
-                        (int)(GameConstants.RegionHeight * GameConstants.TileSize),
-                        Color.Brown);
-                }
-
                 Raylib.DrawRectangle(
                     (int)((region.Coordinates.X + 3) * GameConstants.TileSize),
                     (int)((region.Coordinates.Y + 3) * GameConstants.TileSize),
@@ -159,7 +161,7 @@ public sealed class GameRenderer
                 (int)z.Position.X,
                 (int)z.Position.Y,
                 GameConstants.PersonRadius * 1.5f,
-                z.Mode == ZombieMode.Wandering ? Color.Pink : Color.Maroon);
+                z.Mode == ZombieMode.Wandering ? Color.Pink : (z.Mode == ZombieMode.Moving ? Color.Maroon : Color.Red));
 
             if (z.Position != z.TargetPosition && z.TargetPosition is not null)
             {

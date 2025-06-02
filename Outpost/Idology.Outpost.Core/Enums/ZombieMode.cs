@@ -3,5 +3,6 @@
 public enum ZombieMode
 {
     Wandering,
+    Moving,
     Attacking
 }

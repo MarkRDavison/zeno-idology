@@ -9,6 +9,7 @@ public sealed class Game
     private readonly IZombieSpawnService _zombieSpawnService;
     private readonly IZombieWanderService _zombieWanderService;
     private readonly IZombieMovementService _zombieMovementService;
+    private readonly IZombieAttackService _zombieAttackService;
 
     public Game(
         GameData gameData,
@@ -17,7 +18,8 @@ public sealed class Game
         IPersonWorkService personWorkService,
         IZombieSpawnService zombieSpawnService,
         IZombieWanderService zombieWanderService,
-        IZombieMovementService zombieMovementService)
+        IZombieMovementService zombieMovementService,
+        IZombieAttackService zombieAttackService)
     {
         _gameData = gameData;
 
@@ -35,6 +37,7 @@ public sealed class Game
         _zombieSpawnService = zombieSpawnService;
         _zombieWanderService = zombieWanderService;
         _zombieMovementService = zombieMovementService;
+        _zombieAttackService = zombieAttackService;
     }
 
     public void ApplyCommand(IGameCommand command)
@@ -78,7 +81,8 @@ public sealed class Game
         _personMovementService.Update(delta);
         _personWorkService.Update(delta);
         _zombieMovementService.Update(delta);
-        _zombieWanderService.Wander(delta);
+        _zombieWanderService.Update(delta);
+        _zombieAttackService.Update(delta);
     }
 
     private static TownRegion CreateHomeRegion()

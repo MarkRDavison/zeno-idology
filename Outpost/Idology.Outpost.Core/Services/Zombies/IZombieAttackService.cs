@@ -1,6 +1,6 @@
 ﻿namespace Idology.Outpost.Core.Services.Zombies;
 
-public interface IZombieWanderService
+public interface IZombieAttackService
 {
     void Update(float delta);
 }

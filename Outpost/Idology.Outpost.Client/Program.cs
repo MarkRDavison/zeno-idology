@@ -120,7 +120,8 @@ public class Worker : BackgroundService
                 new ZombiePrototype
                 {
                     Id = StringHash.Hash(PrototypeConstants.Zombie),
-                    Name = PrototypeConstants.Zombie
+                    Name = PrototypeConstants.Zombie,
+                    Damage = 5
                 });
         }
 
