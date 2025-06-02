@@ -1,0 +1,7 @@
+# Idology Outpost
+
+## TODO
+
+
+
+## DONE

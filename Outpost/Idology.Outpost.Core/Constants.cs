@@ -29,6 +29,8 @@ public static class ResourceConstants
     public const string Meat = nameof(Meat);
     public const string Wheat = nameof(Wheat);
     public const string Tools = nameof(Tools);
+    public const string Stone = nameof(Stone);
+    public const string Metal = nameof(Metal);
 }
 
 public static class PrototypeConstants

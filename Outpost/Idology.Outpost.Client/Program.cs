@@ -43,7 +43,7 @@ public class Worker : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken token)
     {
         Console.WriteLine("TODO: Powered by Raylib");
-
+        // TODO: Raylib.SetTraceLogCallback -> redirect output to ILogger
         using var scope = _serviceScopeFactory.CreateScope();
 
         var app = scope.ServiceProvider.GetRequiredService<Application>();
@@ -69,8 +69,10 @@ public class Worker : BackgroundService
         var gameData = scope.ServiceProvider.GetRequiredService<GameData>();
         gameData.Resources.Add(ResourceConstants.Meat, new AmountRange { Min = 0, Current = 5, Max = 20 });
         gameData.Resources.Add(ResourceConstants.Wood, new AmountRange { Min = 0, Current = 100, Max = 200 });
-        gameData.Resources.Add(ResourceConstants.Wheat, new AmountRange { Min = 0, Current = 0, Max = 100 });
         gameData.Resources.Add(ResourceConstants.Tools, new AmountRange { Min = 0, Current = 0, Max = 20 });
+        gameData.Resources.Add(ResourceConstants.Wheat, new AmountRange { Min = 0, Current = 0, Max = 100 });
+        gameData.Resources.Add(ResourceConstants.Stone, new AmountRange { Min = 0, Current = 0, Max = 100 });
+        gameData.Resources.Add(ResourceConstants.Metal, new AmountRange { Min = 0, Current = 0, Max = 50 });
 
         // TODO: Config
         scope.ServiceProvider
