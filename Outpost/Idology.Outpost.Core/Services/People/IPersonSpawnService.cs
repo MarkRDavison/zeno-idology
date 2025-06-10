@@ -5,7 +5,7 @@ public interface IPersonSpawnService
     void HandleSunrise();
     void HandleSunset();
 
-    Person SpawnHunterAtSunrise();
-    Person SpawnLumberjackAtSunrise();
-    Person SpawnGuardAtSunset(int index, TownRegion homeRegion);
+    Worker SpawnHunterAtSunrise();
+    Worker SpawnLumberjackAtSunrise();
+    Worker SpawnGuardAtSunset(int index, TownRegion homeRegion);
 }

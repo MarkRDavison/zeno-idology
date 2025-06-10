@@ -4,12 +4,12 @@ public sealed class PersonMovementService : IPersonMovementService
 {
     private readonly GameData _gameData;
     private readonly IResourceService _resourceService;
-    private readonly IPrototypeService<PersonPrototype, Person> _personPrototypeService;
+    private readonly IPrototypeService<WorkerPrototype, Worker> _personPrototypeService;
 
     public PersonMovementService(
         GameData gameData,
         IResourceService resourceService,
-        IPrototypeService<PersonPrototype, Person> personPrototypeService)
+        IPrototypeService<WorkerPrototype, Worker> personPrototypeService)
     {
         _gameData = gameData;
         _resourceService = resourceService;
@@ -70,43 +70,53 @@ public sealed class PersonMovementService : IPersonMovementService
             return;
         }
 
-        // TODO: Worker vs military etc
-        if (_gameData.Town.TimeOfDay == TimeOfDay.Day && p.Class == PrototypeConstants.Guard)
+        if (p is Guard g)
         {
-            p.RequiresRemoval = true;
-        }
-
-        if (p.Class != PrototypeConstants.Guard && p.Mode == WorkerMode.TravellingToWork)
-        {
-            p.Mode = WorkerMode.Working;
-        }
-        else if (p.Class != PrototypeConstants.Guard && p.Mode == WorkerMode.ReturningResources)
-        {
-            foreach (var (r, range) in p.Inventory)
+            // TODO: Worker vs military etc
+            if (_gameData.Town.TimeOfDay == TimeOfDay.Day)
             {
-                _resourceService.IncreaseResources(new Dictionary<string, int>
+                g.RequiresRemoval = true;
+            }
+            else
+            {
+                g.Mode = WorkerMode.Working;
+            }
+        }
+        else if (p is Worker w)
+        {
+            if (w.Mode == WorkerMode.TravellingToWork)
+            {
+                w.Mode = WorkerMode.Working;
+            }
+            else if (p.Mode == WorkerMode.ReturningResources)
+            {
+                foreach (var (r, range) in w.Inventory)
+                {
+                    _resourceService.IncreaseResources(new Dictionary<string, int>
                 {
                     { r, range.Current }
                 });
-                range.Current = 0;
+                    range.Current = 0;
+                }
+
+                w.Mode = WorkerMode.TravellingToWork;
+
+                w.TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -1, 0) + Wiggle();
+                w.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -8, 0) + Wiggle(3));
+                w.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, 0) + Wiggle(4));
+                w.Waypoints.Enqueue(GetWorkLocation(w.Class) + Wiggle(2));
             }
-
-            p.Mode = WorkerMode.TravellingToWork;
-
-            p.TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -1, 0) + Wiggle();
-            p.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -8, 0) + Wiggle(3));
-            p.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, 0) + Wiggle(4));
-            p.Waypoints.Enqueue(GetWorkLocation(p.Class) + Wiggle(2));
+            else if (w.Mode == WorkerMode.ReturningHome)
+            {
+                w.RequiresRemoval = true;
+            }
         }
-        else if (p.Class != PrototypeConstants.Guard && p.Mode == WorkerMode.ReturningHome)
-        {
-            p.RequiresRemoval = true;
-        }
+
     }
 
     private static Func<Person, bool> RequiresMovementFunc => _ => _.TargetPosition != _.Position;
-    private static Func<Person, bool> IsGuard => _ => _.Class == PrototypeConstants.Guard;
-    private static Func<Person, bool> IsNotGuard => _ => _.Class != PrototypeConstants.Guard;
+    private static Func<Person, bool> IsGuard => _ => _ is Guard;
+    private static Func<Person, bool> IsNotGuard => _ => _ is Worker;
 
     private Vector2 GetWorkLocation(string workerClass)
     {

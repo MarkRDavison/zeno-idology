@@ -10,6 +10,7 @@ global using Idology.Outpost.Core.Data.Prototypes;
 global using Idology.Outpost.Core.Enums;
 global using Idology.Outpost.Core.Infrastructure;
 global using Idology.Outpost.Core.Scenes;
+global using Idology.Outpost.Core.Services.Guards;
 global using Idology.Outpost.Core.Services.People;
 global using Idology.Outpost.Core.Services.Resources;
 global using Idology.Outpost.Core.Services.Zombies;

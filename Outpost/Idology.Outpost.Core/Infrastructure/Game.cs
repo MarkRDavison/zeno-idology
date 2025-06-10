@@ -6,6 +6,7 @@ public sealed class Game
     private readonly IPersonMovementService _personMovementService;
     private readonly IPersonSpawnService _personSpawnService;
     private readonly IPersonWorkService _personWorkService;
+    private readonly IGuardDefenceService _guardDefenceService;
     private readonly IZombieSpawnService _zombieSpawnService;
     private readonly IZombieWanderService _zombieWanderService;
     private readonly IZombieMovementService _zombieMovementService;
@@ -16,6 +17,7 @@ public sealed class Game
         IPersonMovementService personMovementService,
         IPersonSpawnService personSpawnService,
         IPersonWorkService personWorkService,
+        IGuardDefenceService guardDefenceService,
         IZombieSpawnService zombieSpawnService,
         IZombieWanderService zombieWanderService,
         IZombieMovementService zombieMovementService,
@@ -34,6 +36,7 @@ public sealed class Game
         _personMovementService = personMovementService;
         _personSpawnService = personSpawnService;
         _personWorkService = personWorkService;
+        _guardDefenceService = guardDefenceService;
         _zombieSpawnService = zombieSpawnService;
         _zombieWanderService = zombieWanderService;
         _zombieMovementService = zombieMovementService;
@@ -80,6 +83,7 @@ public sealed class Game
     {
         _personMovementService.Update(delta);
         _personWorkService.Update(delta);
+        _guardDefenceService.Update(delta);
         _zombieMovementService.Update(delta);
         _zombieWanderService.Update(delta);
         _zombieAttackService.Update(delta);

@@ -1,6 +1,6 @@
 ﻿namespace Idology.Outpost.Core.Data.Entities;
 
-public sealed class Person : IEntity
+public abstract class Person : IEntity
 {
     public Guid Id { get; set; }
     public Guid PrototypeId { get; set; }
@@ -11,5 +11,4 @@ public sealed class Person : IEntity
     public Vector2 TargetPosition { get; set; }
     public Queue<Vector2> Waypoints { get; } = [];
     public float ElapsedWork { get; set; }
-    public Dictionary<string, AmountRange> Inventory { get; init; } = [];
 }

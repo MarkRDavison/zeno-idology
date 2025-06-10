@@ -3,11 +3,11 @@
 public sealed class PersonWorkService : IPersonWorkService
 {
     private readonly GameData _gameData;
-    private readonly IPrototypeService<PersonPrototype, Person> _personPrototypeService;
+    private readonly IPrototypeService<WorkerPrototype, Worker> _personPrototypeService;
 
     public PersonWorkService(
         GameData gameData,
-        IPrototypeService<PersonPrototype, Person> personPrototypeService)
+        IPrototypeService<WorkerPrototype, Worker> personPrototypeService)
     {
         _gameData = gameData;
         _personPrototypeService = personPrototypeService;
@@ -15,34 +15,32 @@ public sealed class PersonWorkService : IPersonWorkService
 
     public void Update(float _delta)
     {
-        foreach (var p in _gameData.Town.People.Where(IsWorkingWorker))
+        foreach (var w in _gameData.Town.Workers.Where(IsWorkingWorker))
         {
-            p.ElapsedWork += _delta;
-            var classThreshold = GetClassWorkThreshold(p.Class);
-            if (p.ElapsedWork >= classThreshold)
+            w.ElapsedWork += _delta;
+            var classThreshold = GetClassWorkThreshold(w.Class);
+            if (w.ElapsedWork >= classThreshold)
             {
-                p.ElapsedWork -= classThreshold;
-                var (resource, amount) = GetClassWorkResult(p.Class);
+                w.ElapsedWork -= classThreshold;
+                var (resource, amount) = GetClassWorkResult(w.Class);
 
-                if (!p.Inventory.ContainsKey(resource))
+                if (!w.Inventory.TryGetValue(resource, out AmountRange? range))
                 {
                     throw new InvalidOperationException(); // TODO: Validate this at prototype loading stage
                 }
 
-                var range = p.Inventory[resource];
-
                 range.Current = Math.Min(range.Max, range.Current + amount);
                 if (range.Current >= range.Max)
                 {
-                    p.Mode = WorkerMode.ReturningResources;
+                    w.Mode = WorkerMode.ReturningResources;
                     // TODO: Verify
                     /*
                      * Is this the right place to plan the walk back?
                      */
-                    p.TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, 0) + Wiggle(4);
+                    w.TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -12, 0) + Wiggle(4);
 
-                    p.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -8, 0) + Wiggle(3));
-                    p.Waypoints.Enqueue(GameConstants.MusterPoint);
+                    w.Waypoints.Enqueue(GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -8, 0) + Wiggle(3));
+                    w.Waypoints.Enqueue(GameConstants.MusterPoint);
                 }
 
             }
@@ -61,9 +59,7 @@ public sealed class PersonWorkService : IPersonWorkService
         return (prototype.WorkResult.First().Key, prototype.WorkResult.First().Value); // TODO: BAD
     }
 
-    public Func<Person, bool> IsWorkingWorker => _ =>
-        _.Class != PrototypeConstants.Guard && // TODO: Non guard unit helper
-        _.Mode == WorkerMode.Working;
+    private static Func<Worker, bool> IsWorkingWorker => _ => _.Mode == WorkerMode.Working;
 
     private static Vector2 Wiggle(int multiplier = 1) => new Vector2(
                     Random.Shared.Next(-15 * multiplier, +15 * multiplier),

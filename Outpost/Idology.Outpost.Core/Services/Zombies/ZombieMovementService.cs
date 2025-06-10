@@ -71,7 +71,14 @@ public sealed class ZombieMovementService : IZombieMovementService
         var closest = closestGuardLocationPerRegion.MinBy(_ => _.Distance);
 
         // TODO: This only works with guards on the left hand edge
-        return (closest.RegionCoords, new Vector2(-2 * GameConstants.PersonRadius * 1.5f, closest.GuardLocation.Y));
+        var highestGuardInClosestRegionY = _gameData.Town.Regions.First(_ => _.Coordinates == closest.RegionCoords).GuardPositions.MinBy(_ => _.Y);
+        var lowestGuardInClosestRegionY = _gameData.Town.Regions.First(_ => _.Coordinates == closest.RegionCoords).GuardPositions.MaxBy(_ => _.Y);
+
+        // TODO: This only works with guards on the left hand edge
+        var yPos = NextFloat(highestGuardInClosestRegionY.Y, lowestGuardInClosestRegionY.Y);
+
+        // TODO: This only works with guards on the left hand edge
+        return (closest.RegionCoords, new Vector2(-2 * GameConstants.PersonRadius * 1.5f, yPos));
     }
 
     private void HandleReachingTarget(Zombie z)
@@ -87,5 +94,11 @@ public sealed class ZombieMovementService : IZombieMovementService
             z.IdleTime = 0;
             z.Mode = ZombieMode.Attacking;
         }
+    }
+    public static float NextFloat(
+        float minValue,
+        float maxValue)
+    {
+        return Random.Shared.NextSingle() * (maxValue - minValue) + minValue;
     }
 }

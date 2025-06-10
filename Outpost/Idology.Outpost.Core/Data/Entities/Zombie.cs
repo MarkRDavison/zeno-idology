@@ -10,4 +10,6 @@ public sealed class Zombie : IEntity
     public float IdleTime { get; set; }
     public ZombieMode Mode { get; set; } = ZombieMode.Wandering;
     public int Damage { get; set; }
+    public int Health { get; set; }
+    public bool RequiresRemoval { get; set; }
 }

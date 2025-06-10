@@ -10,7 +10,8 @@ public sealed class ZombiePrototypeService : PrototypeService<ZombiePrototype, Z
             PrototypeId = prototype.Id,
             IdleTime = 0.0f,
             Mode = ZombieMode.Wandering,
-            Damage = prototype.Damage
+            Damage = prototype.Damage,
+            Health = prototype.Health
         };
     }
 }

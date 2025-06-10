@@ -80,11 +80,11 @@ public class Worker : BackgroundService
             .SetScene<GameScene>();
 
         {
-            var personPrototypeService = scope.ServiceProvider.GetRequiredService<IPrototypeService<PersonPrototype, Person>>();
+            var personPrototypeService = scope.ServiceProvider.GetRequiredService<IPrototypeService<WorkerPrototype, Core.Data.Entities.Worker>>();
 
             personPrototypeService.RegisterPrototype(
                 PrototypeConstants.Hunter,
-                new PersonPrototype
+                new WorkerPrototype
                 {
                     Id = StringHash.Hash(PrototypeConstants.Hunter),
                     Name = PrototypeConstants.Hunter,
@@ -95,7 +95,7 @@ public class Worker : BackgroundService
                 });
             personPrototypeService.RegisterPrototype(
                 PrototypeConstants.Lumberjack,
-                new PersonPrototype
+                new WorkerPrototype
                 {
                     Id = StringHash.Hash(PrototypeConstants.Lumberjack),
                     Name = PrototypeConstants.Lumberjack,
@@ -106,7 +106,7 @@ public class Worker : BackgroundService
                 });
             personPrototypeService.RegisterPrototype(
                 PrototypeConstants.Guard,
-                new PersonPrototype
+                new WorkerPrototype
                 {
                     Id = StringHash.Hash(PrototypeConstants.Guard),
                     Name = PrototypeConstants.Guard
@@ -121,7 +121,8 @@ public class Worker : BackgroundService
                 {
                     Id = StringHash.Hash(PrototypeConstants.Zombie),
                     Name = PrototypeConstants.Zombie,
-                    Damage = 5
+                    Damage = 5,
+                    Health = 10
                 });
         }
 

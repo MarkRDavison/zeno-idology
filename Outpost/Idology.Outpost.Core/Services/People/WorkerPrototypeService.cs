@@ -1,10 +1,10 @@
 ﻿namespace Idology.Outpost.Core.Services.People;
 
-public sealed class PersonPrototypeService : PrototypeService<PersonPrototype, Person>
+public sealed class WorkerPrototypeService : PrototypeService<WorkerPrototype, Worker>
 {
-    public override Person CreateEntity(PersonPrototype prototype)
+    public override Worker CreateEntity(WorkerPrototype prototype)
     {
-        return new Person
+        return new Worker
         {
             Id = Guid.NewGuid(),
             PrototypeId = prototype.Id,
