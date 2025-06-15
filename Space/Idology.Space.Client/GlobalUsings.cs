@@ -1,7 +1,9 @@
 ﻿global using Idology.Engine.Core;
 global using Idology.Engine.Ignition;
 global using Idology.Engine.Resources;
+global using Idology.Space.Core.Data;
 global using Idology.Space.Core.Ignition;
+global using Idology.Space.Core.Infrastructure;
 global using Idology.Space.Core.Scenes;
 global using Idology.UserInterface.Ignition;
 global using Microsoft.Extensions.DependencyInjection;

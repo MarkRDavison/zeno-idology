@@ -1,4 +1,6 @@
-﻿namespace Idology.Space.Client;
+﻿using Idology.Space.Client.Helpers;
+
+namespace Idology.Space.Client;
 
 public class Program
 {
@@ -63,6 +65,12 @@ public class Worker : BackgroundService
             var filename = Path.GetFileNameWithoutExtension(path);
             textureManager.LoadTexture(filename, path);
         }
+
+        var data = scope.ServiceProvider.GetRequiredService<GameData>();
+
+        data.CurrentLevel = LevelCreationHelper.CreateTestLevel();
+
+        Raylib_cs.Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
 
         // TODO: Config
         scope.ServiceProvider

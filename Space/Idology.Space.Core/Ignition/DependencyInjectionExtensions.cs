@@ -8,9 +8,14 @@ public static class DependencyInjectionExtensions
             .RegisterScene<GameScene>();
 
         services
+            .AddScoped<GameCamera>()
             .AddScoped<Infrastructure.Game>()
             .AddScoped<GameRenderer>()
             .AddScoped<GameData>();
+
+        services
+            .AddScoped<SpaceCommandHandler>()
+            .AddScoped<ISpaceCommandHandlerBase, SelectLocationCommandHandler>();
 
         return services;
     }

@@ -2,4 +2,5 @@
 
 public sealed class GameData
 {
+    public LevelData? CurrentLevel { get; set; }
 }
