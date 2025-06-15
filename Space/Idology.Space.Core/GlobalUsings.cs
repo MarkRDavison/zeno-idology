@@ -1,0 +1,7 @@
+﻿global using Idology.Engine.Core;
+global using Idology.Engine.Ignition;
+global using Idology.Space.Core.Infrastructure;
+global using Idology.Space.Core.Scenes;
+global using Microsoft.Extensions.DependencyInjection;
+global using Raylib_cs;
+global using System.Numerics;
