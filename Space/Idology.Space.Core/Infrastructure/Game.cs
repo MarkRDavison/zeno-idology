@@ -28,19 +28,19 @@ public sealed class Game
 
         if (Raylib.IsKeyPressed(KeyboardKey.Left))
         {
-            _gameCamera.Offset = new(_gameCamera.Offset.X - SpaceConstants.TileSize, _gameCamera.Offset.Y);
+            _gameCamera.Offset = new(_gameCamera.Offset.X + SpaceConstants.TileSize, _gameCamera.Offset.Y);
         }
         if (Raylib.IsKeyPressed(KeyboardKey.Right))
         {
-            _gameCamera.Offset = new(_gameCamera.Offset.X + SpaceConstants.TileSize, _gameCamera.Offset.Y);
+            _gameCamera.Offset = new(_gameCamera.Offset.X - SpaceConstants.TileSize, _gameCamera.Offset.Y);
         }
         if (Raylib.IsKeyPressed(KeyboardKey.Up))
         {
-            _gameCamera.Offset = new(_gameCamera.Offset.X, _gameCamera.Offset.Y - SpaceConstants.TileSize);
+            _gameCamera.Offset = new(_gameCamera.Offset.X, _gameCamera.Offset.Y + SpaceConstants.TileSize);
         }
         if (Raylib.IsKeyPressed(KeyboardKey.Down))
         {
-            _gameCamera.Offset = new(_gameCamera.Offset.X, _gameCamera.Offset.Y + SpaceConstants.TileSize);
+            _gameCamera.Offset = new(_gameCamera.Offset.X, _gameCamera.Offset.Y - SpaceConstants.TileSize);
         }
     }
 }

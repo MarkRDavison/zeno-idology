@@ -7,5 +7,5 @@ public sealed class GameCamera
     public float Rotation { get; set; } = 0.0f;
     public float Zoom { get; set; } = 1.0f;
 
-    public Camera2D Camera => new Camera2D(Offset, Target, Rotation, Zoom);
+    public Camera2D Camera => new(Offset, Target, Rotation, Zoom);
 }
