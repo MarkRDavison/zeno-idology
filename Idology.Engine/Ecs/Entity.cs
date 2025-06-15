@@ -26,6 +26,11 @@ public class Entity
         return Has<TC0>() && Has<TC1>() && Has<TC2>();
     }
 
+    public bool Has<TC0, TC1, TC2, TC3>()
+    {
+        return Has<TC0>() && Has<TC1>() && Has<TC2>() && Has<TC3>();
+    }
+
     public TC Get<TC>() => (TC)_components.First(_ => _ is TC);
 
     public void Remove<TC>() => _components.Remove(Get<TC>()!);
