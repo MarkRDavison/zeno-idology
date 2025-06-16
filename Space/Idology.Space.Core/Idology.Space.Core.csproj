@@ -10,8 +10,4 @@
     <ProjectReference Include="..\..\Idology.Game\Idology.Game.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>

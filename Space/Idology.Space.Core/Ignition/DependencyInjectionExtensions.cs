@@ -11,7 +11,8 @@ public static class DependencyInjectionExtensions
             .AddScoped<GameCamera>()
             .AddScoped<Infrastructure.Game>()
             .AddScoped<GameRenderer>()
-            .AddScoped<GameData>();
+            .AddScoped<GameData>()
+            .AddScoped<IInputService, InputService>();
 
         services
             .AddScoped<SpaceCommandHandler>()

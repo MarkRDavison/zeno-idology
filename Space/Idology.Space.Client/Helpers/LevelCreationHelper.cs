@@ -41,14 +41,17 @@ public static class LevelCreationHelper
 
         level.Creatures.Add(new Creature
         {
+            Id = Guid.NewGuid(),
             Position = new Vector2(1.5f, 1.5f)
         });
         level.Creatures.Add(new Creature
         {
+            Id = Guid.NewGuid(),
             Position = new Vector2(28.5f, 3.5f)
         });
         level.Creatures.Add(new Creature
         {
+            Id = Guid.NewGuid(),
             Position = new Vector2(14.5f, 23.5f)
         });
 

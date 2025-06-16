@@ -1,11 +1,13 @@
 ﻿global using Idology.Engine.Converters;
 global using Idology.Engine.Core;
 global using Idology.Engine.Ignition;
+global using Idology.Game.Entities;
 global using Idology.Space.Core.Commands;
 global using Idology.Space.Core.Commands.SelectLocation;
 global using Idology.Space.Core.Data;
 global using Idology.Space.Core.Infrastructure;
 global using Idology.Space.Core.Scenes;
+global using Idology.Space.Core.Services;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using Raylib_cs;

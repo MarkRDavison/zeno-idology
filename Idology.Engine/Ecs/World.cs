@@ -34,4 +34,9 @@ public class World
     {
         return _entities.Where(_ => _.Has<TC0, TC1, TC2>()).ToList();
     }
+
+    public IEnumerable<Entity> GetWithAll<TC0, TC1, TC2, TC3>()
+    {
+        return _entities.Where(_ => _.Has<TC0, TC1, TC2, TC3>()).ToList();
+    }
 }

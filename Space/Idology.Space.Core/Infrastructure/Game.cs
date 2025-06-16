@@ -18,6 +18,7 @@ public sealed class Game
 
     public void Update(float delta)
     {
+        // TODO: Trigger after double click, make input manager? Input action manager?
         if (Raylib.IsMouseButtonPressed(MouseButton.Left))
         {
             var world = Raylib.GetScreenToWorld2D(Raylib.GetMousePosition(), _gameCamera.Camera);
