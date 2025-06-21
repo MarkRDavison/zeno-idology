@@ -5,21 +5,24 @@ public sealed class Game
     private readonly GameData _gameData;
     private readonly GameCamera _gameCamera;
     private readonly SpaceCommandHandler _commandHandler;
+    private readonly IInputService _inputService;
 
     public Game(
         GameData gameData,
         GameCamera gameCamera,
-        SpaceCommandHandler commandHandler)
+        SpaceCommandHandler commandHandler,
+        IInputService inputService)
     {
         _gameData = gameData;
         _gameCamera = gameCamera;
         _commandHandler = commandHandler;
+        _inputService = inputService;
     }
 
     public void Update(float delta)
     {
         // TODO: Trigger after double click, make input manager? Input action manager?
-        if (Raylib.IsMouseButtonPressed(MouseButton.Left))
+        if (_inputService.IsMouseDoubleClicked(MouseButton.Left))
         {
             var world = Raylib.GetScreenToWorld2D(Raylib.GetMousePosition(), _gameCamera.Camera);
             var tileX = (int)(world.X / SpaceConstants.TileSize);
@@ -43,5 +46,7 @@ public sealed class Game
         {
             _gameCamera.Offset = new(_gameCamera.Offset.X, _gameCamera.Offset.Y - SpaceConstants.TileSize);
         }
+
+        _inputService.Update(delta);
     }
 }
