@@ -12,11 +12,13 @@ public static class DependencyInjectionExtensions
             .AddScoped<Infrastructure.Game>()
             .AddScoped<GameRenderer>()
             .AddScoped<GameData>()
-            .AddScoped<IInputService, InputService>();
+            .AddScoped<IInputService, InputService>()
+            .AddScoped<IPathfindingService, PathfindingService>();
 
         services
             .AddScoped<SpaceCommandHandler>()
-            .AddScoped<ISpaceCommandHandlerBase, SelectLocationCommandHandler>();
+            .AddScoped<ISpaceCommandHandlerBase, SelectLocationCommandHandler>()
+            .AddScoped<ISpaceCommandHandlerBase, FindPathCommandHandler>();
 
         return services;
     }

@@ -32,8 +32,8 @@ public sealed class SelectLocationCommandHandler : ISpaceCommandHandler<SelectLo
 
             var alreadySelectedInTile = command.Cycle && level.ActiveEntity is not null && creatures.Any(_ => _.Id == level.ActiveEntity.Id);
 
-            IEntity? selected = null;
-            IEntity? fallback = null;
+            IPositionedEntity? selected = null;
+            IPositionedEntity? fallback = null;
 
             var takeNext = false;
 

@@ -89,6 +89,19 @@ public sealed class GameRenderer
                     (int)(creature.Position.Y * SpaceConstants.TileSize),
                     SpaceConstants.TileSize / 3f,
                     creature.Color);
+
+                if (creature.Path is { Count: > 1 })
+                {
+                    for (int i = 1; i < creature.Path.Count; ++i)
+                    {
+                        Raylib.DrawLine(
+                            (int)((creature.Path[i - 1].X) * (SpaceConstants.TileSize) + SpaceConstants.TileSize * 0.5f),
+                            (int)((creature.Path[i - 1].Y) * (SpaceConstants.TileSize) + SpaceConstants.TileSize * 0.5f),
+                            (int)((creature.Path[i + 0].X) * (SpaceConstants.TileSize) + SpaceConstants.TileSize * 0.5f),
+                            (int)((creature.Path[i + 0].Y) * (SpaceConstants.TileSize) + SpaceConstants.TileSize * 0.5f),
+                            Color.Magenta);
+                    }
+                }
             }
         }
 

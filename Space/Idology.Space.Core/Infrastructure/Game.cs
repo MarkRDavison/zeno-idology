@@ -30,6 +30,28 @@ public sealed class Game
             _commandHandler.HandleCommand(new SelectLocationCommand(tileX, tileY, true));
         }
 
+        if (Raylib.IsMouseButtonPressed(MouseButton.Right) &&
+            _gameData.CurrentLevel is { } level &&
+            level.ActiveEntity is not null)
+        {
+            var world = Raylib.GetScreenToWorld2D(Raylib.GetMousePosition(), _gameCamera.Camera);
+            var tileX = (int)(world.X / SpaceConstants.TileSize);
+            var tileY = (int)(world.Y / SpaceConstants.TileSize);
+
+            var path = _commandHandler.HandleCommandWithResult<FindPathCommand, Vector2[]>(new FindPathCommand
+            {
+                Entity = level.ActiveEntity,
+                StartTile = new Vector2((int)Math.Floor(level.ActiveEntity.Position.X), (int)Math.Floor(level.ActiveEntity.Position.Y)),
+                EndTile = new Vector2(tileX, tileY),
+                LevelData = level
+            });
+
+            if (path is not null)
+            {
+                level.ActiveEntity.Path = [.. path];
+            }
+        }
+
         if (Raylib.IsKeyPressed(KeyboardKey.Left))
         {
             _gameCamera.Offset = new(_gameCamera.Offset.X + SpaceConstants.TileSize, _gameCamera.Offset.Y);

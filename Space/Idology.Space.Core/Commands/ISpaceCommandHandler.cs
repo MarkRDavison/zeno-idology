@@ -11,3 +11,9 @@ public interface ISpaceCommandHandler<TCommand> : ISpaceCommandHandlerBase
 {
     void HandleCommand(TCommand command);
 }
+
+public interface ISpaceCommandHandler<TCommand, TResult> : ISpaceCommandHandlerBase
+    where TCommand : class, ISpaceCommand
+{
+    TResult HandleCommand(TCommand command);
+}

@@ -8,5 +8,5 @@ public sealed class LevelData
     public List<List<TileData>> Tiles { get; init; } = [];
 
     public List<Creature> Creatures { get; set; } = [];
-    public IEntity? ActiveEntity { get; set; }
+    public IPositionedEntity? ActiveEntity { get; set; }
 }
