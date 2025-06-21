@@ -21,13 +21,13 @@ public sealed class Game
 
     public void Update(float delta)
     {
-        // TODO: Trigger after double click, make input manager? Input action manager?
+        // TODO: Consolidate
         if (_inputService.IsMouseDoubleClicked(MouseButton.Left))
         {
             var world = Raylib.GetScreenToWorld2D(Raylib.GetMousePosition(), _gameCamera.Camera);
             var tileX = (int)(world.X / SpaceConstants.TileSize);
             var tileY = (int)(world.Y / SpaceConstants.TileSize);
-            _commandHandler.HandleCommand(new SelectLocationCommand(tileX, tileY));
+            _commandHandler.HandleCommand(new SelectLocationCommand(tileX, tileY, true));
         }
 
         if (Raylib.IsKeyPressed(KeyboardKey.Left))

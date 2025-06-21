@@ -73,6 +73,17 @@ public sealed class GameRenderer
 
             foreach (var creature in level.Creatures)
             {
+                var isActive = creature == level.ActiveEntity;
+
+                if (isActive)
+                {
+                    Raylib.DrawCircle(
+                        (int)(creature.Position.X * SpaceConstants.TileSize),
+                        (int)(creature.Position.Y * SpaceConstants.TileSize),
+                        SpaceConstants.TileSize / 2.5f,
+                        Color.Green);
+                }
+
                 Raylib.DrawCircle(
                     (int)(creature.Position.X * SpaceConstants.TileSize),
                     (int)(creature.Position.Y * SpaceConstants.TileSize),

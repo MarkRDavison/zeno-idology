@@ -5,11 +5,10 @@ public class InputService : IInputService
     const double DoubleClickThreshold = 0.4;
 
     private readonly Dictionary<MouseButton, DateTime> _lastPressed = [];
-    // TODO: DateTimeService
+    // TODO: ISDateTimeService
 
     public InputService()
     {
-
         foreach (var button in Enum.GetValues(typeof(MouseButton)).OfType<MouseButton>())
         {
             _lastPressed[button] = DateTime.MinValue;

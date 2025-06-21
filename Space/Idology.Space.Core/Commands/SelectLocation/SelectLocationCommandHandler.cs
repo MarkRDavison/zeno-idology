@@ -24,24 +24,24 @@ public sealed class SelectLocationCommandHandler : ISpaceCommandHandler<SelectLo
 
             var tile = level.Tiles[command.Y][command.X];
 
-            _logger.LogInformation("Tile: {Tile}", JsonSerializer.Serialize(tile, SpaceConstants.DefaultJsonSerializerOptions));
-
             var creatures = level.Creatures
                 .Where(_ =>
                     command.X <= _.Position.X && _.Position.X < command.X + 1 &&
                     command.Y <= _.Position.Y && _.Position.Y < command.Y + 1)
                 .ToList();
 
-            var alreadySelectedInTile = level.ActiveEntity is not null && creatures.Any(_ => _.Id == level.ActiveEntity.Id);
+            var alreadySelectedInTile = command.Cycle && level.ActiveEntity is not null && creatures.Any(_ => _.Id == level.ActiveEntity.Id);
 
             IEntity? selected = null;
+            IEntity? fallback = null;
 
             var takeNext = false;
 
-            foreach (var c in creatures.OrderBy(_ => _.Id)) // Consistency.
+            foreach (var c in creatures.OrderBy(_ => _.Id))
             {
                 if (selected is null)
                 {
+                    fallback = c;
                     if (alreadySelectedInTile)
                     {
                         if (takeNext)
@@ -56,20 +56,17 @@ public sealed class SelectLocationCommandHandler : ISpaceCommandHandler<SelectLo
                     else
                     {
                         selected = c;
+                        break;
                     }
                 }
-
-                _logger.LogInformation("Creature: {Creature}", JsonSerializer.Serialize(c, SpaceConstants.DefaultJsonSerializerOptions));
             }
 
-            if (selected is not null)
+            if (selected is null && fallback is not null)
             {
-                _logger.LogInformation("Selected entity id: {EntityId}", selected.Id);
+                selected = fallback;
             }
-            else
-            {
-                _logger.LogInformation("No entity to select.");
-            }
+
+            level.ActiveEntity = selected;
         }
     }
 }
