@@ -9,7 +9,6 @@ global using Idology.Space.Core.Data;
 global using Idology.Space.Core.Infrastructure;
 global using Idology.Space.Core.Scenes;
 global using Idology.Space.Core.Services;
-global using Idology.Space.Core.Services.Creature;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using Raylib_cs;

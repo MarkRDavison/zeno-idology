@@ -1,4 +1,4 @@
-﻿namespace Idology.Space.Core.Services.Creature;
+﻿namespace Idology.Space.Core.Services;
 
 public interface ICreaturePathFollowingService
 {
