@@ -6,17 +6,20 @@ public sealed class Game
     private readonly GameCamera _gameCamera;
     private readonly SpaceCommandHandler _commandHandler;
     private readonly IInputService _inputService;
+    private readonly ICreaturePathFollowingService _creaturePathFollowingService;
 
     public Game(
         GameData gameData,
         GameCamera gameCamera,
         SpaceCommandHandler commandHandler,
-        IInputService inputService)
+        IInputService inputService,
+        ICreaturePathFollowingService creaturePathFollowingService)
     {
         _gameData = gameData;
         _gameCamera = gameCamera;
         _commandHandler = commandHandler;
         _inputService = inputService;
+        _creaturePathFollowingService = creaturePathFollowingService;
     }
 
     public void Update(float delta)
@@ -68,6 +71,8 @@ public sealed class Game
         {
             _gameCamera.Offset = new(_gameCamera.Offset.X, _gameCamera.Offset.Y - SpaceConstants.TileSize);
         }
+
+        _creaturePathFollowingService.Update(delta);
 
         _inputService.Update(delta);
     }

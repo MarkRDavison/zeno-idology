@@ -13,7 +13,8 @@ public static class DependencyInjectionExtensions
             .AddScoped<GameRenderer>()
             .AddScoped<GameData>()
             .AddScoped<IInputService, InputService>()
-            .AddScoped<IPathfindingService, PathfindingService>();
+            .AddScoped<IPathfindingService, PathfindingService>()
+            .AddScoped<ICreaturePathFollowingService, CreaturePathFollowingService>();
 
         services
             .AddScoped<SpaceCommandHandler>()
