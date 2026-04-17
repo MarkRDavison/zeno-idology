@@ -3,6 +3,7 @@
 public abstract class ComponentBase
 {
     public static IServiceProvider Services { get; set; } = null!;
+
     public virtual void Update(float delta)
     {
 
