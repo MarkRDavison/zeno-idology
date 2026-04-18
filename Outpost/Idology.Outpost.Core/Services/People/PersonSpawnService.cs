@@ -3,14 +3,17 @@
 public sealed class PersonSpawnService : IPersonSpawnService
 {
     private readonly GameData _gameData;
-    private readonly IPrototypeService<WorkerPrototype, Worker> _personPrototypeService;
+    private readonly IPrototypeService<WorkerPrototype, Worker> _workerPrototypeService;
+    private readonly IPrototypeService<GuardPrototype, Guard> _guardPrototypeService;
 
     public PersonSpawnService(
         GameData gameData,
-        IPrototypeService<WorkerPrototype, Worker> personPrototypeService)
+        IPrototypeService<WorkerPrototype, Worker> workerPrototypeService,
+        IPrototypeService<GuardPrototype, Guard> guardPrototypeService)
     {
         _gameData = gameData;
-        _personPrototypeService = personPrototypeService;
+        _workerPrototypeService = workerPrototypeService;
+        _guardPrototypeService = guardPrototypeService;
     }
 
     public void HandleSunrise()
@@ -40,7 +43,7 @@ public sealed class PersonSpawnService : IPersonSpawnService
 
     public Worker SpawnHunterAtSunrise()
     {
-        var person = _personPrototypeService.CreateEntity(PrototypeConstants.Hunter);
+        var person = _workerPrototypeService.CreateEntity(PrototypeConstants.Hunter);
         person.Mode = WorkerMode.TravellingToWork;
         person.Position = GameConstants.MusterPoint + new Vector2(15, 0) + Wiggle();
         person.TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -1, 0) + Wiggle();
@@ -54,7 +57,7 @@ public sealed class PersonSpawnService : IPersonSpawnService
 
     public Worker SpawnLumberjackAtSunrise()
     {
-        var person = _personPrototypeService.CreateEntity(PrototypeConstants.Lumberjack);
+        var person = _workerPrototypeService.CreateEntity(PrototypeConstants.Lumberjack);
         person.Mode = WorkerMode.TravellingToWork;
         person.Position = GameConstants.MusterPoint + new Vector2(15, 0) + Wiggle();
         person.TargetPosition = GameConstants.MusterPoint + new Vector2(GameConstants.TileSize * -1, 0) + Wiggle();
@@ -66,9 +69,9 @@ public sealed class PersonSpawnService : IPersonSpawnService
         return person;
     }
 
-    public Worker SpawnGuardAtSunset(int index, TownRegion homeRegion)
+    public Guard SpawnGuardAtSunset(int index, TownRegion homeRegion)
     {
-        var person = _personPrototypeService.CreateEntity(PrototypeConstants.Guard);
+        var person = _guardPrototypeService.CreateEntity(PrototypeConstants.Guard);
         person.Position = GameConstants.MusterPoint + new Vector2(15, 0) + Wiggle();
         person.TargetPosition = homeRegion.GuardPositions[index];
         person.CurrentRegion = homeRegion.Coordinates;

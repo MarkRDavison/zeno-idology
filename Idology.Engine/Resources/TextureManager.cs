@@ -42,7 +42,14 @@ public sealed class TextureManager : ITextureManager
             {
                 foreach (var (name, texture) in _textures)
                 {
-                    Raylib.UnloadTexture(texture);
+                    //try
+                    //{
+                    //    Raylib.UnloadTexture(texture);
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    Console.WriteLine(e.Message);
+                    //}
                 }
                 _textures.Clear();
             }

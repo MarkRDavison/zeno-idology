@@ -37,7 +37,7 @@ public sealed class GuardDefenceService : IGuardDefenceService
                  * If no targets return to guard position
                  */
 
-                if (zombiesAttackingRegion.FirstOrDefault(_ => _.Health > 0 && Math.Abs(_.Position.Y - g.Position.Y) < 2.0f) is { } zombie)
+                if (zombiesAttackingRegion.FirstOrDefault(_ => _.Health > 0 && Math.Abs(_.Position.Y - g.Position.Y) < 20.0f) is { } zombie)
                 {
                     zombie.Health -= GuardDamage;
                     g.ElapsedWork = 0.0f;

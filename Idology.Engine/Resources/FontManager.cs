@@ -40,10 +40,10 @@ public sealed class FontManager : IFontManager
         {
             if (disposing)
             {
-                foreach (var (name, font) in _fonts)
-                {
-                    Raylib.UnloadFont(font);
-                }
+                //foreach (var (name, font) in _fonts)
+                //{
+                //    Raylib.UnloadFont(font);
+                //}
                 _fonts.Clear();
             }
 

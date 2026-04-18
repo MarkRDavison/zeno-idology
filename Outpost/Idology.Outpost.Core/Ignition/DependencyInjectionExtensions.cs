@@ -14,6 +14,7 @@ public static class DependencyInjectionExtensions
 
         services
             .AddScoped<IPrototypeService<WorkerPrototype, Worker>, WorkerPrototypeService>()
+            .AddScoped<IPrototypeService<GuardPrototype, Guard>, GuardPrototypeService>()
             .AddScoped<IPersonMovementService, PersonMovementService>()
             .AddScoped<IPersonSpawnService, PersonSpawnService>()
             .AddScoped<IPersonWorkService, PersonWorkService>()

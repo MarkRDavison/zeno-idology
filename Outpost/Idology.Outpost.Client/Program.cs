@@ -80,9 +80,9 @@ public class Worker : BackgroundService
             .SetScene<GameScene>();
 
         {
-            var personPrototypeService = scope.ServiceProvider.GetRequiredService<IPrototypeService<WorkerPrototype, Core.Data.Entities.Worker>>();
+            var workerPrototypeService = scope.ServiceProvider.GetRequiredService<IPrototypeService<WorkerPrototype, Core.Data.Entities.Worker>>();
 
-            personPrototypeService.RegisterPrototype(
+            workerPrototypeService.RegisterPrototype(
                 PrototypeConstants.Hunter,
                 new WorkerPrototype
                 {
@@ -93,7 +93,7 @@ public class Worker : BackgroundService
                     WorkResult = { { ResourceConstants.Meat, 1 } },
                     WorkLocations = [GameConstants.HuntLocation]
                 });
-            personPrototypeService.RegisterPrototype(
+            workerPrototypeService.RegisterPrototype(
                 PrototypeConstants.Lumberjack,
                 new WorkerPrototype
                 {
@@ -104,9 +104,20 @@ public class Worker : BackgroundService
                     WorkResult = { { ResourceConstants.Wood, 1 } },
                     WorkLocations = [GameConstants.ForestLocation]
                 });
-            personPrototypeService.RegisterPrototype(
+            workerPrototypeService.RegisterPrototype(
                 PrototypeConstants.Guard,
                 new WorkerPrototype
+                {
+                    Id = StringHash.Hash(PrototypeConstants.Guard),
+                    Name = PrototypeConstants.Guard
+                });
+        }
+        {
+            var guardPrototypeService = scope.ServiceProvider.GetRequiredService<IPrototypeService<GuardPrototype, Core.Data.Entities.Guard>>();
+
+            guardPrototypeService.RegisterPrototype(
+                PrototypeConstants.Guard,
+                new GuardPrototype
                 {
                     Id = StringHash.Hash(PrototypeConstants.Guard),
                     Name = PrototypeConstants.Guard

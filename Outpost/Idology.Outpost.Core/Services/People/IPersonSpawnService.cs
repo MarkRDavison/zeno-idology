@@ -7,5 +7,5 @@ public interface IPersonSpawnService
 
     Worker SpawnHunterAtSunrise();
     Worker SpawnLumberjackAtSunrise();
-    Worker SpawnGuardAtSunset(int index, TownRegion homeRegion);
+    Guard SpawnGuardAtSunset(int index, TownRegion homeRegion);
 }
