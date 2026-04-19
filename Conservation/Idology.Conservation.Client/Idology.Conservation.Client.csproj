@@ -24,4 +24,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Wiki\Seasons\" />
+    <Folder Include="Wiki\Screens\" />
+  </ItemGroup>
+
 </Project>
