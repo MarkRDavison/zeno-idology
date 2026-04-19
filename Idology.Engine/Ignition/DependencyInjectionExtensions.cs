@@ -9,6 +9,7 @@ public static class DependencyInjectionExtensions
         services.AddSingleton<IFontManager, FontManager>();
         services.AddSingleton<ITextureManager, TextureManager>();
         services.AddSingleton<ISpriteSheetManager, SpriteSheetManager>();
+        services.AddSingleton<IInputManager, InputManager>();
 
         services.AddTransient<RenderSystem>();
 

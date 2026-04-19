@@ -25,6 +25,7 @@ public class Program
         });
 }
 
+// TODO: Move this to framework and accept On init overrides etc
 public class Worker : BackgroundService
 {
     private readonly IHostApplicationLifetime _hostApplicationLifetime;
@@ -41,8 +42,10 @@ public class Worker : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken token)
     {
         Console.WriteLine("TODO: Powered by Raylib");
-        // TODO: Raylib.SetTraceLogCallback -> redirect output to ILogger
+
         using var scope = _serviceScopeFactory.CreateScope();
+
+        RaylibLogger.Initialize(scope.ServiceProvider.GetRequiredService<ILoggerFactory>());
 
         var app = scope.ServiceProvider.GetRequiredService<Application>();
 
