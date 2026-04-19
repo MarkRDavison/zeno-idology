@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.11.35303.130
+# Visual Studio Version 18
+VisualStudioVersion = 18.4.11626.88 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idology.Client", "Idology.Client\Idology.Client.csproj", "{1BB9EEFD-AB86-44BC-B34A-F627769CCFD3}"
 EndProject
@@ -49,6 +49,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idology.Farm.Core.Tests", "Farm\Idology.Farm.Core.Tests\Idology.Farm.Core.Tests.csproj", "{40D54027-DBDE-4E1E-9DFA-FEC2D4F8D76B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idology.Farm.Client.Tests", "Farm\Idology.Farm.Client.Tests\Idology.Farm.Client.Tests.csproj", "{5A98804F-1EE0-4685-8851-6356EE16933E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Conservation", "Conservation", "{9D7BD018-D441-44C8-88DE-B52D0D7F0F74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idology.Conservation.Core", "Conservation\Idology.Conservation.Core\Idology.Conservation.Core.csproj", "{F2FDFFB2-7CA7-49A8-A6E4-CDA5D0EB4B2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idology.Conservation.Client", "Conservation\Idology.Conservation.Client\Idology.Conservation.Client.csproj", "{96422AE3-F76E-4072-B370-14A867169A71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -124,6 +130,14 @@ Global
 		{5A98804F-1EE0-4685-8851-6356EE16933E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A98804F-1EE0-4685-8851-6356EE16933E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A98804F-1EE0-4685-8851-6356EE16933E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2FDFFB2-7CA7-49A8-A6E4-CDA5D0EB4B2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2FDFFB2-7CA7-49A8-A6E4-CDA5D0EB4B2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2FDFFB2-7CA7-49A8-A6E4-CDA5D0EB4B2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2FDFFB2-7CA7-49A8-A6E4-CDA5D0EB4B2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96422AE3-F76E-4072-B370-14A867169A71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96422AE3-F76E-4072-B370-14A867169A71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96422AE3-F76E-4072-B370-14A867169A71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96422AE3-F76E-4072-B370-14A867169A71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -142,6 +156,8 @@ Global
 		{4B2B649B-DB20-4723-BA83-B64D9F6C421D} = {E31EE6D9-1F98-4E41-814C-30B86D4FC9E3}
 		{40D54027-DBDE-4E1E-9DFA-FEC2D4F8D76B} = {E31EE6D9-1F98-4E41-814C-30B86D4FC9E3}
 		{5A98804F-1EE0-4685-8851-6356EE16933E} = {E31EE6D9-1F98-4E41-814C-30B86D4FC9E3}
+		{F2FDFFB2-7CA7-49A8-A6E4-CDA5D0EB4B2F} = {9D7BD018-D441-44C8-88DE-B52D0D7F0F74}
+		{96422AE3-F76E-4072-B370-14A867169A71} = {9D7BD018-D441-44C8-88DE-B52D0D7F0F74}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {629703C3-8ED3-4895-BC7A-7A029F1B46B0}

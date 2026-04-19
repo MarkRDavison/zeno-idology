@@ -1,5 +1,4 @@
 ﻿using Idology.Engine.Core;
-using Idology.Farm.Core.Infrastructure;
 
 namespace Idology.Farm.Core.Scenes;
 
