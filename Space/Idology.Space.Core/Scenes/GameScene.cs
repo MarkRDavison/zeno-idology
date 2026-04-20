@@ -1,6 +1,6 @@
 ﻿namespace Idology.Space.Core.Scenes;
 
-public sealed class GameScene : Scene
+public sealed class GameScene : Scene<GameScene>
 {
     private GameCamera _camera;
     private readonly Infrastructure.Game _game;
@@ -19,7 +19,7 @@ public sealed class GameScene : Scene
         _gameData = gameData;
     }
 
-    public override void Init()
+    public override void Init(IScenePayload<GameScene>? payload)
     {
 
     }

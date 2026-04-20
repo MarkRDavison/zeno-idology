@@ -13,12 +13,19 @@ public sealed class SceneService : ISceneService
         _serviceProvider = serviceProvider;
     }
 
-    public void SetScene<TScene>() where TScene : Scene
+    public TScene SetScene<TScene>(IScenePayload<TScene>? payload) where TScene : Scene
     {
         // TODO: DEFER
         var scene = _serviceProvider.GetRequiredService<TScene>();
-        scene.Init();
+
+        if (scene is Scene<TScene> initableScene)
+        {
+            initableScene.Init(payload);
+        }
+
         _application.SetScene(scene);
+
+        return scene;
     }
 
     public void Init()

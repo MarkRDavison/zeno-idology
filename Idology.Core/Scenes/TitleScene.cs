@@ -73,12 +73,12 @@ public sealed class TitleScene : Scene
         switch (id)
         {
             case "START":
-                _sceneService.SetScene<GameScene>();
+                _sceneService.SetScene<GameScene>(null);
                 break;
             case "OPTIONS":
                 break;
             case "SHEET":
-                _sceneService.SetScene<MedievalSheetExplorerScene>();
+                _sceneService.SetScene<MedievalSheetExplorerScene>(null);
                 break;
             case "EXIT":
                 _hostApplicationLifetime.StopApplication();

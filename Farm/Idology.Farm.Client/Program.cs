@@ -78,7 +78,7 @@ public class Worker : BackgroundService
         // TODO: Config
         scope.ServiceProvider
             .GetRequiredService<ISceneService>()
-            .SetScene<FarmGameScene>();
+            .SetScene<FarmGameScene>(null);
 
         await app.Start(token);
 

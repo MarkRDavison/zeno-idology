@@ -1,8 +1,6 @@
-﻿using Idology.Engine.Core;
+﻿namespace Idology.Farm.Core.Scenes;
 
-namespace Idology.Farm.Core.Scenes;
-
-public class FarmGameScene : Scene
+public class FarmGameScene : Scene<FarmGameScene>
 {
     private GameCamera _camera;
     private readonly FarmGame _game;
@@ -21,7 +19,7 @@ public class FarmGameScene : Scene
         _gameData = gameData;
     }
 
-    public override void Init()
+    public override void Init(IScenePayload<FarmGameScene>? payload)
     {
 
     }

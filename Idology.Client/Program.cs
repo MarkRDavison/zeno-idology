@@ -58,7 +58,7 @@ public class Worker : BackgroundService
         spriteManager.LoadSpriteSheet(ResourceConstants.CustomSpriteSheet, "Assets/Textures/CustomSpriteSheet.xml");
 
         // TODO: Config
-        scope.ServiceProvider.GetRequiredService<ISceneService>().SetScene<GameScene>();
+        scope.ServiceProvider.GetRequiredService<ISceneService>().SetScene<GameScene>(null);
 
         await app.Start(token);
 

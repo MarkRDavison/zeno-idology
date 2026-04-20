@@ -1,4 +1,5 @@
-﻿global using Idology.Engine.Ignition;
+﻿global using Idology.Engine.Core;
+global using Idology.Engine.Ignition;
 global using Idology.Farm.Core.Infrastructure;
 global using Idology.Farm.Core.Scenes;
 global using Microsoft.Extensions.DependencyInjection;

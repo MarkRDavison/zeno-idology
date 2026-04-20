@@ -1,6 +1,6 @@
 ﻿namespace Idology.Core.Scenes;
 
-public sealed class GameScene : Scene
+public sealed class GameScene : Scene<GameScene>
 {
     private readonly World _world;
     private readonly IList<WorldSystem> _systems = [];
@@ -14,7 +14,7 @@ public sealed class GameScene : Scene
         _serviceProvider = serviceProvider;
     }
 
-    public override void Init()
+    public override void Init(IScenePayload<GameScene>? payload)
     {
         _camera.Zoom = 1.0f;
         _camera.Offset = new Vector2(

@@ -1,31 +1,37 @@
 ﻿namespace Idology.Conservation.Core.Scenes;
 
-using Idology.Engine.Infrastructure;
-
-public sealed class ConservationTitleScene : Scene
+public sealed class ConservationTitleScene : Scene<ConservationTitleScene>
 {
     private readonly ISceneService _sceneService;
     private readonly IFontManager _fontManager;
     private readonly IInputManager _inputManager;
+    private readonly ITranslationService _translationService;
     private readonly Application _application;
 
-    private readonly string[] _buttons = { "Start", "Load", "Quit" };
+    private readonly string[] _buttons;
     private int _hoveredIndex = -1;
 
     public ConservationTitleScene(
         ISceneService sceneService,
         IFontManager fontManager,
-        IInputManager inputManager
-,
+        IInputManager inputManager,
+        ITranslationService translationService,
         Application application)
     {
         _sceneService = sceneService;
         _fontManager = fontManager;
         _inputManager = inputManager;
+        _translationService = translationService;
         _application = application;
+
+        _buttons = [
+            _translationService["TITLE_SCREEN_START"],
+            _translationService["TITLE_SCREEN_LOAD"],
+            _translationService["TITLE_SCREEN_QUIT"],
+        ];
     }
 
-    public override void Init()
+    public override void Init(IScenePayload<ConservationTitleScene>? payload)
     {
 
     }
@@ -54,8 +60,16 @@ public sealed class ConservationTitleScene : Scene
                 {
                     switch (i)
                     {
-                        case 0: _sceneService.SetScene<ConservationGameScene>(); break;
-                        case 1: /* Load logic */ break;
+                        case 0:
+                            {
+                                _sceneService.SetScene<ConservationGameScene>(new ConservationGameScenePayload { Load = false });
+                                break;
+                            }
+                        case 1:
+                            {
+                                _sceneService.SetScene<ConservationGameScene>(new ConservationGameScenePayload { Load = true });
+                                break;
+                            }
                         case 2: _application.Stop(); break;
                     }
                 }
@@ -71,12 +85,14 @@ public sealed class ConservationTitleScene : Scene
 
         var font = _fontManager.GetFont("CALIBRIB");
 
+        var title = _translationService["TITLE_SCREEN_TITLE"];
+
         var w = Raylib.GetScreenWidth();
         var h = Raylib.GetScreenHeight();
-        var bounds = Raylib.MeasureTextEx(font, Constants.Title, 96, 0.0f);
+        var bounds = Raylib.MeasureTextEx(font, title, 96, 0.0f);
         var offset = w / 2.0f - bounds.X / 2.0f;
 
-        Raylib.DrawTextEx(font, Constants.Title, new System.Numerics.Vector2(offset, 128), 96, 0.0f, Color.DarkGreen);
+        Raylib.DrawTextEx(font, title, new System.Numerics.Vector2(offset, 128), 96, 0.0f, Color.DarkGreen);
 
         var y = h - 300;
         for (int i = 0; i < _buttons.Length; i++)

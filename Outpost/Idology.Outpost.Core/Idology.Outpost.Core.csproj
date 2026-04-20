@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Idology.Game\Idology.Game.csproj" />
   </ItemGroup>
 

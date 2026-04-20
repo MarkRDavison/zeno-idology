@@ -75,7 +75,7 @@ public class Worker : BackgroundService
         // TODO: Config
         scope.ServiceProvider
             .GetRequiredService<ISceneService>()
-            .SetScene<GameScene>();
+            .SetScene<GameScene>(null);
 
         Console.WriteLine("https://mrscauthd.github.io/Bliss/docs/getting-started.html");
 

@@ -1,6 +1,11 @@
 ﻿namespace Idology.Conservation.Core.Scenes;
 
-public class ConservationGameScene : Scene
+public class ConservationGameScenePayload : IScenePayload<ConservationGameScene>
+{
+    public required bool Load { get; init; }
+}
+
+public class ConservationGameScene : Scene<ConservationGameScene>
 {
     private readonly ConservationGame _game;
     private readonly ConservationGameRenderer _gameRenderer;
@@ -16,9 +21,12 @@ public class ConservationGameScene : Scene
         _inputManager = inputManager;
     }
 
-    public override void Init()
+    public override void Init(IScenePayload<ConservationGameScene>? payload)
     {
+        if (payload is ConservationGameScenePayload cgsp)
+        {
 
+        }
     }
 
     public override void Update(float delta)

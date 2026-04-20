@@ -49,7 +49,7 @@ public class Worker : BackgroundService
 
         var app = scope.ServiceProvider.GetRequiredService<Application>();
 
-        await app.Init("Idology Conservation");
+        await app.Init(scope.ServiceProvider.GetRequiredService<ITranslationService>()["WINDOW_TITLE"]);
 
         // TODO: Set working directory...
 
@@ -77,7 +77,7 @@ public class Worker : BackgroundService
         // TODO: Config
         scope.ServiceProvider
             .GetRequiredService<ISceneService>()
-            .SetScene<ConservationTitleScene>();
+            .SetScene<ConservationTitleScene>(null);
 
         await app.Start(token);
 

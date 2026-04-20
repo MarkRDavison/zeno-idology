@@ -77,7 +77,7 @@ public class Worker : BackgroundService
         // TODO: Config
         scope.ServiceProvider
             .GetRequiredService<ISceneService>()
-            .SetScene<GameScene>();
+            .SetScene<GameScene>(null);
 
         {
             var workerPrototypeService = scope.ServiceProvider.GetRequiredService<IPrototypeService<WorkerPrototype, Core.Data.Entities.Worker>>();

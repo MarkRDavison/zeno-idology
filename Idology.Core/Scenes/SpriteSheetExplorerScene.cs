@@ -1,6 +1,6 @@
 ﻿namespace Idology.Core.Scenes;
 
-public abstract class SpriteSheetExplorerScene : Scene
+public abstract class SpriteSheetExplorerScene : Scene<SpriteSheetExplorerScene>
 {
     private readonly List<string> _itemNames = [];
     private readonly ISpriteSheetManager _spriteSheetManager;
@@ -20,7 +20,7 @@ public abstract class SpriteSheetExplorerScene : Scene
 
     public int Index { get; set; }
 
-    public override void Init()
+    public override void Init(IScenePayload<SpriteSheetExplorerScene>? payload)
     {
         _itemNames.AddRange(_spriteSheetManager.GetItemNames(Name));
 

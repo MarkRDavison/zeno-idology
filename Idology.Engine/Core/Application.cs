@@ -1,5 +1,6 @@
 ﻿namespace Idology.Engine.Core;
 
+// TODO: Application needs to be separated from the window and have its game loop called into by some external orchestrator
 public class Application
 {
     private readonly IServiceProvider _serviceProvider;

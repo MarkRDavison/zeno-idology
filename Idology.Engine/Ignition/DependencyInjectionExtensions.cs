@@ -1,4 +1,6 @@
-﻿namespace Idology.Engine.Ignition;
+﻿using Idology.Engine.Translations;
+
+namespace Idology.Engine.Ignition;
 
 public static class DependencyInjectionExtensions
 {
@@ -12,6 +14,13 @@ public static class DependencyInjectionExtensions
         services.AddSingleton<IInputManager, InputManager>();
 
         services.AddTransient<RenderSystem>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddLocalization(this IServiceCollection services, Dictionary<string, string> translations)
+    {
+        services.AddSingleton<ITranslationService>(_ => new TranslationService(translations));
 
         return services;
     }

@@ -2,7 +2,7 @@
 
 public interface ISceneService
 {
-    void SetScene<TScene>() where TScene : Scene;
+    TScene SetScene<TScene>(IScenePayload<TScene>? payload) where TScene : Scene;
 
     void Init();
 }
