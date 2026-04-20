@@ -5,6 +5,7 @@ public static class DependencyInjectionExtensions
     public static IServiceCollection AddClient(this IServiceCollection services)
     {
         services
+            .RegisterScene<ConservationTitleScene>()
             .RegisterScene<ConservationGameScene>();
 
         services

@@ -12,7 +12,8 @@ public sealed class FontManager : IFontManager
 
     public void LoadFont(string name, string path)
     {
-        var font = Raylib.LoadFont(path);
+        // TODO: Investigate here how to make this create more clear fonts... SDF?
+        var font = Raylib.LoadFontEx(path, 96, [], 1000);
         if (_fonts.ContainsKey(name))
         {
             Raylib.UnloadFont(_fonts[name]);

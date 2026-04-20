@@ -4,16 +4,16 @@ public class ConservationGameScene : Scene
 {
     private readonly ConservationGame _game;
     private readonly ConservationGameRenderer _gameRenderer;
-    private readonly ConservationGameData _gameData;
+    private readonly IInputManager _inputManager;
 
     public ConservationGameScene(
         ConservationGame game,
         ConservationGameRenderer gameRenderer,
-        ConservationGameData gameData)
+        IInputManager inputManager)
     {
         _game = game;
         _gameRenderer = gameRenderer;
-        _gameData = gameData;
+        _inputManager = inputManager;
     }
 
     public override void Init()
@@ -23,9 +23,9 @@ public class ConservationGameScene : Scene
 
     public override void Update(float delta)
     {
-
         _game.Update(delta);
         _gameRenderer.Update(delta);
+        _inputManager.Update();
     }
 
     public override void Draw()

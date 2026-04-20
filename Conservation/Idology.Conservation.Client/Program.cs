@@ -77,7 +77,7 @@ public class Worker : BackgroundService
         // TODO: Config
         scope.ServiceProvider
             .GetRequiredService<ISceneService>()
-            .SetScene<ConservationGameScene>();
+            .SetScene<ConservationTitleScene>();
 
         await app.Start(token);
 

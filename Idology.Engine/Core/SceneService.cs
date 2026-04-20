@@ -15,6 +15,7 @@ public sealed class SceneService : ISceneService
 
     public void SetScene<TScene>() where TScene : Scene
     {
+        // TODO: DEFER
         var scene = _serviceProvider.GetRequiredService<TScene>();
         scene.Init();
         _application.SetScene(scene);

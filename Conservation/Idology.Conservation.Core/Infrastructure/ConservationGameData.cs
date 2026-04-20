@@ -2,4 +2,5 @@
 
 public sealed class ConservationGameData
 {
+    public RegionData? ActiveRegion { get; set; }
 }

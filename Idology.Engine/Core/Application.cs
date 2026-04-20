@@ -4,6 +4,8 @@ public class Application
 {
     private readonly IServiceProvider _serviceProvider;
 
+    private bool _running;
+
     public Application(
         IServiceProvider serviceProvider)
     {
@@ -34,19 +36,20 @@ public class Application
 
     public void Stop()
     {
-        Raylib.CloseWindow();
+        _running = false;
     }
 
     public Task Start(CancellationToken token)
     {
-        while (!Raylib.WindowShouldClose()) // Detect window close button or ESC key
+        _running = true;
+        while (!Raylib.WindowShouldClose() && _running)
         {
             if (token.IsCancellationRequested)
             {
                 break;
             }
 
-            CurrentScene?.Update(1.0f / 60.0f);// Raylib.GetFrameTime());
+            CurrentScene?.Update(Raylib.GetFrameTime());
 
             CurrentScene?.Draw();
         }
