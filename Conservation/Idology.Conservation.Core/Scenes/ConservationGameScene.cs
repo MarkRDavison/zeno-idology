@@ -1,4 +1,5 @@
 ﻿using Idology.Conservation.Core.Models;
+using Idology.Conservation.Core.Services;
 
 namespace Idology.Conservation.Core.Scenes;
 
@@ -13,31 +14,34 @@ public class ConservationGameScene : Scene<ConservationGameScene>
     private readonly ConservationGame _game;
     private readonly ConservationGameRenderer _gameRenderer;
     private readonly IInputManager _inputManager;
+    private readonly IConservationGameInteractionService _conservationGameInteractionService;
     private ConservationGameCamera _camera;
 
     public ConservationGameScene(
         ConservationGameData gameData,
         ConservationGame game,
         ConservationGameRenderer gameRenderer,
-        IInputManager inputManager)
+        IInputManager inputManager,
+        IConservationGameInteractionService conservationGameInteractionService)
     {
         _gameData = gameData;
         _game = game;
         _gameRenderer = gameRenderer;
         _inputManager = inputManager;
+        _conservationGameInteractionService = conservationGameInteractionService;
 
         _camera = new ConservationGameCamera(inputManager);
+
+        // TODO: Better way of applying defaults...
         _camera.Target = new Vector2(4500, 4000);
         _camera.Offset = new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2);
         _camera.Zoom = 0.10f;
-
     }
 
     public override void Init(IScenePayload<ConservationGameScene>? payload)
     {
-        if (payload is ConservationGameScenePayload cgsp)
+        if (payload is ConservationGameScenePayload)
         {
-
             _gameData.ActiveRegion = null;
             _gameData.Regions.Clear();
 
@@ -55,6 +59,8 @@ public class ConservationGameScene : Scene<ConservationGameScene>
 
     public override void Update(float delta)
     {
+        _conservationGameInteractionService.Update(delta);
+
         _game.Update(delta);
 
         _gameRenderer.Update(delta);

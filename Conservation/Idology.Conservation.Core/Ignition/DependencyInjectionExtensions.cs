@@ -1,4 +1,6 @@
-﻿namespace Idology.Conservation.Core.Ignition;
+﻿using Idology.Conservation.Core.Services;
+
+namespace Idology.Conservation.Core.Ignition;
 
 public static class DependencyInjectionExtensions
 {
@@ -21,7 +23,8 @@ public static class DependencyInjectionExtensions
         services
             .AddScoped<ConservationGame>()
             .AddScoped<ConservationGameRenderer>()
-            .AddScoped<ConservationGameData>();
+            .AddScoped<ConservationGameData>()
+            .AddScoped<IConservationGameInteractionService, ConservationGameInteractionService>();
 
         return services;
     }

@@ -114,6 +114,22 @@ public class Worker : BackgroundService
                 State = InputActionState.RELEASE,
                 Key = KeyboardKey.Escape
             });
+
+            inputManager.RegisterAction(new()
+            {
+                Name = Constants.Action_Enter,
+                Type = InputActionType.KEYBOARD,
+                State = InputActionState.RELEASE,
+                Key = KeyboardKey.Enter
+            });
+
+            inputManager.RegisterAction(new()
+            {
+                Name = Constants.Action_CycleRegion,
+                Type = InputActionType.KEYBOARD,
+                State = InputActionState.RELEASE,
+                Key = KeyboardKey.Tab
+            });
         }
 
         var data = scope.ServiceProvider.GetRequiredService<ConservationGameData>();

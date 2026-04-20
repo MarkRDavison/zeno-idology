@@ -20,6 +20,7 @@ public sealed class ConservationGameRenderer
 
         Raylib.BeginMode2D(camera);
 
+        int regionIdx = 0;
         foreach (var region in _gameData.Regions)
         {
             for (int y = 0; y < region.Height; ++y)
@@ -36,6 +37,23 @@ public sealed class ConservationGameRenderer
                         tile.Color);
                 }
             }
+
+            if (_gameData.InteractionData.DefaultScreenData.SelectedRegion == regionIdx)
+            {
+                Raylib.DrawRectangleLinesEx(
+                    new Rectangle(
+                        new Vector2(
+                            (int)region.RegionOffset.X * TileSize,
+                            (int)region.RegionOffset.Y * TileSize),
+                        new Vector2(
+                            TileSize * region.Width,
+                            TileSize * region.Height)
+                        ),
+                    (float)(TileSize / 4.0f),
+                    Color.White);
+            }
+
+            regionIdx++;
         }
 
 
