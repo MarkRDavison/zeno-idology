@@ -1,4 +1,6 @@
-﻿namespace Idology.Conservation.Core.Scenes;
+﻿using Idology.Conservation.Core.Models;
+
+namespace Idology.Conservation.Core.Scenes;
 
 public class ConservationGameScenePayload : IScenePayload<ConservationGameScene>
 {
@@ -7,15 +9,18 @@ public class ConservationGameScenePayload : IScenePayload<ConservationGameScene>
 
 public class ConservationGameScene : Scene<ConservationGameScene>
 {
+    private readonly ConservationGameData _gameData;
     private readonly ConservationGame _game;
     private readonly ConservationGameRenderer _gameRenderer;
     private readonly IInputManager _inputManager;
 
     public ConservationGameScene(
+        ConservationGameData gameData,
         ConservationGame game,
         ConservationGameRenderer gameRenderer,
         IInputManager inputManager)
     {
+        _gameData = gameData;
         _game = game;
         _gameRenderer = gameRenderer;
         _inputManager = inputManager;
@@ -25,6 +30,18 @@ public class ConservationGameScene : Scene<ConservationGameScene>
     {
         if (payload is ConservationGameScenePayload cgsp)
         {
+
+            _gameData.ActiveRegion = null;
+            _gameData.Regions.Clear();
+
+            List<string> regions = ["region-1", "region-2"];
+
+            foreach (var r in regions)
+            {
+                var regionData = RegionModel.Create(r);
+
+                _gameData.Regions.Add(regionData.ToRegionData());
+            }
 
         }
     }
