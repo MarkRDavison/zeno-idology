@@ -8,4 +8,5 @@ global using Idology.Engine.Resources;
 global using Idology.Engine.Translations;
 global using Microsoft.Extensions.DependencyInjection;
 global using Raylib_cs;
+global using System.Numerics;
 global using System.Text.Json;

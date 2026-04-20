@@ -10,4 +10,22 @@ public enum TileType
     Beach = 4
 }
 
-public sealed record Tile(TileType TileType);
+public sealed record Tile(TileType TileType)
+{
+    public Color Color
+    {
+        get
+        {
+            if (TileType == TileType.Water)
+            {
+                return Color.Blue;
+            }
+            else if (TileType == TileType.Land)
+            {
+                return Color.Green;
+            }
+
+            return Color.Black;
+        }
+    }
+}

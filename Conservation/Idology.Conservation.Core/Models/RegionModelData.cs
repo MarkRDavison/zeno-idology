@@ -2,4 +2,5 @@
 
 public sealed class RegionModelData
 {
+    public Vector2 Offset { get; set; }
 }

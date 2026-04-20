@@ -1,4 +1,6 @@
-﻿namespace Idology.Conservation.Core.Models;
+﻿using Idology.Engine.Converters;
+
+namespace Idology.Conservation.Core.Models;
 
 public sealed class RegionModel
 {
@@ -12,7 +14,10 @@ public sealed class RegionModel
 
         var regionDataText = File.ReadAllText(regionPath + ".json");
 
-        if (JsonSerializer.Deserialize<RegionModelData>(regionDataText) is { } regionData)
+        var options = new JsonSerializerOptions();
+        options.Converters.Add(new Vector2JsonConverter());
+
+        if (JsonSerializer.Deserialize<RegionModelData>(regionDataText, options) is { } regionData)
         {
             return new RegionModel
             {
@@ -32,7 +37,8 @@ public sealed class RegionModel
         var data = new RegionData
         {
             Width = RegionImage.Width,
-            Height = RegionImage.Height
+            Height = RegionImage.Height,
+            RegionOffset = RegionModelData.Offset
         };
 
         for (var y = 0; y < RegionImage.Height; ++y)

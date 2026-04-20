@@ -20,20 +20,24 @@ public sealed class ConservationGameRenderer
 
         Raylib.BeginMode2D(camera);
 
-        //for (int y = 0; y < _gameData.WorldHeight; ++y)
-        //{
-        //    for (int x = 0; x < _gameData.WorldWidth; ++x)
-        //    {
-        //        var tile = _gameData.Tiles[y][x];
+        foreach (var region in _gameData.Regions)
+        {
+            for (int y = 0; y < region.Height; ++y)
+            {
+                for (int x = 0; x < region.Width; ++x)
+                {
+                    var tile = region.Tiles[y * region.Height + x];
 
-        //        Raylib.DrawRectangle(
-        //            x * TileSize,
-        //            y * TileSize,
-        //            TileSize,
-        //            TileSize,
-        //            tile.Color);
-        //    }
-        //}
+                    Raylib.DrawRectangle(
+                        x * TileSize + (int)region.RegionOffset.X * TileSize,
+                        y * TileSize + (int)region.RegionOffset.Y * TileSize,
+                        TileSize,
+                        TileSize,
+                        tile.Color);
+                }
+            }
+        }
+
 
         Raylib.EndMode2D();
     }

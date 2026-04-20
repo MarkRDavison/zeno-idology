@@ -1,4 +1,7 @@
-﻿namespace Idology.Conservation.Client;
+﻿using Idology.Conservation.Core;
+using Raylib_cs;
+
+namespace Idology.Conservation.Client;
 
 public class Program
 {
@@ -68,6 +71,49 @@ public class Worker : BackgroundService
                 var filename = Path.GetFileNameWithoutExtension(path);
                 textureManager.LoadTexture(filename, path);
             }
+        }
+        {
+            var inputManager = scope.ServiceProvider.GetRequiredService<IInputManager>();
+
+            inputManager.RegisterAction(new()
+            {
+                Name = Constants.Action_Click_Start,
+                Type = InputActionType.MOUSE,
+                State = InputActionState.PRESS,
+                Button = MouseButton.Left
+            });
+
+            inputManager.RegisterAction(new()
+            {
+                Name = Constants.Action_Pan,
+                Type = InputActionType.MOUSE,
+                State = InputActionState.DOWN,
+                Button = MouseButton.Left
+            });
+
+            inputManager.RegisterAction(new()
+            {
+                Name = Constants.Action_Click,
+                Type = InputActionType.MOUSE,
+                State = InputActionState.RELEASE,
+                Button = MouseButton.Left
+            });
+
+            inputManager.RegisterAction(new()
+            {
+                Name = Constants.Action_Click_Context,
+                Type = InputActionType.MOUSE,
+                State = InputActionState.RELEASE,
+                Button = MouseButton.Right
+            });
+
+            inputManager.RegisterAction(new()
+            {
+                Name = Constants.Action_Escape,
+                Type = InputActionType.KEYBOARD,
+                State = InputActionState.RELEASE,
+                Key = KeyboardKey.Escape
+            });
         }
 
         var data = scope.ServiceProvider.GetRequiredService<ConservationGameData>();
