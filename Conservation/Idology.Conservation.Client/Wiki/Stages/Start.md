@@ -13,3 +13,9 @@ Start halfway through a breeding season?
 Get given a couple of possibilities of things that can be researched and implemented between now and the next season?
 
  * Maybe a retrospective of the breeding season brings up a few issues
+	
+## First actions
+
+ - Review existing kakapo
+ - Review existing staff
+ - Go to region with kakapo present

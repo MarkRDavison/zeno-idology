@@ -1,7 +1,4 @@
-﻿using Idology.Conservation.Core;
-using Raylib_cs;
-
-namespace Idology.Conservation.Client;
+﻿namespace Idology.Conservation.Client;
 
 public class Program
 {
@@ -129,6 +126,22 @@ public class Worker : BackgroundService
                 Type = InputActionType.KEYBOARD,
                 State = InputActionState.RELEASE,
                 Key = KeyboardKey.Tab
+            });
+
+            inputManager.RegisterAction(new()
+            {
+                Name = Constants.Action_Shortcut_Kakapo,
+                Type = InputActionType.KEYBOARD,
+                State = InputActionState.RELEASE,
+                Key = KeyboardKey.F1
+            });
+
+            inputManager.RegisterAction(new()
+            {
+                Name = Constants.Action_Shortcut_Staff,
+                Type = InputActionType.KEYBOARD,
+                State = InputActionState.RELEASE,
+                Key = KeyboardKey.F2
             });
         }
 

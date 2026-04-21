@@ -3,7 +3,9 @@
 public enum ScreenState
 {
     Default = 0,
-    Region = 1
+    Region = 1,
+    Kakapo = 2,
+    Staff = 3
 };
 
 public sealed class DefaultScreenData

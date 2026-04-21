@@ -24,7 +24,8 @@ public static class DependencyInjectionExtensions
             .AddScoped<ConservationGame>()
             .AddScoped<ConservationGameRenderer>()
             .AddScoped<ConservationGameData>()
-            .AddScoped<IConservationGameInteractionService, ConservationGameInteractionService>();
+            .AddScoped<IConservationGameInteractionService, ConservationGameInteractionService>()
+            .AddScoped<IGameDateTimeProvider, GameDateTimeProvider>();
 
         return services;
     }

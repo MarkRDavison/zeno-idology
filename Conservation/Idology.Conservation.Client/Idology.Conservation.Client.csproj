@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Assets\Data\" />
     <Folder Include="Wiki\Seasons\" />
     <Folder Include="Wiki\Screens\" />
   </ItemGroup>

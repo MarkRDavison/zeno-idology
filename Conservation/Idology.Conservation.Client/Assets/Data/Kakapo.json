@@ -1,0 +1,535 @@
+[
+  {
+    "id": 1,
+    "name": "Adelaide",
+    "mother": "Kuia",
+    "father": "Kumi",
+    "isFemale": true,
+    "birthDate": "2016-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 2,
+    "name": "Āio",
+    "mother": "Mila",
+    "father": "Horton",
+    "isFemale": true,
+    "birthDate": "2019-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 3,
+    "name": "Ako",
+    "mother": "Esperance",
+    "father": "Komaru",
+    "isFemale": true,
+    "birthDate": "2019-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 4,
+    "name": "Alice",
+    "mother": null,
+    "father": null,
+    "isFemale": true,
+    "birthDate": null,
+    "capturedDate": "1981-01-01",
+    "status": "alive"
+  },
+  {
+    "id": 5,
+    "name": "Alison",
+    "mother": "Queenie",
+    "father": "Tutoko",
+    "isFemale": true,
+    "birthDate": "2019-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 6,
+    "name": "Aparima",
+    "mother": "Wendy",
+    "father": "Waynebo",
+    "isFemale": true,
+    "birthDate": "2002-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 7,
+    "name": "Aranga",
+    "mother": "Lisa",
+    "father": "Ox",
+    "isFemale": true,
+    "birthDate": "1999-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 8,
+    "name": "Awarua",
+    "mother": "Kuihi",
+    "father": "Barnard",
+    "isFemale": true,
+    "birthDate": "2009-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 9,
+    "name": "Bella",
+    "mother": null,
+    "father": null,
+    "isFemale": true,
+    "birthDate": null,
+    "capturedDate": "1982-01-01",
+    "status": "alive"
+  },
+  {
+    "id": 10,
+    "name": "Boomer",
+    "mother": "Zephyr",
+    "father": "Felix",
+    "isFemale": true,
+    "birthDate": "1999-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 11,
+    "name": "Cyndy",
+    "mother": null,
+    "father": null,
+    "isFemale": true,
+    "birthDate": null,
+    "capturedDate": "1987-01-01",
+    "status": "alive"
+  },
+  {
+    "id": 12,
+    "name": "Esperance",
+    "mother": "Flossie",
+    "father": "Bill",
+    "isFemale": true,
+    "birthDate": "2002-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 13,
+    "name": "Eva",
+    "mother": "Suzanne",
+    "father": "Gulliver",
+    "isFemale": true,
+    "birthDate": "2019-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 14,
+    "name": "Flossie",
+    "mother": null,
+    "father": null,
+    "isFemale": true,
+    "birthDate": null,
+    "capturedDate": "1982-01-01",
+    "status": "alive"
+  },
+  {
+    "id": 15,
+    "name": "Heather",
+    "mother": "Flossie",
+    "father": "Ben",
+    "isFemale": true,
+    "birthDate": "1981-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 16,
+    "name": "Huarangi",
+    "mother": "Alice",
+    "father": "Boss",
+    "isFemale": true,
+    "birthDate": "2019-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 17,
+    "name": "JEM",
+    "mother": "Aparima",
+    "father": "Bill",
+    "isFemale": true,
+    "birthDate": "2008-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 18,
+    "name": "Kuia",
+    "mother": "Flossie",
+    "father": "Richard Henry",
+    "isFemale": true,
+    "birthDate": "1998-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 19,
+    "name": "Kuihi",
+    "mother": "Jean",
+    "father": "Sass",
+    "isFemale": true,
+    "birthDate": "2002-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 20,
+    "name": "Lisa",
+    "mother": null,
+    "father": null,
+    "isFemale": true,
+    "birthDate": null,
+    "capturedDate": "1982-01-01",
+    "status": "alive"
+  },
+  {
+    "id": 21,
+    "name": "Mila",
+    "mother": "Margaret-Maree",
+    "father": "Nog",
+    "isFemale": true,
+    "birthDate": "2002-01-01",
+    "capturedDate": null,
+    "status": "dead"
+  },
+  {
+    "id": 22,
+    "name": "Pearl",
+    "mother": "Alice",
+    "father": "Waynebo",
+    "isFemale": true,
+    "birthDate": "2002-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 23,
+    "name": "Pura",
+    "mother": "Flossie",
+    "father": "Bill",
+    "isFemale": true,
+    "birthDate": "2005-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 24,
+    "name": "Queenie",
+    "mother": "Cyndy",
+    "father": "Ox",
+    "isFemale": true,
+    "birthDate": "2009-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 25,
+    "name": "Rakiura",
+    "mother": "Flossie",
+    "father": "Bill",
+    "isFemale": true,
+    "birthDate": "2002-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 26,
+    "name": "Roha",
+    "mother": "Bella",
+    "father": "Blades",
+    "isFemale": true,
+    "birthDate": "2009-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 27,
+    "name": "Suzanne",
+    "mother": null,
+    "father": null,
+    "isFemale": true,
+    "birthDate": null,
+    "capturedDate": "1989-01-01",
+    "status": "alive"
+  },
+
+  {
+    "id": 28,
+    "name": "Acheron",
+    "mother": "Kuia",
+    "father": "Tamahou",
+    "isFemale": false,
+    "birthDate": "2019-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 29,
+    "name": "Blades",
+    "mother": null,
+    "father": null,
+    "isFemale": false,
+    "birthDate": null,
+    "capturedDate": "1982-01-01",
+    "status": "alive"
+  },
+  {
+    "id": 30,
+    "name": "Boss",
+    "mother": null,
+    "father": null,
+    "isFemale": false,
+    "birthDate": null,
+    "capturedDate": "1989-01-01",
+    "status": "alive"
+  },
+  {
+    "id": 31,
+    "name": "Doc",
+    "mother": "Ruth",
+    "father": "Basil",
+    "isFemale": false,
+    "birthDate": "2002-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 32,
+    "name": "Gulliver",
+    "mother": "Flossie",
+    "father": "Richard Henry",
+    "isFemale": false,
+    "birthDate": "1998-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 33,
+    "name": "Horton",
+    "mother": "Cyndy",
+    "father": "Bill",
+    "isFemale": false,
+    "birthDate": "2002-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 34,
+    "name": "Kumi",
+    "mother": "Margaret-Maree",
+    "father": "Sass",
+    "isFemale": false,
+    "birthDate": "2005-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 35,
+    "name": "Richard Henry",
+    "mother": null,
+    "father": null,
+    "isFemale": false,
+    "birthDate": null,
+    "capturedDate": "1975-01-01",
+    "status": "dead"
+  },
+  {
+    "id": 36,
+    "name": "Takahimu",
+    "mother": "Sue",
+    "father": "Basil",
+    "isFemale": false,
+    "birthDate": "2002-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 37,
+    "name": "Tamahou",
+    "mother": "Rakiura",
+    "father": "Whiskas",
+    "isFemale": false,
+    "birthDate": "2009-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+  {
+    "id": 38,
+    "name": "Tutoko",
+    "mother": "Rakiura",
+    "father": "Barnard",
+    "isFemale": false,
+    "birthDate": "2011-01-01",
+    "capturedDate": null,
+    "status": "alive"
+  },
+
+  {
+    "id": 39,
+    "name": "Mike",
+    "mother": null,
+    "father": null,
+    "isFemale": true,
+    "birthDate": null,
+    "capturedDate": "1982-01-01",
+    "status": "missing"
+  },
+  {
+    "id": 40,
+    "name": "John-Girl",
+    "mother": null,
+    "father": null,
+    "isFemale": true,
+    "birthDate": null,
+    "capturedDate": null,
+    "status": "dead"
+  },
+  {
+    "id": 41,
+    "name": "Aroha",
+    "mother": "Sue",
+    "father": null,
+    "isFemale": true,
+    "birthDate": "2002-01-01",
+    "capturedDate": null,
+    "status": "dead"
+  },
+  {
+    "id": 42,
+    "name": "Aurora",
+    "mother": "Zephyr",
+    "father": null,
+    "isFemale": true,
+    "birthDate": "2002-01-01",
+    "capturedDate": null,
+    "status": "dead"
+  },
+  {
+    "id": 43,
+    "name": "Vollie",
+    "mother": "Ruth",
+    "father": null,
+    "isFemale": true,
+    "birthDate": "2002-01-01",
+    "capturedDate": null,
+    "status": "dead"
+  },
+  {
+    "id": 44,
+    "name": "Mokopuna",
+    "mother": "Rakiura",
+    "father": "Ox",
+    "isFemale": true,
+    "birthDate": "2008-01-01",
+    "capturedDate": null,
+    "status": "dead"
+  },
+  {
+    "id": 45,
+    "name": "Sarah",
+    "mother": null,
+    "father": null,
+    "isFemale": true,
+    "birthDate": null,
+    "capturedDate": null,
+    "status": "dead"
+  },
+  {
+    "id": 46,
+    "name": "Purity",
+    "mother": "Lisa",
+    "father": "Basil",
+    "isFemale": true,
+    "birthDate": "2009-01-01",
+    "capturedDate": null,
+    "status": "dead"
+  },
+  {
+    "id": 47,
+    "name": "Sandra",
+    "mother": null,
+    "father": null,
+    "isFemale": true,
+    "birthDate": null,
+    "capturedDate": null,
+    "status": "dead"
+  },
+
+  {
+    "id": 48,
+    "name": "Bill",
+    "mother": null,
+    "father": null,
+    "isFemale": false,
+    "birthDate": null,
+    "capturedDate": "1982-01-01",
+    "status": "dead"
+  },
+  {
+    "id": 49,
+    "name": "Sass",
+    "mother": null,
+    "father": null,
+    "isFemale": false,
+    "birthDate": null,
+    "capturedDate": null,
+    "status": "dead"
+  },
+  {
+    "id": 50,
+    "name": "Whiskas",
+    "mother": null,
+    "father": null,
+    "isFemale": false,
+    "birthDate": null,
+    "capturedDate": "1989-01-01",
+    "status": "dead"
+  },
+  {
+    "id": 51,
+    "name": "Waynebo",
+    "mother": null,
+    "father": null,
+    "isFemale": false,
+    "birthDate": null,
+    "capturedDate": null,
+    "status": "dead"
+  },
+  {
+    "id": 52,
+    "name": "Barnard",
+    "mother": null,
+    "father": null,
+    "isFemale": false,
+    "birthDate": null,
+    "capturedDate": "1982-01-01",
+    "status": "dead"
+  },
+  {
+    "id": 53,
+    "name": "Felix",
+    "mother": null,
+    "father": null,
+    "isFemale": false,
+    "birthDate": null,
+    "capturedDate": "1989-01-01",
+    "status": "dead"
+  }
+]

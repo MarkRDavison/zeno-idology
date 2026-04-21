@@ -54,3 +54,9 @@ Manage staff/volunteers
 [Starting](Wiki/Stages/Start.md)
 
 [Late](Wiki/Stages/Late.md)
+
+## Unsorted thoughts
+
+### Technical
+
+ - Difference between *world* scenes, like default and region, and the menu scenes, like staff/kakapo
