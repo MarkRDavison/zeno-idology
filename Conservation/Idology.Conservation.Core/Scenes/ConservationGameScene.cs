@@ -45,7 +45,7 @@ public class ConservationGameScene : Scene<ConservationGameScene>
             _gameData.ActiveRegion = null;
             _gameData.Regions.Clear();
 
-            List<string> regions = ["region-1", "region-2"];
+            List<string> regions = ["region-1", "region-2", "region-3"];
 
             foreach (var r in regions)
             {

@@ -27,7 +27,7 @@ public sealed class ConservationGameRenderer
             {
                 for (int x = 0; x < region.Width; ++x)
                 {
-                    var tile = region.Tiles[y * region.Height + x];
+                    var tile = region.Tiles[y * region.Width + x];
 
                     Raylib.DrawRectangle(
                         x * TileSize + (int)region.RegionOffset.X * TileSize,
