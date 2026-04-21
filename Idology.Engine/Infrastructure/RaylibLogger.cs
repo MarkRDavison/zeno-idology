@@ -65,11 +65,26 @@ public static unsafe class RaylibLogger
         messageStart = (sbyte*)p;
 
         // 5. match category safely
-        if (Matches(categoryStart, categoryLen, "rcore")) return _general!;
-        if (Matches(categoryStart, categoryLen, "rlgl")) return _gl!;
-        if (Matches(categoryStart, categoryLen, "rtextures")) return _texture!;
-        if (Matches(categoryStart, categoryLen, "raudio")) return _audio!;
-        if (Matches(categoryStart, categoryLen, "rfileio")) return _fileio!;
+        if (Matches(categoryStart, categoryLen, "rcore"))
+        {
+            return _general!;
+        }
+        else if (Matches(categoryStart, categoryLen, "rlgl"))
+        {
+            return _gl!;
+        }
+        else if (Matches(categoryStart, categoryLen, "rtextures"))
+        {
+            return _texture!;
+        }
+        else if (Matches(categoryStart, categoryLen, "raudio"))
+        {
+            return _audio!;
+        }
+        else if (Matches(categoryStart, categoryLen, "rfileio"))
+        {
+            return _fileio!;
+        }
 
         return _general!;
     }
@@ -80,8 +95,11 @@ public static unsafe class RaylibLogger
         for (int i = 0; i < keyword.Length; i++)
         {
             if (ptr[i] != keyword[i])
+            {
                 return false;
+            }
         }
+
         return true;
     }
 
@@ -89,12 +107,16 @@ public static unsafe class RaylibLogger
     private static bool Matches(byte* ptr, int len, string value)
     {
         if (len != value.Length)
+        {
             return false;
+        }
 
         for (int i = 0; i < len; i++)
         {
             if (ptr[i] != value[i])
+            {
                 return false;
+            }
         }
 
         return true;
@@ -128,7 +150,7 @@ public static unsafe class RaylibLogger
         {
             var logger = ResolveLogger(cat, len);
 
-            string message = new string((sbyte*)msg);
+            string message = new((sbyte*)msg);
 
             logger.Log(ll, "{Message}", message);
         }
@@ -151,7 +173,9 @@ public static unsafe class RaylibLogger
             category[4] == 'U' &&
             category[5] == 'R' &&
             category[6] == 'E')
+        {
             return _texture!;
+        }
 
         // AUDIO
         if (len == 5 &&
@@ -160,13 +184,17 @@ public static unsafe class RaylibLogger
             category[2] == 'D' &&
             category[3] == 'I' &&
             category[4] == 'O')
+        {
             return _audio!;
+        }
 
         // GL
         if (len == 2 &&
             category[0] == 'G' &&
             category[1] == 'L')
+        {
             return _gl!;
+        }
 
         // FILEIO
         if (len == 6 &&
@@ -176,7 +204,9 @@ public static unsafe class RaylibLogger
             category[3] == 'E' &&
             category[4] == 'I' &&
             category[5] == 'O')
+        {
             return _fileio!;
+        }
 
         return _general!;
     }
@@ -192,7 +222,9 @@ public static unsafe class RaylibLogger
         categoryStart = p;
 
         while (*p != 0 && *p != (byte)':')
+        {
             p++;
+        }
 
         if (*p == 0)
         {
@@ -205,7 +237,9 @@ public static unsafe class RaylibLogger
         p++; // skip ':'
 
         while (*p == (byte)' ')
+        {
             p++;
+        }
 
         messageStart = (sbyte*)p;
         return true;
