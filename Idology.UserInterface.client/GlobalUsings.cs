@@ -5,6 +5,8 @@ global using Idology.Game.Infrastructure;
 global using Idology.UserInterface.Client;
 global using Idology.UserInterface.Client.Scenes;
 global using Idology.UserInterface.Ignition;
+global using Idology.UserInterface.Layout;
+global using Idology.UserInterface.Widgets;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;

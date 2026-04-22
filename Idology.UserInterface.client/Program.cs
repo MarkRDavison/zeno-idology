@@ -8,13 +8,20 @@
 
     private static IHostBuilder CreateDefaultApp(string[] args) => Host
         .CreateDefaultBuilder()
+        .ConfigureHostConfiguration(config =>
+        {
+
+        })
         .ConfigureServices(services =>
         {
             services
                 .AddHostedService<UserInterfaceWorkerBackgroundService>()
                 .AddEngine()
                 .AddUserInterface()
-                .AddLocalization([])
+                .AddLocalization(new Dictionary<string, string>
+                {
+                    { "WINDOW_TITLE", "Idology User Interface Client" }
+                })
                 .RegisterScene<StartScene>();
         })
         .ConfigureLogging(logging =>

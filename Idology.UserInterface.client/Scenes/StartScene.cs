@@ -1,51 +1,61 @@
-﻿using Idology.UserInterface.Layout;
-
-namespace Idology.UserInterface.Client.Scenes;
+﻿namespace Idology.UserInterface.Client.Scenes;
 
 internal sealed class StartScene : Scene<StartScene>
 {
-    private readonly Application _application;
+    private readonly IUserInterfaceRoot _userInterfaceRoot;
+    private readonly IInputManager _inputManager;
 
-    private LayoutItem _root;
-
-    public StartScene(Application application)
+    public StartScene(
+        IUserInterfaceRoot userInterfaceRoot,
+        IInputManager inputManager)
     {
-        _application = application;
-
-        _root = new LayoutItem
-        {
-            RequestedSize = new LayoutVector(
-                Raylib.GetScreenWidth(),
-                Raylib.GetScreenHeight()),
-            Behave = BehaveFlags.Fill,
-            RequestedMargin = new LayoutEdges(16.0f),
-            Contain = ContainFlags.Row,
-        };
-
-        var masterList = new LayoutItem
-        {
-            RequestedSize = new(400, 0),
-            Behave = BehaveFlags.VFill,
-            RequestedMargin = new LayoutEdges(16.0f),
-            Contain = ContainFlags.Column,
-        };
-        _root.AddChild(masterList);
-
-        var contentView = new LayoutItem
-        {
-            Behave = BehaveFlags.Fill,
-            RequestedMargin = new LayoutEdges(16.0f),
-        };
-        _root.AddChild(contentView);
+        _userInterfaceRoot = userInterfaceRoot;
+        _inputManager = inputManager;
     }
+
+    public override void Init(IScenePayload<StartScene>? payload)
+    {
+        _userInterfaceRoot.SetBounds(new LayoutVector(Raylib.GetScreenWidth(), Raylib.GetScreenHeight()));
+
+        _userInterfaceRoot.RootWidget.Layout.Contain = ContainFlags.Layout;
+        var root = _userInterfaceRoot.RootWidget;
+
+        var background = root.AddChild(new PanelWidget
+        {
+            Foreground = Color.Gray,
+            Layout = new LayoutItem
+            {
+                RequestedMargin = new LayoutEdges(32.0f),
+                Behave = BehaveFlags.Fill,
+                Contain = ContainFlags.Row
+            }
+        });
+
+        var button = background.AddChild(new TextButtonWidget
+        {
+            Foreground = Color.Yellow,
+            Background = Color.Green,
+            Border = Color.DarkBlue,
+            Layout = new LayoutItem
+            {
+                Behave = BehaveFlags.Center,
+                RequestedSize = new LayoutVector(256, 96)
+            }
+        });
+
+        button.OnClick += (s, e) => Console.WriteLine("BUTTON IS CLICKED!");
+    }
+
 
     public override void Update(float delta)
     {
-        _root.RequestedSize = new LayoutVector(
-            Raylib.GetScreenWidth() - _root.RequestedMargin.Left - _root.RequestedMargin.Right,
-            Raylib.GetScreenHeight() - _root.RequestedMargin.Top - _root.RequestedMargin.Bottom);
+        if (Raylib.IsWindowResized())
+        {
+            _userInterfaceRoot.SetBounds(new LayoutVector(Raylib.GetScreenWidth(), Raylib.GetScreenHeight()));
+        }
 
-        _root.Run();
+        _userInterfaceRoot.Update(delta);
+        _inputManager.Update();
     }
 
     public override void Draw()
@@ -54,23 +64,7 @@ internal sealed class StartScene : Scene<StartScene>
 
         Raylib.ClearBackground(Color.SkyBlue);
 
-        List<Color> Colours = [Color.Beige, Color.RayWhite, Color.RayWhite, Color.Blue, Color.Red, Color.Green];
-
-        int idx = 0;
-
-        Action<LayoutItem> drawFunc = null!;
-
-        drawFunc = (LayoutItem item) =>
-        {
-            Raylib.DrawRectangle((int)item.Rect.X, (int)item.Rect.Y, (int)item.Rect.Width, (int)item.Rect.Height, Colours[idx++]);
-
-            foreach (var c in item.Children)
-            {
-                drawFunc(c);
-            }
-        };
-
-        drawFunc(_root);
+        _userInterfaceRoot.RootWidget.Draw();
 
         Raylib.DrawFPS(10, 10);
 
