@@ -7,6 +7,7 @@ public interface IWidget
     Color Background { get; set; }
     Color Foreground { get; set; }
     Color Border { get; set; }
+    float? BorderRoundness { get; set; }
 
     TWidget AddChild<TWidget>(TWidget child) where TWidget : BaseWidget;
 

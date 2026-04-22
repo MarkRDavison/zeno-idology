@@ -32,28 +32,32 @@ public sealed class TextButtonWidget : BaseWidget
     public override void Draw()
     {
         const int TextSize = 64;
-        const int BorderSize = 8;
 
-        Raylib.DrawRectangleLinesEx(
+        if (BorderThickness.GetValueOrDefault() > 0)
+        {
+            Raylib.DrawRectangleLinesEx(
             new Rectangle(
                 (int)Layout.Rect.X,
                 (int)Layout.Rect.Y,
                 (int)Layout.Rect.Width,
                 (int)Layout.Rect.Height),
-            BorderSize,
+            BorderThickness ?? 0,
             _mouseWithin ? Color.Magenta : Border);
+        }
 
         Raylib.DrawRectangle(
-            (int)Layout.Rect.X + BorderSize,
-            (int)Layout.Rect.Y + BorderSize,
-            (int)Layout.Rect.Width - BorderSize * 2,
-            (int)Layout.Rect.Height - BorderSize * 2,
+            (int)Layout.Rect.X + (int)(BorderThickness ?? 0),
+            (int)Layout.Rect.Y + (int)(BorderThickness ?? 0),
+            (int)Layout.Rect.Width - (int)(BorderThickness ?? 0) * 2,
+            (int)Layout.Rect.Height - (int)(BorderThickness ?? 0) * 2,
             _mouseDownWithin ? Color.Orange : Background);
 
-        var text = "Hello world";
+        var text = TextContent;
 
         // TODO: PADDING...
-        var maxTextSize = Layout.Rect.Width - BorderSize * 2;
+        var maxTextSize = Layout.Rect.Width - (int)(BorderThickness ?? 0) * 2;
+
+        // Different approach if Desired size not set? Then update needs to set it?
 
         while (true)
         {
@@ -79,5 +83,6 @@ public sealed class TextButtonWidget : BaseWidget
         }
     }
 
+    public string TextContent { get; set; } = string.Empty;
     public event EventHandler? OnClick;
 }

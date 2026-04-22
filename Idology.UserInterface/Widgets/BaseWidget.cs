@@ -9,7 +9,8 @@ public abstract class BaseWidget : IWidget
     public Color Background { get; set; } = Color.Blank;
     public Color Foreground { get; set; } = Color.Blank;
     public Color Border { get; set; } = Color.Blank;
-
+    public float? BorderRoundness { get; set; }
+    public float? BorderThickness { get; set; }
 
     public TWidget AddChild<TWidget>(TWidget child) where TWidget : BaseWidget
     {
