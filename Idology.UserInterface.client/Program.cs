@@ -1,6 +1,4 @@
-﻿namespace Idology.Conservation.Client;
-
-public class Program
+﻿public class Program
 {
     public static async Task Main(string[] args)
     {
@@ -13,10 +11,11 @@ public class Program
         .ConfigureServices(services =>
         {
             services
-                .AddHostedService<ConservationWorkerBackgroundService>()
+                .AddHostedService<UserInterfaceWorkerBackgroundService>()
                 .AddEngine()
                 .AddUserInterface()
-                .AddClient();
+                .AddLocalization([])
+                .RegisterScene<StartScene>();
         })
         .ConfigureLogging(logging =>
         {

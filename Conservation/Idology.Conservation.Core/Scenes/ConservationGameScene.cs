@@ -1,11 +1,9 @@
-﻿using Idology.Conservation.Core.Models;
-using Idology.Conservation.Core.Services;
-
-namespace Idology.Conservation.Core.Scenes;
+﻿namespace Idology.Conservation.Core.Scenes;
 
 public class ConservationGameScenePayload : IScenePayload<ConservationGameScene>
 {
     public required bool Load { get; init; }
+    public required bool Dev { get; init; }
 }
 
 public class ConservationGameScene : Scene<ConservationGameScene>
@@ -43,7 +41,7 @@ public class ConservationGameScene : Scene<ConservationGameScene>
 
     public override void Init(IScenePayload<ConservationGameScene>? payload)
     {
-        if (payload is ConservationGameScenePayload)
+        if (payload is ConservationGameScenePayload cgsp)
         {
             _gameData.ActiveRegion = null;
             _gameData.Regions.Clear();
@@ -53,8 +51,8 @@ public class ConservationGameScene : Scene<ConservationGameScene>
             // TODO: Load from files....
             // https://encyclopedia.pub/entry/37611
             _gameData.KakapoData.Add(new(1, "Flossie", true, null, null, new DateOnly(1982, 1, 1), null));
-            _gameData.KakapoData.Add(new(2, "Rakiura", true, null, null, new DateOnly(2002, 2, 19), null));
-            _gameData.KakapoData.Add(new(3, "Esperance", true, null, null, new DateOnly(2002, 2, 17), null));
+            _gameData.KakapoData.Add(new(2, "Rakiura", true, 1, null, new DateOnly(2002, 2, 19), null));
+            _gameData.KakapoData.Add(new(3, "Esperance", true, 1, null, new DateOnly(2002, 2, 17), null));
 
             _gameData.StaffData.Add(new(1, "Tom"));
             _gameData.StaffData.Add(new(2, "Sarah"));
@@ -70,6 +68,17 @@ public class ConservationGameScene : Scene<ConservationGameScene>
                 _gameData.Regions.Add(regionData.ToRegionData());
             }
 
+            if (cgsp.Load)
+            {
+                if (cgsp.Dev)
+                {
+
+                }
+                else
+                {
+
+                }
+            }
         }
     }
 

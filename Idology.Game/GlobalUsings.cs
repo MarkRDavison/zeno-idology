@@ -1,2 +1,9 @@
-﻿global using Idology.Engine.Utility;
+﻿global using Idology.Engine.Core;
+global using Idology.Engine.Infrastructure;
+global using Idology.Engine.Resources;
+global using Idology.Engine.Translations;
+global using Idology.Engine.Utility;
 global using Idology.Game.Entities;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Hosting;
+global using Microsoft.Extensions.Logging;

@@ -1,11 +1,9 @@
-﻿global using Idology.Conservation.Core;
-global using Idology.Conservation.Core.Ignition;
-global using Idology.Conservation.Core.Scenes;
-global using Idology.Engine.Core;
+﻿global using Idology.Engine.Core;
 global using Idology.Engine.Ignition;
 global using Idology.Engine.Infrastructure;
-global using Idology.Engine.Resources;
 global using Idology.Game.Infrastructure;
+global using Idology.UserInterface.Client;
+global using Idology.UserInterface.Client.Scenes;
 global using Idology.UserInterface.Ignition;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;

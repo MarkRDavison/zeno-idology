@@ -13,6 +13,7 @@ public static class DependencyInjectionExtensions
             { "TITLE_SCREEN_TITLE", "Kakapo Conservation" },
             { "TITLE_SCREEN_START", "Start" },
             { "TITLE_SCREEN_LOAD", "Load" },
+            { "TITLE_SCREEN_LOAD_DEV", "Load Dev" },
             { "TITLE_SCREEN_QUIT", "Quit" }
         });
 

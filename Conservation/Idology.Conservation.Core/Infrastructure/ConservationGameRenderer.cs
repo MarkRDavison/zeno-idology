@@ -48,6 +48,7 @@ public sealed class ConservationGameRenderer
 
                 if (_gameData.InteractionData.DefaultScreenData.SelectedRegion == regionIdx)
                 {
+                    // TODO: Width needs to be adjusted based on zoom level...
                     Raylib.DrawRectangleLinesEx(
                         new Rectangle(
                             new Vector2(

@@ -1,6 +1,8 @@
 ﻿global using Idology.Conservation.Core.Data;
 global using Idology.Conservation.Core.Infrastructure;
+global using Idology.Conservation.Core.Models;
 global using Idology.Conservation.Core.Scenes;
+global using Idology.Conservation.Core.Services;
 global using Idology.Engine.Core;
 global using Idology.Engine.Ignition;
 global using Idology.Engine.Infrastructure;

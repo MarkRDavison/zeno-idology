@@ -25,6 +25,7 @@ public class Application
         //Raylib.SetWindowSize(width, height);
 
         Raylib.SetConfigFlags(ConfigFlags.VSyncHint);
+        Raylib.SetConfigFlags(ConfigFlags.ResizableWindow);
         Raylib.SetExitKey(0);
         Raylib.InitWindow(1440, 900, title);
         Raylib.InitAudioDevice();

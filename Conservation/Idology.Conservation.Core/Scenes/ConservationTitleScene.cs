@@ -27,6 +27,7 @@ public sealed class ConservationTitleScene : Scene<ConservationTitleScene>
         _buttons = [
             _translationService["TITLE_SCREEN_START"],
             _translationService["TITLE_SCREEN_LOAD"],
+            _translationService["TITLE_SCREEN_LOAD_DEV"],
             _translationService["TITLE_SCREEN_QUIT"],
         ];
     }
@@ -61,16 +62,17 @@ public sealed class ConservationTitleScene : Scene<ConservationTitleScene>
                     switch (i)
                     {
                         case 0:
-                            {
-                                _sceneService.SetScene<ConservationGameScene>(new ConservationGameScenePayload { Load = false });
-                                break;
-                            }
+                            _sceneService.SetScene(new ConservationGameScenePayload { Load = false, Dev = false });
+                            break;
                         case 1:
-                            {
-                                _sceneService.SetScene<ConservationGameScene>(new ConservationGameScenePayload { Load = true });
-                                break;
-                            }
-                        case 2: _application.Stop(); break;
+                            _sceneService.SetScene(new ConservationGameScenePayload { Load = true, Dev = false });
+                            break;
+                        case 2:
+                            _sceneService.SetScene(new ConservationGameScenePayload { Load = true, Dev = true });
+                            break;
+                        case 3:
+                            _application.Stop();
+                            break;
                     }
                 }
             }

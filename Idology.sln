@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.4.11626.88 stable
+VisualStudioVersion = 18.4.11626.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idology.Client", "Idology.Client\Idology.Client.csproj", "{1BB9EEFD-AB86-44BC-B34A-F627769CCFD3}"
 EndProject
@@ -55,6 +55,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idology.Conservation.Core", "Conservation\Idology.Conservation.Core\Idology.Conservation.Core.csproj", "{F2FDFFB2-7CA7-49A8-A6E4-CDA5D0EB4B2F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idology.Conservation.Client", "Conservation\Idology.Conservation.Client\Idology.Conservation.Client.csproj", "{96422AE3-F76E-4072-B370-14A867169A71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idology.UserInterface.Client", "Idology.UserInterface.client\Idology.UserInterface.Client.csproj", "{6EF76CF8-94DA-400B-B5CC-8694DB9A2D97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -138,6 +140,10 @@ Global
 		{96422AE3-F76E-4072-B370-14A867169A71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96422AE3-F76E-4072-B370-14A867169A71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96422AE3-F76E-4072-B370-14A867169A71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EF76CF8-94DA-400B-B5CC-8694DB9A2D97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EF76CF8-94DA-400B-B5CC-8694DB9A2D97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EF76CF8-94DA-400B-B5CC-8694DB9A2D97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EF76CF8-94DA-400B-B5CC-8694DB9A2D97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
