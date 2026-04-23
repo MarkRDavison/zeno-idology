@@ -116,7 +116,7 @@ internal sealed class StartScene : Scene<StartScene>
                     new DropdownItem("Item 1", "1"),
                     new DropdownItem("Item 2", "2"),
                     new DropdownItem("Item 3", "3"),
-                    new DropdownItem("Item 4", "4"),
+                    new DropdownItem("Item 4 with more text", "4"),
                     new DropdownItem("Item 5", "5"),
                 }
             });

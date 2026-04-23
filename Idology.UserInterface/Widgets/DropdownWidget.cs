@@ -172,14 +172,41 @@ public sealed class DropdownWidget : BaseWidget
             {
                 var ddi = Items.ElementAt(idx);
 
-                Raylib.DrawText(
-                    ddi.Text,
-                    (int)(penPos.X + (BorderThickness ?? 0) * 4),
-                    (int)(penPos.Y + (BorderThickness ?? 0) * 2),
-                    TextSize,
-                    _hoveredDropdownIndex == idx ? Color.Yellow : Color.White);
+                {
+                    var text = ddi.Text;
 
-                penPos.Y += dropdownItemHeight;
+                    // TODO: PADDING...
+                    var maxTextSize = Layout.Rect.Width - (int)(BorderThickness ?? 0) * 4;
+
+                    // Different approach if Desired size not set? Then update needs to set it?
+
+                    while (true)
+                    {
+                        var textBounds = Raylib.MeasureText(text, TextSize);
+
+                        if (textBounds <= maxTextSize)
+                        {
+                            Raylib.DrawText(
+                            text,
+                            (int)(penPos.X + (BorderThickness ?? 0) * 4),
+                            (int)(penPos.Y + (BorderThickness ?? 0) * 2),
+                            TextSize,
+                            _hoveredDropdownIndex == idx ? Color.Yellow : Color.White);
+
+                            break;
+                        }
+
+                        if (text.Length <= 0)
+                        {
+                            break;
+                        }
+
+                        text = text[..^1];
+                        // TODO: CACHE TEXT THAT FITS...
+                    }
+
+                    penPos.Y += dropdownItemHeight;
+                }
             }
         }
     }
