@@ -18,7 +18,6 @@ public class LayoutItem
     public LayoutEdges RequestedMargin = new();
     public LayoutEdges RequestedPadding = new();
     public LayoutVector RequestedSize = new();
-    // TODO: Spacing/gaps...
 
     public LayoutRect Rect = new();
 
@@ -305,6 +304,7 @@ public class LayoutItem
         {
             need_size += child.Rect[dim] + child.Rect[wdim] + child.RequestedMargin[wdim];
         }
+
         return RequestedPadding.GetDimension(dim) + need_size;
     }
 
@@ -318,6 +318,7 @@ public class LayoutItem
             float child_size = child.Rect[dim] + child.Rect[wdim] + child.RequestedMargin[wdim];
             need_size = Math.Max(need_size, child_size);
         }
+
         return RequestedPadding.GetDimension(dim) + need_size;
     }
 
@@ -335,6 +336,7 @@ public class LayoutItem
             }
             need_size += child.Rect[dim] + child.Rect[wdim] + child.RequestedMargin[wdim];
         }
+
         return RequestedPadding.GetDimension(dim) + Math.Max(need_size2, need_size);
     }
 
@@ -353,6 +355,7 @@ public class LayoutItem
             float child_size = child.Rect[dim] + child.Rect[wdim] + child.RequestedMargin[wdim];
             need_size = Math.Max(need_size, child_size);
         }
+
         return RequestedPadding.GetDimension(dim) + need_size2 + need_size;
     }
 

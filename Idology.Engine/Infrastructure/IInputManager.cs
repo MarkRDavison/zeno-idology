@@ -3,6 +3,7 @@
 public interface IInputManager
 {
     public bool IsActionInvoked(string name);
+    public bool IsActionInvokedEvenIfHandled(string name);
     public bool HandleActionIfInvoked(string name);
     public void MarkActionAsHandled(string name);
     public void RegisterAction(InputAction action);

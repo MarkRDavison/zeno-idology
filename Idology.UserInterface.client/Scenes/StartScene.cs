@@ -26,9 +26,9 @@ internal sealed class StartScene : Scene<StartScene>
                 Background = Color.Gray,
                 Border = Color.DarkGray,
                 BorderThickness = 2.0f,
-                // Gap = 2.0f, // TODO: Need gap for parents...
                 Layout = new LayoutItem
                 {
+                    RequestedPadding = new LayoutEdges(4.0f),
                     RequestedSize = new LayoutVector(0, 48),
                     Contain = ContainFlags.Row,
                     Behave = BehaveFlags.HFill,
@@ -36,7 +36,7 @@ internal sealed class StartScene : Scene<StartScene>
                 }
             });
 
-            for (int i = 0; i < 4; ++i)
+            for (int i = 0; i < 6; ++i)
             {
                 topBar.AddChild(new PanelWidget
                 {
@@ -45,12 +45,26 @@ internal sealed class StartScene : Scene<StartScene>
                     BorderThickness = 2.0f,
                     Layout = new LayoutItem
                     {
+                        RequestedMargin = i == 0 ? new() : new LayoutEdges(2.0f, 0.0f, 0.0f, 0.0f),
                         RequestedSize = new LayoutVector(128, 0),
                         Contain = ContainFlags.Row,
                         Behave = BehaveFlags.VFill
                     }
                 });
             }
+            topBar.AddChild(new PanelWidget
+            {
+                Background = Color.Gray,
+                Border = Color.DarkGray,
+                BorderThickness = 2.0f,
+                Layout = new LayoutItem
+                {
+                    RequestedMargin = new LayoutEdges(2.0f, 0.0f, 0.0f, 0.0f),
+                    RequestedSize = new LayoutVector(0, 0),
+                    Contain = ContainFlags.Row,
+                    Behave = BehaveFlags.Fill
+                }
+            });
         }
 
         {
@@ -64,17 +78,17 @@ internal sealed class StartScene : Scene<StartScene>
                 {
                     RequestedMargin = new LayoutEdges(32.0f),
                     Behave = BehaveFlags.Fill,
-                    Contain = ContainFlags.Row
+                    Contain = ContainFlags.Column
                 }
             });
 
             var button = background.AddChild(new TextButtonWidget
             {
-                TextContent = "Hello World!",
+                TextContent = "BUTTON 1",
                 Foreground = Color.Yellow,
                 Background = Color.Green,
                 Border = Color.DarkBlue,
-                BorderThickness = 8.0f,
+                BorderThickness = 4.0f,
                 Layout = new LayoutItem
                 {
                     Behave = BehaveFlags.Center,
@@ -82,7 +96,36 @@ internal sealed class StartScene : Scene<StartScene>
                 }
             });
 
-            button.OnClick += (s, e) => Console.WriteLine("BUTTON IS CLICKED!");
+            button.OnClick += (s, e) => Console.WriteLine("BUTTON 1 IS CLICKED!");
+
+            var button2 = background.AddChild(new DropdownWidget
+            {
+                Foreground = Color.Yellow,
+                Background = Color.Green,
+                Border = Color.DarkBlue,
+                BorderThickness = 4.0f,
+                Layout = new LayoutItem
+                {
+                    RequestedMargin = new LayoutEdges(0.0f, 8.0f, 0.0f, 0.0f),
+                    Behave = BehaveFlags.Center,
+                    RequestedSize = new LayoutVector(256, 64)
+                },
+                SelectedItemId = "3",
+                Items =
+                {
+                    new DropdownItem("Item 1", "1"),
+                    new DropdownItem("Item 2", "2"),
+                    new DropdownItem("Item 3", "3"),
+                    new DropdownItem("Item 4", "4"),
+                    new DropdownItem("Item 5", "5"),
+                }
+            });
+
+            button2.OnItemSelected += (s, e) =>
+            {
+                Console.WriteLine("Selected: '{0}' ({1})", e.Text, e.Id);
+                button2.SelectedItemId = e.Id;
+            };
         }
     }
 

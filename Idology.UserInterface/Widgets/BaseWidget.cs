@@ -9,6 +9,9 @@ public abstract class BaseWidget : IWidget
     public Color Background { get; set; } = Color.Blank;
     public Color Foreground { get; set; } = Color.Blank;
     public Color Border { get; set; } = Color.Blank;
+
+    // TODO: Should these all be float? or float...
+
     public float? BorderRoundness { get; set; }
     public float? BorderThickness { get; set; }
 

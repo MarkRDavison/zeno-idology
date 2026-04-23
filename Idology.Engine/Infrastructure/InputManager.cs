@@ -12,6 +12,11 @@ internal sealed class InputManager : IInputManager
             return false;
         }
 
+        return IsActionInvokedEvenIfHandled(name);
+    }
+
+    public bool IsActionInvokedEvenIfHandled(string name)
+    {
         if (_actions.TryGetValue(name, out var action))
         {
             if (action.Type is InputActionType.MOUSE)
