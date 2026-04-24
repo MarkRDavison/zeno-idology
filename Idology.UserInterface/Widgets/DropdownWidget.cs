@@ -191,7 +191,11 @@ public sealed class DropdownWidget : BaseWidget
                             (int)(penPos.X + (BorderThickness ?? 0) * 4),
                             (int)(penPos.Y + (BorderThickness ?? 0) * 2),
                             TextSize,
-                            _hoveredDropdownIndex == idx ? Color.Yellow : Color.White);
+                            _hoveredDropdownIndex == idx
+                            ? Color.Yellow
+                            : (SelectedItemId == ddi.Id
+                                ? Color.Black
+                                : Color.White));
 
                             break;
                         }
