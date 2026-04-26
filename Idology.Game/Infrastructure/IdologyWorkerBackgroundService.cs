@@ -64,5 +64,5 @@ public abstract class IdologyWorkerBackgroundService : BackgroundService
         }
     }
 
-    public abstract string WindowTitleTranslationKey { get; }
+    public virtual string WindowTitleTranslationKey => "WINDOW_TITLE";
 }

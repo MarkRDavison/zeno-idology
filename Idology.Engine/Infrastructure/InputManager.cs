@@ -21,14 +21,14 @@ internal sealed class InputManager : IInputManager
         {
             if (action.Type is InputActionType.MOUSE)
             {
-                if (action.State.HasFlag(InputActionState.HOLD) &&
-                    Raylib.IsMouseButtonDown(action.Button))
+                if (action.State.HasFlag(InputActionState.PRESS) &&
+                    Raylib.IsMouseButtonPressed(action.Button))
                 {
                     return true;
                 }
 
-                if (action.State.HasFlag(InputActionState.PRESS) &&
-                    Raylib.IsMouseButtonPressed(action.Button))
+                if (action.State.HasFlag(InputActionState.HOLD) &&
+                    Raylib.IsMouseButtonDown(action.Button))
                 {
                     return true;
                 }

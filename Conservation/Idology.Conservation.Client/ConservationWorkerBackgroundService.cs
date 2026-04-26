@@ -11,13 +11,16 @@ internal sealed class ConservationWorkerBackgroundService : IdologyWorkerBackgro
     {
     }
 
-    public override string WindowTitleTranslationKey => "WINDOW_TITLE";
-
     protected override void BeforeStartInitialize(IServiceProvider serviceProvider)
     {
+        /*
         serviceProvider
             .GetRequiredService<ISceneService>()
             .SetScene<ConservationTitleScene>(null);
+        */
+        serviceProvider
+            .GetRequiredService<ISceneService>()
+            .SetScene<ConservationGameScene>(null);
     }
 
     protected override void RegisterActions(IInputManager inputManager)
@@ -76,6 +79,14 @@ internal sealed class ConservationWorkerBackgroundService : IdologyWorkerBackgro
             Type = InputActionType.KEYBOARD,
             State = InputActionState.RELEASE,
             Key = KeyboardKey.Tab
+        });
+
+        inputManager.RegisterAction(new()
+        {
+            Name = Constants.Action_PlayPause,
+            Type = InputActionType.KEYBOARD,
+            State = InputActionState.RELEASE,
+            Key = KeyboardKey.Space
         });
 
         inputManager.RegisterAction(new()

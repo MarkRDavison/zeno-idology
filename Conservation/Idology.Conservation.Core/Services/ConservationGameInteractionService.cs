@@ -4,20 +4,28 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
 {
     private readonly ConservationGameData _gameData;
     private readonly IInputManager _inputManager;
+    private readonly IGameDateTimeProvider _gameDateTimeProvider;
 
     public ConservationGameInteractionService(
         ConservationGameData gameData,
-        IInputManager inputManager)
+        IInputManager inputManager,
+        IGameDateTimeProvider gameDateTimeProvider)
     {
         _gameData = gameData;
         _inputManager = inputManager;
+        _gameDateTimeProvider = gameDateTimeProvider;
     }
 
     public void Update(float delta)
     {
+        // TODO: MOVE THIS TO THE SUB SCENE?
         if (_gameData.InteractionData.ScreenState is ScreenState.Default)
         {
-            if (_inputManager.HandleActionIfInvoked(Constants.Action_CycleRegion))
+            if (_inputManager.HandleActionIfInvoked(Constants.Action_PlayPause))
+            {
+                _gameDateTimeProvider.SetPauseState(!_gameDateTimeProvider.IsPaused);
+            }
+            else if (_inputManager.HandleActionIfInvoked(Constants.Action_CycleRegion))
             {
                 if (_gameData.InteractionData.DefaultScreenData.SelectedRegion is null)
                 {

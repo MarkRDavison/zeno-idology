@@ -1,6 +1,4 @@
-﻿using Idology.Conservation.Core.Services;
-
-namespace Idology.Conservation.Core.Ignition;
+﻿namespace Idology.Conservation.Core.Ignition;
 
 public static class DependencyInjectionExtensions
 {
@@ -14,19 +12,31 @@ public static class DependencyInjectionExtensions
             { "TITLE_SCREEN_START", "Start" },
             { "TITLE_SCREEN_LOAD", "Load" },
             { "TITLE_SCREEN_LOAD_DEV", "Load Dev" },
-            { "TITLE_SCREEN_QUIT", "Quit" }
+            { "TITLE_SCREEN_QUIT", "Quit" },
+            { "TOP_BAR_DATE_FORMAT", "htt - MMM d yyyy" }
         });
 
+        // Scenes
         services
             .RegisterScene<ConservationTitleScene>()
             .RegisterScene<ConservationGameScene>();
 
+        // Subscenes
+
+        services
+            .AddTransient<KakapoDetailsSubScene>();
+
+        // Services
         services
             .AddScoped<ConservationGame>()
             .AddScoped<ConservationGameRenderer>()
             .AddScoped<ConservationGameData>()
             .AddScoped<IConservationGameInteractionService, ConservationGameInteractionService>()
             .AddScoped<IGameDateTimeProvider, GameDateTimeProvider>();
+
+        // Widgets
+        services
+            .AddTransient<TopBarWidget>();
 
         return services;
     }

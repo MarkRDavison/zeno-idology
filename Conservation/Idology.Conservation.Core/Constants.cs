@@ -9,6 +9,7 @@ public static class Constants
     public const string Action_Escape = "ACTION_KEY_ESCAPE";
     public const string Action_Enter = "ACTION_KEY_ENTER";
     public const string Action_CycleRegion = "ACTION_CYCLE_REGION";
+    public const string Action_PlayPause = "ACTION_PLAY_PAUSE";
     public const string Action_Shortcut_Kakapo = "ACTION_SHORTCUT_KAKAPO";
     public const string Action_Shortcut_Staff = "ACTION_SHORTCUT_STAFF";
 }

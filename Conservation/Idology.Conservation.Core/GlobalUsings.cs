@@ -2,12 +2,17 @@
 global using Idology.Conservation.Core.Infrastructure;
 global using Idology.Conservation.Core.Models;
 global using Idology.Conservation.Core.Scenes;
+global using Idology.Conservation.Core.Scenes.SubScenes;
 global using Idology.Conservation.Core.Services;
+global using Idology.Conservation.Core.Widgets;
 global using Idology.Engine.Core;
 global using Idology.Engine.Ignition;
 global using Idology.Engine.Infrastructure;
 global using Idology.Engine.Resources;
 global using Idology.Engine.Translations;
+global using Idology.UserInterface;
+global using Idology.UserInterface.Layout;
+global using Idology.UserInterface.Widgets;
 global using Microsoft.Extensions.DependencyInjection;
 global using Raylib_cs;
 global using System.Numerics;

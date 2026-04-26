@@ -5,7 +5,7 @@ public abstract class BaseWidget : IWidget
     private readonly List<IWidget> _children = [];
 
     public IWidget? Parent { get; private set; }
-    public required LayoutItem Layout { get; init; }
+    public LayoutItem Layout { get; init; } = new();
     public Color Background { get; set; } = Color.Blank;
     public Color Foreground { get; set; } = Color.Blank;
     public Color Border { get; set; } = Color.Blank;
@@ -25,6 +25,9 @@ public abstract class BaseWidget : IWidget
         // TODO: Need to keep layout/widget in sync when adding/removing...
         Layout.AddChild(child.Layout);
         _children.Add(child);
+        child.Parent = this;
+
+        child.PostConstructInit();
 
         return child;
     }
@@ -40,6 +43,10 @@ public abstract class BaseWidget : IWidget
         }
 
         return false;
+    }
+    public virtual void PostConstructInit()
+    {
+
     }
 
     public virtual void Update(float delta)

@@ -8,4 +8,10 @@ public interface IGameDateTimeProvider
 
     void Increment(TimeSpan offset);
     void Set(DateTime now);
+
+    float TimeSpeed { get; }
+    bool IsPaused { get; }
+
+    void SetPauseState(bool paused);
+    void SetTimeSpeed(int speed);
 }

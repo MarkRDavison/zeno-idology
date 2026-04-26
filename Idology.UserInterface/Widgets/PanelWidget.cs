@@ -1,6 +1,6 @@
 ﻿namespace Idology.UserInterface.Widgets;
 
-public sealed class PanelWidget : BaseWidget
+public class PanelWidget : BaseWidget
 {
 
     public override void Draw()

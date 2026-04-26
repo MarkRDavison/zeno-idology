@@ -11,6 +11,8 @@ public interface IWidget
 
     TWidget AddChild<TWidget>(TWidget child) where TWidget : BaseWidget;
 
+    void PostConstructInit();
+
     void Update(float delta);
     void Draw();
 }
