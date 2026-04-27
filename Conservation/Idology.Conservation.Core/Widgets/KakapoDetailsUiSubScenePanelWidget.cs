@@ -5,15 +5,58 @@ public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
     private readonly IGameDateTimeProvider _gameDateTimeProvider;
 
     public KakapoDetailsUiSubScenePanelWidget(
-        IGameDateTimeProvider gameDateTimeProvider)
+        ITranslationService translationService,
+        IGameDateTimeProvider gameDateTimeProvider
+    ) : base(
+        translationService)
     {
         _gameDateTimeProvider = gameDateTimeProvider;
+    }
 
-        Background = Color.Gray;
-        Border = Color.DarkGray;
-        BorderThickness = 2.0f;
-        Layout.Behave = BehaveFlags.Fill;
-        Layout.RequestedPadding = new LayoutEdges(4.0f);
-        Layout.RequestedMargin = new LayoutEdges(4.0f);
+    public override string TitleTranslationKey => "KAKAPO_DETAILS_TITLE";
+
+    public override void PostConstructInit()
+    {
+        AddChild(new LabelWidget
+        {
+            TextContent = TranslationService[TitleTranslationKey],
+            Foreground = Color.White,
+            Layout =
+            {
+                RequestedMargin = new LayoutEdges(4.0f, 0.0f, 0.0f, 0.0f),
+                Behave = BehaveFlags.Left | BehaveFlags.HFill | BehaveFlags.Top,
+                RequestedSize = new LayoutVector(0, 36)
+            }
+        });
+
+        var scrollableWidget = AddChild(new ScrollablePanelWidget
+        {
+            Background = Color.Gray,
+            Border = Color.DarkGray,
+            BorderThickness = 2.0f,
+            Layout =
+            {
+                Behave = BehaveFlags.Fill,
+                Contain = ContainFlags.Column,
+                Align = AlignFlags.Start,
+                RequestedPadding = new LayoutEdges(4.0f)
+            }
+        });
+
+        for (int i = 0; i < 3; ++i)
+        {
+            scrollableWidget.AddChild(new PanelWidget
+            {
+                Background = Color.Red,
+                Border = Color.Magenta,
+                BorderThickness = 4.0f,
+                Layout =
+                {
+                    Behave = BehaveFlags.HFill,
+                    Contain = ContainFlags.Layout,
+                    RequestedSize = new LayoutVector(0, 350)
+                }
+            });
+        }
     }
 }

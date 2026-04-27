@@ -17,6 +17,11 @@ public abstract class SubScene
 
     }
 
+    public virtual void OnWindowResize(int width, int height)
+    {
+
+    }
+
     protected ConservationGameData GameData { get; }
 }
 

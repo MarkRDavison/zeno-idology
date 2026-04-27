@@ -39,7 +39,7 @@ internal sealed class TopBarWidget : PanelWidget
                 BorderThickness = 2.0f,
                 Layout = new LayoutItem
                 {
-                    RequestedMargin = new LayoutEdges(isFirst ? 0.0f : 2.0f, 0.0f, 0.0f, 0.0f),
+                    RequestedMargin = new LayoutEdges(isFirst ? 0.0f : 4.0f, 0.0f, 0.0f, 0.0f),
                     Behave = BehaveFlags.Center | BehaveFlags.VFill,
                     RequestedSize = new LayoutVector(128, 0)
                 }

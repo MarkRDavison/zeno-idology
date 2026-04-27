@@ -32,6 +32,11 @@ internal sealed class KakapoDetailsSubScene : SubScene<KakapoDetailsSubScene, Ka
         }
     }
 
+    public override void OnWindowResize(int width, int height)
+    {
+        _userInterfaceRoot.SetBounds(new LayoutVector(width, height - TopBarWidget.Height));
+    }
+
     public override void Update(float delta)
     {
         _userInterfaceRoot.Update(delta);
@@ -43,27 +48,27 @@ internal sealed class KakapoDetailsSubScene : SubScene<KakapoDetailsSubScene, Ka
 
         _userInterfaceRoot.RootWidget.Draw();
 
-        Raylib.DrawText("Kakapo details", 32, 32, 48, Color.White);
+        //Raylib.DrawText("Kakapo details", 32, 32, 48, Color.White);
 
-        const int Padding = 4;
+        //const int Padding = 4;
 
-        var yPos = 32 + 48 + Padding;
+        //var yPos = 32 + 48 + Padding;
 
-        foreach (var kd in GameData.KakapoData)
-        {
-            var birdSummaryHeight = 0;
+        //foreach (var kd in GameData.KakapoData)
+        //{
+        //    var birdSummaryHeight = 0;
 
-            var summaryLine = kd.Name;
-            if (kd.Birth is not null)
-            {
-                summaryLine += $"\t({_gameDateTimeProvider.Date.Year - kd.Birth.Value.Year})";
-            }
-            Raylib.DrawText(summaryLine, 32 + Padding, yPos, 32, Color.Black);
+        //    var summaryLine = kd.Name;
+        //    if (kd.Birth is not null)
+        //    {
+        //        summaryLine += $"\t({_gameDateTimeProvider.Date.Year - kd.Birth.Value.Year})";
+        //    }
+        //    Raylib.DrawText(summaryLine, 32 + Padding, yPos, 32, Color.Black);
 
-            birdSummaryHeight += 32;
+        //    birdSummaryHeight += 32;
 
-            yPos += birdSummaryHeight + Padding;
-        }
+        //    yPos += birdSummaryHeight + Padding;
+        //}
 
         Raylib.EndMode2D();
     }

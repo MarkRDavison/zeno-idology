@@ -32,6 +32,11 @@ internal sealed class StaffDetailsSubScene : SubScene<StaffDetailsSubScene, Staf
         }
     }
 
+    public override void OnWindowResize(int width, int height)
+    {
+        _userInterfaceRoot.SetBounds(new LayoutVector(width, height - TopBarWidget.Height));
+    }
+
     public override void Update(float delta)
     {
         _userInterfaceRoot.Update(delta);
@@ -43,22 +48,22 @@ internal sealed class StaffDetailsSubScene : SubScene<StaffDetailsSubScene, Staf
 
         _userInterfaceRoot.RootWidget.Draw();
 
-        Raylib.DrawText("Staff details", 32, 32, 48, Color.White);
+        //Raylib.DrawText("Staff details", 32, 32, 48, Color.White);
 
-        const int Padding = 4;
+        //const int Padding = 4;
 
-        var yPos = 32 + 48 + Padding;
+        //var yPos = 32 + 48 + Padding;
 
-        foreach (var kd in GameData.StaffData)
-        {
-            var summaryHeight = 0;
+        //foreach (var kd in GameData.StaffData)
+        //{
+        //    var summaryHeight = 0;
 
-            Raylib.DrawText(kd.Name, 32 + Padding, yPos, 32, Color.Black);
+        //    Raylib.DrawText(kd.Name, 32 + Padding, yPos, 32, Color.Black);
 
-            summaryHeight += 32;
+        //    summaryHeight += 32;
 
-            yPos += summaryHeight + Padding;
-        }
+        //    yPos += summaryHeight + Padding;
+        //}
 
         Raylib.EndMode2D();
     }

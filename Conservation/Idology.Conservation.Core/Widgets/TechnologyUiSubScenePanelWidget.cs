@@ -2,18 +2,17 @@
 
 public sealed class TechnologyUiSubScenePanelWidget : UiSubScenePanelWidget
 {
-    private readonly IGameDateTimeProvider _gameDateTimeProvider;
-
     public TechnologyUiSubScenePanelWidget(
-        IGameDateTimeProvider gameDateTimeProvider)
+        ITranslationService translationService
+    ) : base(
+        translationService)
     {
-        _gameDateTimeProvider = gameDateTimeProvider;
+    }
 
-        Background = Color.Gray;
-        Border = Color.DarkGray;
-        BorderThickness = 2.0f;
-        Layout.Behave = BehaveFlags.Fill;
-        Layout.RequestedPadding = new LayoutEdges(4.0f);
-        Layout.RequestedMargin = new LayoutEdges(4.0f);
+    public override string TitleTranslationKey => "TECHNOLOGY_DETAILS_TITLE";
+
+    public override void PostConstructInit()
+    {
+        var scrollableWidget = AddCommonWidgets();
     }
 }

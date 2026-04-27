@@ -32,6 +32,11 @@ internal sealed class TechnologySubScene : SubScene<TechnologySubScene, Technolo
         }
     }
 
+    public override void OnWindowResize(int width, int height)
+    {
+        _userInterfaceRoot.SetBounds(new LayoutVector(width, height - TopBarWidget.Height));
+    }
+
     public override void Update(float delta)
     {
         _userInterfaceRoot.Update(delta);
@@ -42,8 +47,6 @@ internal sealed class TechnologySubScene : SubScene<TechnologySubScene, Technolo
         Raylib.BeginMode2D(camera);
 
         _userInterfaceRoot.RootWidget.Draw();
-
-        Raylib.DrawText("Technology", 32, 32, 48, Color.White);
 
         Raylib.EndMode2D();
     }

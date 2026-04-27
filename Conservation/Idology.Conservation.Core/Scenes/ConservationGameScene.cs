@@ -75,6 +75,23 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
             _gameData.KakapoData.Add(new(3, "Nora", true, null, null, new DateOnly(1980, 1, 1), null));
             _gameData.KakapoData.Add(new(4, "Rakiura", true, 1, null, new DateOnly(2002, 2, 19), null));
             _gameData.KakapoData.Add(new(5, "Esperance", true, 1, null, new DateOnly(2002, 2, 17), null));
+            _gameData.KakapoData.Add(new(6, "Margaret-Maree", true, null, null, new DateOnly(1986, 1, 1), null));
+            _gameData.KakapoData.Add(new(7, "Marama", true, null, null, new DateOnly(2002, 1, 1), null));
+            _gameData.KakapoData.Add(new(8, "Stella", true, 2, null, new DateOnly(2011, 1, 1), null));
+            _gameData.KakapoData.Add(new(9, "Heather", true, 1, null, new DateOnly(1981, 1, 1), null));
+            _gameData.KakapoData.Add(new(10, "Ako", true, 5, null, new DateOnly(2019, 1, 1), null));
+            _gameData.KakapoData.Add(new(11, "Alice", true, null, null, new DateOnly(1981, 1, 1), null));
+            _gameData.KakapoData.Add(new(12, "Lisa", true, null, null, new DateOnly(1982, 1, 1), null));
+            _gameData.KakapoData.Add(new(13, "Wendy", true, null, null, new DateOnly(1982, 1, 1), null));
+            _gameData.KakapoData.Add(new(14, "Atareta", true, 12, null, new DateOnly(2011, 1, 1), null));
+            _gameData.KakapoData.Add(new(15, "Tia", true, 4, null, new DateOnly(2011, 1, 1), null));
+            _gameData.KakapoData.Add(new(16, "Toitiiti", true, 4, null, new DateOnly(2011, 1, 1), null));
+            _gameData.KakapoData.Add(new(17, "Yasmine", true, 1, null, new DateOnly(2005, 1, 1), null));
+            _gameData.KakapoData.Add(new(18, "Zephyr", true, 3, null, new DateOnly(1981, 1, 1), null));
+            _gameData.KakapoData.Add(new(19, "Vori", true, 11, null, new DateOnly(2019, 1, 1), null));
+            _gameData.KakapoData.Add(new(20, "Tohu", true, 9, null, new DateOnly(2014, 1, 1), null));
+            _gameData.KakapoData.Add(new(21, "Aparima", true, 13, null, new DateOnly(2002, 1, 1), null));
+            _gameData.KakapoData.Add(new(22, "JEM", true, 21, null, new DateOnly(2008, 1, 1), null));
 
             _gameData.StaffData.Add(new(1, "Tom"));
             _gameData.StaffData.Add(new(2, "Sarah"));
@@ -174,6 +191,8 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         if (Raylib.IsWindowResized())
         {
             _userInterfaceRoot.SetBounds(new LayoutVector(Raylib.GetScreenWidth(), Raylib.GetScreenHeight()));
+
+            ForEachSubScene(ss => ss.OnWindowResize(Raylib.GetScreenWidth(), Raylib.GetScreenHeight()));
         }
 
         _conservationGameInteractionService.Update(delta);
@@ -204,8 +223,6 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         ForEachSubSceneReverse(ss => ss.Draw(subSceneCamera));
 
         _userInterfaceRoot.RootWidget.Draw();
-
-        Raylib.DrawFPS(10, 58);
 
         Raylib.EndDrawing();
     }

@@ -18,7 +18,12 @@ public static class DependencyInjectionExtensions
             { "TOP_BAR_STAFF_DETAILS", "Staff" },
             { "TOP_BAR_RESEARCH_DETAILS", "Research" },
             { "TOP_BAR_TECHNOLOGY_DETAILS", "Technology" },
-            { "TOP_BAR_FUNDING_DETAILS", "Funding" }
+            { "TOP_BAR_FUNDING_DETAILS", "Funding" },
+            { "KAKAPO_DETAILS_TITLE", "Kakapo Details" },
+            { "STAFF_DETAILS_TITLE", "Staff Details" },
+            { "RESEARCH_DETAILS_TITLE", "Research Details" },
+            { "TECHNOLOGY_DETAILS_TITLE", "Technology Details" },
+            { "FUNDING_DETAILS_TITLE", "Funding Details" }
         });
 
         // Scenes
