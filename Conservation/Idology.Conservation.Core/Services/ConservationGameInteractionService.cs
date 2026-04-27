@@ -29,20 +29,20 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
             ScreenState.Technology,
             ScreenState.Funding
         };
-        var shortcutsToSceneIds = new Dictionary<string, string>
+        var shortcutsToScreenStates = new Dictionary<string, ScreenState>
         {
-            { Constants.Action_Shortcut_Kakapo, Constants.SubScene_KakapoDetails },
-            { Constants.Action_Shortcut_Staff, Constants.SubScene_StaffDetails },
-            { Constants.Action_Shortcut_Research, Constants.SubScene_ResearchDetails },
-            { Constants.Action_Shortcut_Technology, Constants.SubScene_TechnologyDetails },
-            { Constants.Action_Shortcut_Funding, Constants.SubScene_FundingDetails }
+            { Constants.Action_Shortcut_Kakapo, ScreenState.Kakapo },
+            { Constants.Action_Shortcut_Staff, ScreenState.Staff },
+            { Constants.Action_Shortcut_Research, ScreenState.Research },
+            { Constants.Action_Shortcut_Technology, ScreenState.Technology },
+            { Constants.Action_Shortcut_Funding, ScreenState.Funding }
         };
 
-        foreach (var (shortcut, sceneId) in shortcutsToSceneIds)
+        foreach (var (shortcut, state) in shortcutsToScreenStates)
         {
             if (_inputManager.HandleActionIfInvoked(shortcut))
             {
-                if (_gameCommandService.HandleCommand(new SetSubSceneGameCommand { Id = sceneId }))
+                if (_gameCommandService.HandleCommand(new SetScreenStateGameCommand { ScreenState = state }))
                 {
                     _inputManager.HandleActionIfInvoked(shortcut);
                 }
@@ -87,7 +87,7 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
         {
             if (_inputManager.IsActionInvoked(Constants.Action_Escape))
             {
-                if (_gameCommandService.HandleCommand(new PopSubSceneGameCommand()))
+                if (_gameCommandService.HandleCommand(new SetScreenStateGameCommand { ScreenState = ScreenState.Default }))
                 {
                     _inputManager.HandleActionIfInvoked(Constants.Action_Escape);
                 }

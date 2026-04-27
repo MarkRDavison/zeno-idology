@@ -1,4 +1,6 @@
-﻿namespace Idology.Conservation.Core.Ignition;
+﻿using Idology.Conservation.Core.Services.GameCommands.SetScreenState;
+
+namespace Idology.Conservation.Core.Ignition;
 
 public static class DependencyInjectionExtensions
 {
@@ -31,15 +33,6 @@ public static class DependencyInjectionExtensions
             .RegisterScene<ConservationTitleScene>()
             .RegisterScene<ConservationGameScene>();
 
-        // Subscenes
-
-        services
-            .AddScoped<KakapoDetailsSubScene>()
-            .AddScoped<StaffDetailsSubScene>()
-            .AddScoped<ResearchSubScene>()
-            .AddScoped<TechnologySubScene>()
-            .AddScoped<FundingSubScene>();
-
         // Services
         services
             .AddScoped<ConservationGame>()
@@ -51,8 +44,7 @@ public static class DependencyInjectionExtensions
 
         // Commands
         services
-            .AddTransient<IGameCommandHandler<SetSubSceneGameCommand>, SetSubSceneGameCommandHandler>()
-            .AddTransient<IGameCommandHandler<PopSubSceneGameCommand>, PopSubSceneGameCommandHandler>();
+            .AddTransient<IGameCommandHandler<SetScreenStateGameCommand>, SetScreenStateGameCommandHandler>();
 
         // Widgets
         services

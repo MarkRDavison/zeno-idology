@@ -18,15 +18,10 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
     private readonly IEventRoutingService _eventRoutingService;
     private readonly ConservationGameCamera _camera;
 
-    private KakapoDetailsSubScene? _kakapoDetailsSubScene;
     private IWidget? _kakapoDetailsSubSceneWidget;
-    private StaffDetailsSubScene? _staffDetialsSubScene;
     private IWidget? _staffDetialsSubSceneWidget;
-    private ResearchSubScene? _researchSubScene;
     private IWidget? _researchSubSceneWidget;
-    private TechnologySubScene? _technologySubScene;
     private IWidget? _technologySubSceneWidget;
-    private FundingSubScene? _fundingSubScene;
     private IWidget? _fundingSubSceneWidget;
 
     private IWidget? _lastActiveSubSceneWidget;
@@ -62,8 +57,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
     public override void Init(IScenePayload<ConservationGameScene>? payload)
     {
         // TODO: Dispose.
-        _eventRoutingService.SetSubScene += OnSetSubScene;
-        _eventRoutingService.PopSubScene += OnPopSubScene;
+        _eventRoutingService.SetScreenState += OnSetScreenState;
 
         _userInterfaceRoot.SetBounds(new LayoutVector(Raylib.GetScreenWidth(), Raylib.GetScreenHeight()));
 
@@ -131,73 +125,21 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         }
     }
 
-    private void OnSetSubScene(object? sender, SetSubSceneGameCommand e)
+    private void OnSetScreenState(object? sender, SetScreenStateGameCommand e)
     {
-        void handleSetSubScene<TSubScene, TSubScenePayload>(ref TSubScene? subScene, ref IWidget? subSceneWidget)
-            where TSubScene : SubScene<TSubScene, TSubScenePayload>
-            where TSubScenePayload : class, new()
-        {
-            if (subScene is null)
-            {
-                subScene = _serviceProvider.GetRequiredService<TSubScene>();
-                subScene.Init(new TSubScenePayload());
-            }
+        _lastActiveSubSceneWidget?.Layout.Visibility = Visibility.Collapsed;
 
-            PushSubScene(subScene);
-
-            if (_lastActiveSubSceneWidget is not null)
-            {
-                _lastActiveSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
-            }
-
-            _lastActiveSubSceneWidget = subSceneWidget;
-
-            if (_lastActiveSubSceneWidget is not null)
-            {
-                _lastActiveSubSceneWidget.Layout.Visibility = Visibility.Visible;
-            }
-        }
-
-        if (e.Id is Constants.SubScene_KakapoDetails)
+        _lastActiveSubSceneWidget = e.ScreenState switch
         {
-            handleSetSubScene<KakapoDetailsSubScene, KakapoDetailsSubScenePayload>(ref _kakapoDetailsSubScene, ref _kakapoDetailsSubSceneWidget);
-        }
-        else if (e.Id is Constants.SubScene_StaffDetails)
-        {
-            handleSetSubScene<StaffDetailsSubScene, StaffDetailsSubScenePayload>(ref _staffDetialsSubScene, ref _staffDetialsSubSceneWidget);
-        }
-        else if (e.Id is Constants.SubScene_ResearchDetails)
-        {
-            handleSetSubScene<ResearchSubScene, ResearchSubScenePayload>(ref _researchSubScene, ref _researchSubSceneWidget);
-        }
-        else if (e.Id is Constants.SubScene_TechnologyDetails)
-        {
-            handleSetSubScene<TechnologySubScene, TechnologySubScenePayload>(ref _technologySubScene, ref _technologySubSceneWidget);
-        }
-        else if (e.Id is Constants.SubScene_FundingDetails)
-        {
-            handleSetSubScene<FundingSubScene, FundingSubScenePayload>(ref _fundingSubScene, ref _fundingSubSceneWidget);
-        }
-    }
+            ScreenState.Kakapo => _kakapoDetailsSubSceneWidget,
+            ScreenState.Staff => _staffDetialsSubSceneWidget,
+            ScreenState.Research => _researchSubSceneWidget,
+            ScreenState.Technology => _technologySubSceneWidget,
+            ScreenState.Funding => _fundingSubSceneWidget,
+            _ => null
+        };
 
-    private void OnPopSubScene(object? sender, PopSubSceneGameCommand e)
-    {
-        if (e.Clear)
-        {
-            PopAllScenes();
-
-            _kakapoDetailsSubSceneWidget?.Layout.Visibility = Visibility.Collapsed;
-            _staffDetialsSubSceneWidget?.Layout.Visibility = Visibility.Collapsed;
-            _researchSubSceneWidget?.Layout.Visibility = Visibility.Collapsed;
-            _technologySubSceneWidget?.Layout.Visibility = Visibility.Collapsed;
-            _fundingSubSceneWidget?.Layout.Visibility = Visibility.Collapsed;
-        }
-        else
-        {
-            PopSubScene();
-
-            _lastActiveSubSceneWidget?.Layout.Visibility = Visibility.Collapsed;
-        }
+        _lastActiveSubSceneWidget?.Layout.Visibility = Visibility.Visible;
     }
 
     private void InitUserInterface()
@@ -239,8 +181,6 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         }
 
         _conservationGameInteractionService.Update(delta);
-
-        ForEachSubScene(ss => ss.Update(delta));
 
         _game.Update(delta);
 

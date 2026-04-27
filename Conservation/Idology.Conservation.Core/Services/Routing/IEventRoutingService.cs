@@ -2,11 +2,7 @@
 
 public interface IEventRoutingService
 {
+    event EventHandler<SetScreenStateGameCommand> SetScreenState;
 
-    event EventHandler<SetSubSceneGameCommand> SetSubScene;
-
-    event EventHandler<PopSubSceneGameCommand> PopSubScene;
-
-    void InvokeSetSubScene(SetSubSceneGameCommand command);
-    void InvokePopSubScene(PopSubSceneGameCommand command);
+    void InvokeSetScreenState(SetScreenStateGameCommand command);
 }

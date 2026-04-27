@@ -30,7 +30,7 @@ internal sealed class TopBarWidget : PanelWidget
     {
         var isFirst = true;
 
-        void addSubSceneButtonFxn(string translationKey, string sceneId)
+        void AddSubWidgetButton(string translationKey, ScreenState screenState)
         {
             var button = AddChild(new TextButtonWidget
             {
@@ -42,22 +42,23 @@ internal sealed class TopBarWidget : PanelWidget
                 BorderThickness = 2.0f,
                 Layout = new LayoutItem
                 {
+                    // TODO: Replace this with a Gap/Spacing property on the parent...
                     RequestedMargin = new LayoutEdges(isFirst ? 0.0f : 4.0f, 0.0f, 0.0f, 0.0f),
                     Behave = BehaveFlags.Center | BehaveFlags.VFill,
                     RequestedSize = new LayoutVector(128, 0)
                 }
             });
 
-            button.OnClick += (s, e) => _gameCommandService.HandleCommand(new SetSubSceneGameCommand { Id = sceneId });
+            button.OnClick += (s, e) => _gameCommandService.HandleCommand(new SetScreenStateGameCommand { ScreenState = screenState });
 
             isFirst = false;
         }
 
-        addSubSceneButtonFxn("TOP_BAR_KAKAPO_DETAILS", Constants.SubScene_KakapoDetails);
-        addSubSceneButtonFxn("TOP_BAR_STAFF_DETAILS", Constants.SubScene_StaffDetails);
-        addSubSceneButtonFxn("TOP_BAR_RESEARCH_DETAILS", Constants.SubScene_ResearchDetails);
-        addSubSceneButtonFxn("TOP_BAR_TECHNOLOGY_DETAILS", Constants.SubScene_TechnologyDetails);
-        addSubSceneButtonFxn("TOP_BAR_FUNDING_DETAILS", Constants.SubScene_FundingDetails);
+        AddSubWidgetButton("TOP_BAR_KAKAPO_DETAILS", ScreenState.Kakapo);
+        AddSubWidgetButton("TOP_BAR_STAFF_DETAILS", ScreenState.Staff);
+        AddSubWidgetButton("TOP_BAR_RESEARCH_DETAILS", ScreenState.Research);
+        AddSubWidgetButton("TOP_BAR_TECHNOLOGY_DETAILS", ScreenState.Technology);
+        AddSubWidgetButton("TOP_BAR_FUNDING_DETAILS", ScreenState.Funding);
 
         isFirst = false;
         // SPACER

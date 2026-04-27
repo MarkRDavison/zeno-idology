@@ -16,10 +16,4 @@ public static class Constants
     public const string Action_Shortcut_Research = "ACTION_SHORTCUT_RESEARCH";
     public const string Action_Shortcut_Technology = "ACTION_SHORTCUT_TECHNOLOGY";
     public const string Action_Shortcut_Funding = "ACTION_SHORTCUT_FUNDING";
-
-    public const string SubScene_KakapoDetails = "SUB_SCENE_KAKAPO_DETAILS";
-    public const string SubScene_StaffDetails = "SUB_SCENE_STAFF_DETAILS";
-    public const string SubScene_ResearchDetails = "SUB_SCENE_RESEARCH_DETAILS";
-    public const string SubScene_TechnologyDetails = "SUB_SCENE_TECHNOLOGY_DETAILS";
-    public const string SubScene_FundingDetails = "SUB_SCENE_FUNDING_DETAILS";
 }
