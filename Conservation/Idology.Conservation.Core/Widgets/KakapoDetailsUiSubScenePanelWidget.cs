@@ -2,14 +2,17 @@
 
 public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
 {
+    private readonly ConservationGameData _gameData;
     private readonly IGameDateTimeProvider _gameDateTimeProvider;
 
     public KakapoDetailsUiSubScenePanelWidget(
+        ConservationGameData gameData,
         ITranslationService translationService,
         IGameDateTimeProvider gameDateTimeProvider
     ) : base(
         translationService)
     {
+        _gameData = gameData;
         _gameDateTimeProvider = gameDateTimeProvider;
     }
 
@@ -17,31 +20,7 @@ public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
 
     public override void PostConstructInit()
     {
-        AddChild(new LabelWidget
-        {
-            TextContent = TranslationService[TitleTranslationKey],
-            Foreground = Color.White,
-            Layout =
-            {
-                RequestedMargin = new LayoutEdges(4.0f, 0.0f, 0.0f, 0.0f),
-                Behave = BehaveFlags.Left | BehaveFlags.HFill | BehaveFlags.Top,
-                RequestedSize = new LayoutVector(0, 36)
-            }
-        });
-
-        var scrollableWidget = AddChild(new ScrollablePanelWidget
-        {
-            Background = Color.Gray,
-            Border = Color.DarkGray,
-            BorderThickness = 2.0f,
-            Layout =
-            {
-                Behave = BehaveFlags.Fill,
-                Contain = ContainFlags.Column,
-                Align = AlignFlags.Start,
-                RequestedPadding = new LayoutEdges(4.0f)
-            }
-        });
+        var scrollableWidget = AddCommonWidgets();
 
         for (int i = 0; i < 8; ++i)
         {
@@ -52,10 +31,11 @@ public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
                 BorderThickness = 4.0f,
                 Layout =
                 {
+                    RequestedPadding = new LayoutEdges(8.0f),
                     Behave = BehaveFlags.HFill,
-                    Contain = ContainFlags.Flex,
-                    ItemFlags = ItemFlags.VFixed,
-                    RequestedSize = new LayoutVector(0, 128)
+                    Contain = ContainFlags.Row,
+                    Align = AlignFlags.Start,
+                    ItemFlags = ItemFlags.VFixed
                 }
             });
 
@@ -63,7 +43,13 @@ public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
             {
                 Foreground = Color.SkyBlue,
                 TextContent = $"Scrollable #{i + 1}",
-                FontSize = 64
+                FontSize = 64,
+                Layout =
+                {
+                    RequestedMargin = new LayoutEdges(4.0f),
+                    Behave = BehaveFlags.VCenter | BehaveFlags.Left,
+                    RequestedSize = new LayoutVector(0, 64)
+                }
             });
         }
     }

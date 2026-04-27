@@ -186,34 +186,17 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         {
             PopAllScenes();
 
-            if (_kakapoDetailsSubSceneWidget is not null)
-            {
-                _kakapoDetailsSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
-            }
-            if (_staffDetialsSubSceneWidget is not null)
-            {
-                _staffDetialsSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
-            }
-            if (_researchSubSceneWidget is not null)
-            {
-                _researchSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
-            }
-            if (_technologySubSceneWidget is not null)
-            {
-                _technologySubSceneWidget.Layout.Visibility = Visibility.Collapsed;
-            }
-            if (_fundingSubSceneWidget is not null)
-            {
-                _fundingSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
-            }
+            _kakapoDetailsSubSceneWidget?.Layout.Visibility = Visibility.Collapsed;
+            _staffDetialsSubSceneWidget?.Layout.Visibility = Visibility.Collapsed;
+            _researchSubSceneWidget?.Layout.Visibility = Visibility.Collapsed;
+            _technologySubSceneWidget?.Layout.Visibility = Visibility.Collapsed;
+            _fundingSubSceneWidget?.Layout.Visibility = Visibility.Collapsed;
         }
         else
         {
             PopSubScene();
-            if (_lastActiveSubSceneWidget is not null)
-            {
-                _lastActiveSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
-            }
+
+            _lastActiveSubSceneWidget?.Layout.Visibility = Visibility.Collapsed;
         }
     }
 
@@ -229,7 +212,6 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         {
             _kakapoDetailsSubSceneWidget = root.AddChild(_serviceProvider.GetRequiredService<KakapoDetailsUiSubScenePanelWidget>());
             _kakapoDetailsSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
-            _kakapoDetailsSubSceneWidget.Layout.Behave = BehaveFlags.Fill;
         }
         {
             _staffDetialsSubSceneWidget = root.AddChild(_serviceProvider.GetRequiredService<StaffDetailsUiSubScenePanelWidget>());
