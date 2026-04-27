@@ -15,7 +15,7 @@ public abstract class ConservationScene<TScene> : Scene<TScene> where TScene : S
     {
         while (_subScenes.Count > 0)
         {
-            _subScenes.Pop();
+            PopSubScene();
         }
     }
 
@@ -26,6 +26,7 @@ public abstract class ConservationScene<TScene> : Scene<TScene> where TScene : S
             throw new InvalidOperationException("Cannot pop empty sub scene stack");
         }
 
+        _subScenes.Peek().OnPopped();
         _subScenes.Pop();
     }
 

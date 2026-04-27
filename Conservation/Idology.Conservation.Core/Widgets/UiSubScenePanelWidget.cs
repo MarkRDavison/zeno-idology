@@ -11,7 +11,7 @@ public abstract class UiSubScenePanelWidget : PanelWidget
         Border = Color.DarkGray;
         BorderThickness = 2.0f;
         Layout.Contain = ContainFlags.Column;
-        Layout.Behave = BehaveFlags.HFill;
+        Layout.Behave = BehaveFlags.Fill;
         Layout.RequestedPadding = new LayoutEdges(16.0f);
         Layout.RequestedMargin = new LayoutEdges(32.0f);
     }

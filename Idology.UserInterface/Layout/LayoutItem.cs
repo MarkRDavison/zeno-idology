@@ -47,6 +47,10 @@ public class LayoutItem
 
     private ItemFlags ItemFlagsHFixed => (ItemFlags)(_flags & ItemFlagsFixedMask);
 
+    public Visibility Visibility { get; set; } = Visibility.Visible;
+
+    public bool ImpactsLayout => Visibility is not Visibility.Collapsed;
+
     public bool IsInserted
     {
         get => ItemFlags.HasFlag(ItemFlags.Inserted);
@@ -128,6 +132,7 @@ public class LayoutItem
         RequestedMargin = new();
         RequestedPadding = new();
         RequestedSize = new();
+        Visibility = Visibility.Visible;
         Rect = new();
     }
 
@@ -300,7 +305,7 @@ public class LayoutItem
     {
         int wdim = dim + 2;
         float need_size = 0;
-        foreach (var child in Children)
+        foreach (var child in Children.Where(c => c.ImpactsLayout))
         {
             need_size += child.Rect[dim] + child.Rect[wdim] + child.RequestedMargin[wdim];
         }
@@ -312,7 +317,7 @@ public class LayoutItem
     {
         int wdim = dim + 2;
         float need_size = 0;
-        foreach (var child in Children)
+        foreach (var child in Children.Where(c => c.ImpactsLayout))
         {
             // width = start margin + calculated width + end margin
             float child_size = child.Rect[dim] + child.Rect[wdim] + child.RequestedMargin[wdim];
@@ -327,7 +332,7 @@ public class LayoutItem
         int wdim = dim + 2;
         float need_size = 0;
         float need_size2 = 0;
-        foreach (var child in Children)
+        foreach (var child in Children.Where(c => c.ImpactsLayout))
         {
             if (child.Behave.HasFlag(BehaveFlags.Break))
             {
@@ -345,7 +350,7 @@ public class LayoutItem
         int wdim = dim + 2;
         float need_size = 0;
         float need_size2 = 0;
-        foreach (var child in Children)
+        foreach (var child in Children.Where(c => c.ImpactsLayout))
         {
             if (child.Behave.HasFlag(BehaveFlags.Break))
             {
@@ -431,37 +436,44 @@ public class LayoutItem
             LayoutItem? endChild = null;
             while (child != null)
             {
-                var flags = (BehaveFlags)((uint)child.Behave >> dim);
-                var fflags = (ItemFlags)((uint)child.ItemFlagsHFixed >> dim);
-                float extend = used;
-                if (flags.HasFlag(BehaveFlags.HFill))
+                if (child.ImpactsLayout)
                 {
-                    count++;
-                    extend += child.Rect[dim] + child.RequestedMargin[wdim];
-                }
-                else
-                {
-                    if (!fflags.HasFlag(ItemFlags.HFixed))
+                    var flags = (BehaveFlags)((uint)child.Behave >> dim);
+                    var fflags = (ItemFlags)((uint)child.ItemFlagsHFixed >> dim);
+                    float extend = used;
+                    if (flags.HasFlag(BehaveFlags.HFill))
                     {
-                        squeezed_count++;
+                        count++;
+                        extend += child.Rect[dim] + child.RequestedMargin[wdim];
                     }
-                    extend += child.Rect[dim] + child.Rect[wdim] + child.RequestedMargin[wdim];
-                }
-                // wrap on end of line or manual flag
-                if (wrap && total > 0 && ((extend > space) || child.Behave.HasFlag(BehaveFlags.Break)))
-                {
-                    endChild = child;
-                    hardbreak = child.Behave.HasFlag(BehaveFlags.Break);
-                    // add marker for subsequent queries
-                    child._flags |= (uint)BehaveFlags.Break;
-                    break;
+                    else
+                    {
+                        if (!fflags.HasFlag(ItemFlags.HFixed))
+                        {
+                            squeezed_count++;
+                        }
+                        extend += child.Rect[dim] + child.Rect[wdim] + child.RequestedMargin[wdim];
+                    }
+                    // wrap on end of line or manual flag
+                    if (wrap && total > 0 && ((extend > space) || child.Behave.HasFlag(BehaveFlags.Break)))
+                    {
+                        endChild = child;
+                        hardbreak = child.Behave.HasFlag(BehaveFlags.Break);
+                        // add marker for subsequent queries
+                        child._flags |= (uint)BehaveFlags.Break;
+                        break;
+                    }
+                    else
+                    {
+                        used = extend;
+                        child = child.NextSibling;
+                    }
+                    total++;
                 }
                 else
                 {
-                    used = extend;
                     child = child.NextSibling;
                 }
-                total++;
             }
 
             float extra_space = space - used;
@@ -520,38 +532,41 @@ public class LayoutItem
             child = startChild;
             while (child != endChild && child != null)
             {
-                float ix0, ix1;
-                var flags = (BehaveFlags)((uint)child.Behave >> dim);
-                var fflags = (ItemFlags)((uint)child.ItemFlagsHFixed >> dim);
+                if (child.ImpactsLayout)
+                {
+                    float ix0, ix1;
+                    var flags = (BehaveFlags)((uint)child.Behave >> dim);
+                    var fflags = (ItemFlags)((uint)child.ItemFlagsHFixed >> dim);
 
-                x += child.Rect[dim] + extra_margin;
-                if (flags.HasFlag(BehaveFlags.HFill))
-                { // grow
-                    x1 = x + filler;
-                }
-                else if (fflags.HasFlag(ItemFlags.HFixed))
-                {
-                    x1 = x + child.Rect[wdim];
-                }
-                else
-                { // squeeze
-                    x1 = x + Math.Max(0.0f, child.Rect[wdim] + eater);
-                }
+                    x += child.Rect[dim] + extra_margin;
+                    if (flags.HasFlag(BehaveFlags.HFill))
+                    { // grow
+                        x1 = x + filler;
+                    }
+                    else if (fflags.HasFlag(ItemFlags.HFixed))
+                    {
+                        x1 = x + child.Rect[wdim];
+                    }
+                    else
+                    { // squeeze
+                        x1 = x + Math.Max(0.0f, child.Rect[wdim] + eater);
+                    }
 
-                ix0 = x;
-                if (wrap)
-                {
-                    ix1 = Math.Min(max_x2 - child.RequestedMargin[wdim], x1);
+                    ix0 = x;
+                    if (wrap)
+                    {
+                        ix1 = Math.Min(max_x2 - child.RequestedMargin[wdim], x1);
+                    }
+                    else
+                    {
+                        ix1 = x1;
+                    }
+                    child.Rect[dim] = ix0; // pos
+                    child.Rect[wdim] = ix1 - ix0; // size
+                    x = x1 + child.RequestedMargin[wdim];
+                    extra_margin = spacer;
                 }
-                else
-                {
-                    ix1 = x1;
-                }
-                child.Rect[dim] = ix0; // pos
-                child.Rect[wdim] = ix1 - ix0; // size
-                x = x1 + child.RequestedMargin[wdim];
                 child = child.NextSibling;
-                extra_margin = spacer;
             }
 
             startChild = endChild;
@@ -564,7 +579,7 @@ public class LayoutItem
         float offset = Rect[dim] + RequestedPadding[dim];
         float space = Rect[wdim] - RequestedPadding.GetDimension(dim);
 
-        foreach (var child in Children)
+        foreach (var child in Children.Where(c => c.ImpactsLayout))
         {
             var b_flags = (BehaveFlags)((uint)child.Behave >> dim);
 
@@ -596,7 +611,7 @@ public class LayoutItem
         float offset = Rect[dim] + RequestedPadding[dim];
         float need_size = 0;
         var startChild = FirstChild;
-        foreach (var child in Children)
+        foreach (var child in Children.Where(c => c.ImpactsLayout))
         {
             if (child.Behave.HasFlag(BehaveFlags.Break))
             {
@@ -619,31 +634,34 @@ public class LayoutItem
         var item = startItem;
         while (item != endItem && item != null)
         {
-            var b_flags = (BehaveFlags)((uint)item.Behave >> dim);
-
-            float min_size = Math.Max(0.0f, space - item.Rect[dim] - item.RequestedMargin[wdim]);
-            switch (b_flags & BehaveFlags.HFill)
+            if (item.ImpactsLayout)
             {
-                case BehaveFlags.HCenter:
-                    item.Rect[wdim] = Math.Min(item.Rect[wdim], min_size);
-                    item.Rect[dim] += (space - item.Rect[wdim] - item.RequestedMargin[wdim]) / 2;
-                    break;
+                var b_flags = (BehaveFlags)((uint)item.Behave >> dim);
 
-                case BehaveFlags.Right:
-                    item.Rect[wdim] = Math.Min(item.Rect[wdim], min_size);
-                    item.Rect[dim] = space - item.Rect[wdim] - item.RequestedMargin[wdim];
-                    break;
+                float min_size = Math.Max(0.0f, space - item.Rect[dim] - item.RequestedMargin[wdim]);
+                switch (b_flags & BehaveFlags.HFill)
+                {
+                    case BehaveFlags.HCenter:
+                        item.Rect[wdim] = Math.Min(item.Rect[wdim], min_size);
+                        item.Rect[dim] += (space - item.Rect[wdim] - item.RequestedMargin[wdim]) / 2;
+                        break;
 
-                case BehaveFlags.HFill:
-                    item.Rect[wdim] = min_size;
-                    break;
+                    case BehaveFlags.Right:
+                        item.Rect[wdim] = Math.Min(item.Rect[wdim], min_size);
+                        item.Rect[dim] = space - item.Rect[wdim] - item.RequestedMargin[wdim];
+                        break;
 
-                default:
-                    item.Rect[wdim] = Math.Min(item.Rect[wdim], min_size);
-                    break;
+                    case BehaveFlags.HFill:
+                        item.Rect[wdim] = min_size;
+                        break;
+
+                    default:
+                        item.Rect[wdim] = Math.Min(item.Rect[wdim], min_size);
+                        break;
+                }
+
+                item.Rect[dim] += offset;
             }
-
-            item.Rect[dim] += offset;
             item = item.NextSibling;
         }
     }

@@ -98,3 +98,10 @@ public enum AlignFlags : uint // aka: box flags
     // insert spacing to stretch across whole row/column
     Justify = 0x018,
 }
+
+public enum Visibility
+{
+    Visible = 0,
+    Hidden = 1,
+    Collapsed = 2
+}

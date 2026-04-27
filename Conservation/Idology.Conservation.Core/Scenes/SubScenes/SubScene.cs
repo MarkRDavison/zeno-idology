@@ -22,6 +22,11 @@ public abstract class SubScene
 
     }
 
+    public virtual void OnPopped()
+    {
+
+    }
+
     protected ConservationGameData GameData { get; }
 }
 

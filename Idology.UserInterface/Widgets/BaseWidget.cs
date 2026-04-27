@@ -20,6 +20,7 @@ public abstract class BaseWidget : IWidget
         if (child is BaseWidget bw)
         {
             bw.InputManager = InputManager;
+            bw.UserInterfaceRoot = UserInterfaceRoot;
         }
 
         // TODO: Need to keep layout/widget in sync when adding/removing...
@@ -71,9 +72,22 @@ public abstract class BaseWidget : IWidget
     {
         foreach (var c in _children)
         {
-            c.Draw();
+            if (c.Layout.Visibility is Visibility.Visible)
+            {
+                c.Draw();
+            }
+        }
+    }
+
+    public void ForEachChildRecursively(Action<IWidget> action)
+    {
+        foreach (var c in _children)
+        {
+            action(c);
+            c.ForEachChildRecursively(action);
         }
     }
 
     public IInputManager InputManager { get; set; } = default!;
+    public IUserInterfaceRoot UserInterfaceRoot { get; set; } = default!;
 }

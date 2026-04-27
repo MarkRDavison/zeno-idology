@@ -19,10 +19,17 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
     private readonly ConservationGameCamera _camera;
 
     private KakapoDetailsSubScene? _kakapoDetailsSubScene;
+    private IWidget? _kakapoDetailsSubSceneWidget;
     private StaffDetailsSubScene? _staffDetialsSubScene;
+    private IWidget? _staffDetialsSubSceneWidget;
     private ResearchSubScene? _researchSubScene;
+    private IWidget? _researchSubSceneWidget;
     private TechnologySubScene? _technologySubScene;
+    private IWidget? _technologySubSceneWidget;
     private FundingSubScene? _fundingSubScene;
+    private IWidget? _fundingSubSceneWidget;
+
+    private IWidget? _lastActiveSubSceneWidget;
 
     public ConservationGameScene(
         ConservationGameData gameData,
@@ -126,7 +133,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
 
     private void OnSetSubScene(object? sender, SetSubSceneGameCommand e)
     {
-        void handleSetSubScene<TSubScene, TSubScenePayload>(ref TSubScene? subScene)
+        void handleSetSubScene<TSubScene, TSubScenePayload>(ref TSubScene? subScene, ref IWidget? subSceneWidget)
             where TSubScene : SubScene<TSubScene, TSubScenePayload>
             where TSubScenePayload : class, new()
         {
@@ -137,27 +144,39 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
             }
 
             PushSubScene(subScene);
+
+            if (_lastActiveSubSceneWidget is not null)
+            {
+                _lastActiveSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
+            }
+
+            _lastActiveSubSceneWidget = subSceneWidget;
+
+            if (_lastActiveSubSceneWidget is not null)
+            {
+                _lastActiveSubSceneWidget.Layout.Visibility = Visibility.Visible;
+            }
         }
 
         if (e.Id is Constants.SubScene_KakapoDetails)
         {
-            handleSetSubScene<KakapoDetailsSubScene, KakapoDetailsSubScenePayload>(ref _kakapoDetailsSubScene);
+            handleSetSubScene<KakapoDetailsSubScene, KakapoDetailsSubScenePayload>(ref _kakapoDetailsSubScene, ref _kakapoDetailsSubSceneWidget);
         }
         else if (e.Id is Constants.SubScene_StaffDetails)
         {
-            handleSetSubScene<StaffDetailsSubScene, StaffDetailsSubScenePayload>(ref _staffDetialsSubScene);
+            handleSetSubScene<StaffDetailsSubScene, StaffDetailsSubScenePayload>(ref _staffDetialsSubScene, ref _staffDetialsSubSceneWidget);
         }
         else if (e.Id is Constants.SubScene_ResearchDetails)
         {
-            handleSetSubScene<ResearchSubScene, ResearchSubScenePayload>(ref _researchSubScene);
+            handleSetSubScene<ResearchSubScene, ResearchSubScenePayload>(ref _researchSubScene, ref _researchSubSceneWidget);
         }
         else if (e.Id is Constants.SubScene_TechnologyDetails)
         {
-            handleSetSubScene<TechnologySubScene, TechnologySubScenePayload>(ref _technologySubScene);
+            handleSetSubScene<TechnologySubScene, TechnologySubScenePayload>(ref _technologySubScene, ref _technologySubSceneWidget);
         }
         else if (e.Id is Constants.SubScene_FundingDetails)
         {
-            handleSetSubScene<FundingSubScene, FundingSubScenePayload>(ref _fundingSubScene);
+            handleSetSubScene<FundingSubScene, FundingSubScenePayload>(ref _fundingSubScene, ref _fundingSubSceneWidget);
         }
     }
 
@@ -166,23 +185,67 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         if (e.Clear)
         {
             PopAllScenes();
+
+            if (_kakapoDetailsSubSceneWidget is not null)
+            {
+                _kakapoDetailsSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
+            }
+            if (_staffDetialsSubSceneWidget is not null)
+            {
+                _staffDetialsSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
+            }
+            if (_researchSubSceneWidget is not null)
+            {
+                _researchSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
+            }
+            if (_technologySubSceneWidget is not null)
+            {
+                _technologySubSceneWidget.Layout.Visibility = Visibility.Collapsed;
+            }
+            if (_fundingSubSceneWidget is not null)
+            {
+                _fundingSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
+            }
         }
         else
         {
             PopSubScene();
+            if (_lastActiveSubSceneWidget is not null)
+            {
+                _lastActiveSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
+            }
         }
     }
 
     private void InitUserInterface()
     {
         var root = _userInterfaceRoot.RootWidget;
-        root.Layout.Contain = ContainFlags.Flex;
-        {
-            var topBar = root.AddChild(_serviceProvider.GetRequiredService<TopBarWidget>());
+        root.Layout.Behave = BehaveFlags.Top | BehaveFlags.HFill;
+        root.Layout.Contain = ContainFlags.Column;
+        root.Layout.Align = AlignFlags.Start;
 
-            topBar.Layout.Contain = ContainFlags.Row;
-            topBar.Layout.Behave = BehaveFlags.HFill | BehaveFlags.Top;
-            topBar.Layout.Align = AlignFlags.Start;
+        root.AddChild(_serviceProvider.GetRequiredService<TopBarWidget>());
+
+        {
+            _kakapoDetailsSubSceneWidget = root.AddChild(_serviceProvider.GetRequiredService<KakapoDetailsUiSubScenePanelWidget>());
+            _kakapoDetailsSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
+            _kakapoDetailsSubSceneWidget.Layout.Behave = BehaveFlags.Fill;
+        }
+        {
+            _staffDetialsSubSceneWidget = root.AddChild(_serviceProvider.GetRequiredService<StaffDetailsUiSubScenePanelWidget>());
+            _staffDetialsSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
+        }
+        {
+            _researchSubSceneWidget = root.AddChild(_serviceProvider.GetRequiredService<ResearchUiSubScenePanelWidget>());
+            _researchSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
+        }
+        {
+            _technologySubSceneWidget = root.AddChild(_serviceProvider.GetRequiredService<TechnologyUiSubScenePanelWidget>());
+            _technologySubSceneWidget.Layout.Visibility = Visibility.Collapsed;
+        }
+        {
+            _fundingSubSceneWidget = root.AddChild(_serviceProvider.GetRequiredService<FundingUiSubScenePanelWidget>());
+            _fundingSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
         }
     }
 
@@ -191,8 +254,6 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         if (Raylib.IsWindowResized())
         {
             _userInterfaceRoot.SetBounds(new LayoutVector(Raylib.GetScreenWidth(), Raylib.GetScreenHeight()));
-
-            ForEachSubScene(ss => ss.OnWindowResize(Raylib.GetScreenWidth(), Raylib.GetScreenHeight()));
         }
 
         _conservationGameInteractionService.Update(delta);
@@ -217,10 +278,6 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         Raylib.ClearBackground(Color.SkyBlue);
 
         DrawRootScene(_camera.Camera);
-
-        var subSceneCamera = new Camera2D(new Vector2(0.0f, TopBarWidget.Height), new(), 0.0f, 1.0f);
-
-        ForEachSubSceneReverse(ss => ss.Draw(subSceneCamera));
 
         _userInterfaceRoot.RootWidget.Draw();
 

@@ -43,9 +43,9 @@ public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
             }
         });
 
-        for (int i = 0; i < 3; ++i)
+        for (int i = 0; i < 8; ++i)
         {
-            scrollableWidget.AddChild(new PanelWidget
+            var currentPanel = scrollableWidget.AddChild(new PanelWidget
             {
                 Background = Color.Red,
                 Border = Color.Magenta,
@@ -53,9 +53,17 @@ public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
                 Layout =
                 {
                     Behave = BehaveFlags.HFill,
-                    Contain = ContainFlags.Layout,
-                    RequestedSize = new LayoutVector(0, 350)
+                    Contain = ContainFlags.Flex,
+                    ItemFlags = ItemFlags.VFixed,
+                    RequestedSize = new LayoutVector(0, 128)
                 }
+            });
+
+            currentPanel.AddChild(new LabelWidget
+            {
+                Foreground = Color.SkyBlue,
+                TextContent = $"Scrollable #{i + 1}",
+                FontSize = 64
             });
         }
     }

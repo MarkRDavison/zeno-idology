@@ -20,6 +20,9 @@ internal sealed class TopBarWidget : PanelWidget
         BorderThickness = 2.0f;
         Layout.RequestedPadding = new LayoutEdges(8.0f);
         Layout.RequestedSize = new LayoutVector(0, Height);
+        Layout.Contain = ContainFlags.Row;
+        Layout.Behave = BehaveFlags.HFill | BehaveFlags.Top;
+
         _gameCommandService = gameCommandService;
     }
 
@@ -56,6 +59,7 @@ internal sealed class TopBarWidget : PanelWidget
         addSubSceneButtonFxn("TOP_BAR_TECHNOLOGY_DETAILS", Constants.SubScene_TechnologyDetails);
         addSubSceneButtonFxn("TOP_BAR_FUNDING_DETAILS", Constants.SubScene_FundingDetails);
 
+        isFirst = false;
         // SPACER
         AddChild(new PanelWidget
         {

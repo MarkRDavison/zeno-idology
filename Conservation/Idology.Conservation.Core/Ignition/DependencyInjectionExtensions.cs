@@ -34,16 +34,11 @@ public static class DependencyInjectionExtensions
         // Subscenes
 
         services
-            .AddTransient<KakapoDetailsSubScene>()
-            .AddKeyedTransient<IUserInterfaceRoot, UserInterfaceRoot>(Constants.SubScene_KakapoDetails)
-            .AddTransient<StaffDetailsSubScene>()
-            .AddKeyedTransient<IUserInterfaceRoot, UserInterfaceRoot>(Constants.SubScene_StaffDetails)
-            .AddTransient<ResearchSubScene>()
-            .AddKeyedTransient<IUserInterfaceRoot, UserInterfaceRoot>(Constants.SubScene_ResearchDetails)
-            .AddTransient<TechnologySubScene>()
-            .AddKeyedTransient<IUserInterfaceRoot, UserInterfaceRoot>(Constants.SubScene_TechnologyDetails)
-            .AddTransient<FundingSubScene>()
-            .AddKeyedTransient<IUserInterfaceRoot, UserInterfaceRoot>(Constants.SubScene_FundingDetails);
+            .AddScoped<KakapoDetailsSubScene>()
+            .AddScoped<StaffDetailsSubScene>()
+            .AddScoped<ResearchSubScene>()
+            .AddScoped<TechnologySubScene>()
+            .AddScoped<FundingSubScene>();
 
         // Services
         services
@@ -61,7 +56,7 @@ public static class DependencyInjectionExtensions
 
         // Widgets
         services
-            .AddTransient<TopBarWidget>()
+            .AddScoped<TopBarWidget>()
             .AddScoped<KakapoDetailsUiSubScenePanelWidget>()
             .AddScoped<StaffDetailsUiSubScenePanelWidget>()
             .AddScoped<ResearchUiSubScenePanelWidget>()

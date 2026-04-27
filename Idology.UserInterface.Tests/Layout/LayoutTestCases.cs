@@ -904,4 +904,271 @@ public class TestCases
         Assert.AreEqual(new(0, 20, 1, 60), row.Rect);
         Assert.AreEqual(new(0, 20, 1, 50), child.Rect);
     }
+
+    [TestMethod]
+    public void FixedItemsNoOverflow()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(100, 100),
+            Align = AlignFlags.Start,
+            Contain = ContainFlags.Column,
+        };
+
+        var child1 = new LayoutItem
+        {
+            RequestedSize = new(100, 30),
+            ItemFlags = ItemFlags.VFixed,
+        };
+        var child2 = new LayoutItem
+        {
+            RequestedSize = new(100, 30),
+            ItemFlags = ItemFlags.VFixed,
+        };
+        var child3 = new LayoutItem
+        {
+            RequestedSize = new(100, 30),
+            ItemFlags = ItemFlags.VFixed,
+        };
+
+        root.AddChildren([child1, child2, child3]);
+        root.Run();
+
+        Assert.AreEqual(new(0, 0, 100, 100), root.Rect);
+        Assert.AreEqual(new(0, 0, 100, 30), child1.Rect);
+        Assert.AreEqual(new(0, 30, 100, 30), child2.Rect);
+        Assert.AreEqual(new(0, 60, 100, 30), child3.Rect);
+    }
+
+    [TestMethod]
+    public void FixedItemsWithOverflow()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(100, 100),
+            Contain = ContainFlags.Column,
+        };
+
+        var child1 = new LayoutItem
+        {
+            RequestedSize = new(100, 40),
+            ItemFlags = ItemFlags.VFixed,
+        };
+        var child2 = new LayoutItem
+        {
+            RequestedSize = new(100, 40),
+            ItemFlags = ItemFlags.VFixed,
+        };
+        var child3 = new LayoutItem
+        {
+            RequestedSize = new(100, 40),
+            ItemFlags = ItemFlags.VFixed,
+        };
+
+        root.AddChildren([child1, child2, child3]);
+        root.Run();
+
+        // Root is 100 tall, but children total 120 tall - they overflow
+        Assert.AreEqual(new(0, 0, 100, 100), root.Rect);
+        Assert.AreEqual(new(0, 0, 100, 40), child1.Rect);
+        Assert.AreEqual(new(0, 40, 100, 40), child2.Rect);
+        // Third child overflows the parent
+        Assert.AreEqual(new(0, 80, 100, 40), child3.Rect);
+    }
+
+    [TestMethod]
+    public void ScrollablePanelWithFixedChildren()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(200, 150),
+        };
+
+        var scrollablePanel = new LayoutItem
+        {
+            Behave = BehaveFlags.Fill,
+            Contain = ContainFlags.Column,
+            RequestedPadding = new(5),
+        };
+        root.AddChild(scrollablePanel);
+
+        // Add 3 children, each 100 pixels tall - total 300 pixels
+        // They should overflow the 150 pixel tall parent
+        for (int i = 0; i < 3; i++)
+        {
+            scrollablePanel.AddChild(new LayoutItem
+            {
+                RequestedSize = new(0, 100),
+                Behave = BehaveFlags.HFill,
+                ItemFlags = ItemFlags.VFixed,
+            });
+        }
+
+        root.Run();
+
+        Assert.AreEqual(new(0, 0, 200, 150), root.Rect);
+        // Scrollable panel fills the parent
+        Assert.AreEqual(new(0, 0, 200, 150), scrollablePanel.Rect);
+
+        // Children maintain their size and overflow
+        var children = scrollablePanel.Children.ToList();
+        Assert.AreEqual(new(5, 5, 190, 100), children[0].Rect);
+        Assert.AreEqual(new(5, 105, 190, 100), children[1].Rect);
+        Assert.AreEqual(new(5, 205, 190, 100), children[2].Rect);
+    }
+
+    [TestMethod]
+    public void MixedFixedAndFlexibleItems()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(100, 200),
+            Contain = ContainFlags.Column,
+        };
+
+        var fixedTop = new LayoutItem
+        {
+            RequestedSize = new(100, 50),
+            ItemFlags = ItemFlags.VFixed,
+        };
+        var flexible = new LayoutItem
+        {
+            Behave = BehaveFlags.Fill,
+        };
+        var fixedBottom = new LayoutItem
+        {
+            RequestedSize = new(100, 50),
+            ItemFlags = ItemFlags.VFixed,
+        };
+
+        root.AddChildren([fixedTop, flexible, fixedBottom]);
+        root.Run();
+
+        Assert.AreEqual(new(0, 0, 100, 200), root.Rect);
+        Assert.AreEqual(new(0, 0, 100, 50), fixedTop.Rect);
+        // Flexible item takes the remaining space
+        Assert.AreEqual(new(0, 50, 100, 100), flexible.Rect);
+        Assert.AreEqual(new(0, 150, 100, 50), fixedBottom.Rect);
+    }
+
+    [TestMethod]
+    public void FixedHorizontalWithOverflow()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(100, 50),
+            Contain = ContainFlags.Row,
+        };
+
+        var child1 = new LayoutItem
+        {
+            RequestedSize = new(40, 50),
+            ItemFlags = ItemFlags.HFixed,
+        };
+        var child2 = new LayoutItem
+        {
+            RequestedSize = new(40, 50),
+            ItemFlags = ItemFlags.HFixed,
+        };
+        var child3 = new LayoutItem
+        {
+            RequestedSize = new(40, 50),
+            ItemFlags = ItemFlags.HFixed,
+        };
+
+        root.AddChildren([child1, child2, child3]);
+        root.Run();
+
+        Assert.AreEqual(new(0, 0, 100, 50), root.Rect);
+        Assert.AreEqual(new(0, 0, 40, 50), child1.Rect);
+        Assert.AreEqual(new(40, 0, 40, 50), child2.Rect);
+        // Third child overflows horizontally
+        Assert.AreEqual(new(80, 0, 40, 50), child3.Rect);
+    }
+
+    [TestMethod]
+    public void NestedScrollablePanelsWithFixedContent()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(200, 300),
+            Contain = ContainFlags.Column,
+        };
+
+        var outerScrollable = new LayoutItem
+        {
+            Behave = BehaveFlags.Fill,
+            Contain = ContainFlags.Column,
+            RequestedMargin = new(5),
+        };
+        root.AddChild(outerScrollable);
+
+        // Add sections with fixed sizes that overflow
+        for (int section = 0; section < 2; section++)
+        {
+            var sectionPanel = new LayoutItem
+            {
+                RequestedSize = new(0, 200),
+                Behave = BehaveFlags.HFill,
+                Contain = ContainFlags.Column,
+                ItemFlags = ItemFlags.VFixed,
+                RequestedPadding = new(4),
+            };
+
+            // Add items to each section
+            for (int i = 0; i < 3; i++)
+            {
+                sectionPanel.AddChild(new LayoutItem
+                {
+                    RequestedSize = new(0, 50),
+                    Behave = BehaveFlags.HFill,
+                });
+            }
+
+            outerScrollable.AddChild(sectionPanel);
+        }
+
+        root.Run();
+
+        Assert.AreEqual(new(0, 0, 200, 300), root.Rect);
+        Assert.AreEqual(new(5, 5, 190, 290), outerScrollable.Rect);
+
+        var sections = outerScrollable.Children.ToList();
+        // First section should be positioned at the top
+        Assert.AreEqual(new(5, 5, 190, 200), sections[0].Rect);
+        // Second section should overflow below the parent
+        Assert.AreEqual(new(5, 205, 190, 200), sections[1].Rect);
+    }
+
+    [TestMethod]
+    public void AllItemsFixedColumnExceedsParentHeight()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(100, 100),
+            Contain = ContainFlags.Column,
+        };
+
+        // Create 5 fixed items, each 50 pixels tall = 250 total
+        // Parent is only 100 tall
+        for (int i = 0; i < 5; i++)
+        {
+            root.AddChild(new LayoutItem
+            {
+                RequestedSize = new(100, 50),
+                ItemFlags = ItemFlags.VFixed,
+            });
+        }
+
+        root.Run();
+
+        Assert.AreEqual(new(0, 0, 100, 100), root.Rect);
+
+        var children = root.Children.ToList();
+        for (int i = 0; i < children.Count; i++)
+        {
+            var expectedY = i * 50;
+            Assert.AreEqual(new(0, expectedY, 100, 50), children[i].Rect, $"Child {i} position mismatch");
+        }
+    }
 }

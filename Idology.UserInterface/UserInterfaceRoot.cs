@@ -36,6 +36,7 @@ public sealed class UserInterfaceRoot : IUserInterfaceRoot
             _rootWidget ??= new RootWidget
             {
                 InputManager = _inputManager,
+                UserInterfaceRoot = this,
                 Layout = new LayoutItem
                 {
                     RequestedSize = _bounds,

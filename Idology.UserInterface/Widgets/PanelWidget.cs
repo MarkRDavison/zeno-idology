@@ -2,8 +2,7 @@
 
 public class PanelWidget : BaseWidget
 {
-
-    public override void Draw()
+    protected void DrawPanelSelf()
     {
         const int Segments = 8;
 
@@ -54,7 +53,11 @@ public class PanelWidget : BaseWidget
                 (int)Layout.Rect.Height - (int)(BorderThickness ?? 0) * 2,
                 Background);
         }
+    }
 
+    public override void Draw()
+    {
+        DrawPanelSelf();
 
         DrawChildren();
     }
