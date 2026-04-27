@@ -12,10 +12,23 @@ public abstract class SubScene
 
     }
 
-    public virtual void Draw()
+    public virtual void Draw(Camera2D camera)
     {
 
     }
 
     protected ConservationGameData GameData { get; }
+}
+
+// TODO: Add another generic param so you can get a specific typed payload?
+public abstract class SubScene<TScene, TSubScenePayload> : SubScene where TScene : SubScene where TSubScenePayload : class
+{
+    protected SubScene(ConservationGameData gameData) : base(gameData)
+    {
+    }
+
+    public virtual void Init(TSubScenePayload? payload)
+    {
+
+    }
 }

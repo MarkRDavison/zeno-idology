@@ -4,9 +4,19 @@ public abstract class ConservationScene<TScene> : Scene<TScene> where TScene : S
 {
     private readonly Stack<SubScene> _subScenes = [];
 
-    protected void PushSubScene(SubScene subScene)
+    protected TSubScene PushSubScene<TSubScene>(TSubScene subScene) where TSubScene : SubScene
     {
         _subScenes.Push(subScene);
+
+        return subScene;
+    }
+
+    protected void PopAllScenes()
+    {
+        while (_subScenes.Count > 0)
+        {
+            _subScenes.Pop();
+        }
     }
 
     protected void PopSubScene()

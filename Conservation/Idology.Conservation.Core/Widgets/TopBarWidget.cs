@@ -2,13 +2,15 @@
 
 internal sealed class TopBarWidget : PanelWidget
 {
-    private const int Height = 48;
+    public const int Height = 48;
     private readonly IGameDateTimeProvider _gameDateTimeProvider;
     private readonly ITranslationService _translationService;
+    private readonly IGameCommandService _gameCommandService;
 
     public TopBarWidget(
         IGameDateTimeProvider gameDateTimeProvider,
-        ITranslationService translationService)
+        ITranslationService translationService,
+        IGameCommandService gameCommandService)
     {
         _gameDateTimeProvider = gameDateTimeProvider;
         _translationService = translationService;
@@ -16,25 +18,44 @@ internal sealed class TopBarWidget : PanelWidget
         Background = Color.Gray;
         Border = Color.DarkGray;
         BorderThickness = 2.0f;
-        Layout.RequestedPadding = new LayoutEdges(4.0f);
+        Layout.RequestedPadding = new LayoutEdges(8.0f);
         Layout.RequestedSize = new LayoutVector(0, Height);
+        _gameCommandService = gameCommandService;
     }
 
     public override void PostConstructInit()
     {
-        AddChild(new PanelWidget
+        var kakapoDetailsButton = AddChild(new TextButtonWidget
         {
+            TextSize = 32,
+            TextContent = _translationService["TOP_BAR_KAKAPO_DETAILS"],
+            Foreground = Color.White,
             Background = Color.Gray,
             Border = Color.DarkGray,
             BorderThickness = 2.0f,
             Layout = new LayoutItem
             {
-                RequestedMargin = new(),
-                RequestedSize = new LayoutVector(128, 0),
-                Contain = ContainFlags.Row,
-                Behave = BehaveFlags.VFill
+                Behave = BehaveFlags.Center | BehaveFlags.VFill,
+                RequestedSize = new LayoutVector(128, 0)
             }
         });
+        kakapoDetailsButton.OnClick += (s, e) => _gameCommandService.HandleCommand(new SetSubSceneGameCommand { Id = Constants.SubScene_KakapoDetails });
+        var staffDetailsButton = AddChild(new TextButtonWidget
+        {
+            TextSize = 32,
+            TextContent = _translationService["TOP_BAR_STAFF_DETAILS"],
+            Foreground = Color.White,
+            Background = Color.Gray,
+            Border = Color.DarkGray,
+            BorderThickness = 2.0f,
+            Layout = new LayoutItem
+            {
+                RequestedMargin = new LayoutEdges(2.0f, 0.0f, 0.0f, 0.0f),
+                Behave = BehaveFlags.Center | BehaveFlags.VFill,
+                RequestedSize = new LayoutVector(128, 0)
+            }
+        });
+        staffDetailsButton.OnClick += (s, e) => _gameCommandService.HandleCommand(new SetSubSceneGameCommand { Id = Constants.SubScene_StaffDetails });
         // SPACER
         AddChild(new PanelWidget
         {

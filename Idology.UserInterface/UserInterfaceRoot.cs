@@ -1,6 +1,6 @@
 ﻿namespace Idology.UserInterface;
 
-internal sealed class UserInterfaceRoot : IUserInterfaceRoot
+public sealed class UserInterfaceRoot : IUserInterfaceRoot
 {
     private LayoutVector _bounds;
     private IWidget? _rootWidget;

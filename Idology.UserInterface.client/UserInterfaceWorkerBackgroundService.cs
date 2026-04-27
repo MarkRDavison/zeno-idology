@@ -24,14 +24,14 @@ internal sealed class UserInterfaceWorkerBackgroundService : IdologyWorkerBackgr
     {
         inputManager.RegisterAction(new()
         {
-            Name = "LCLICK_DOWN",
+            Name = UserInterfaceConstants.PRIMARY_CLICK_START,
             Type = InputActionType.MOUSE,
             State = InputActionState.PRESS,
             Button = MouseButton.Left
         });
         inputManager.RegisterAction(new()
         {
-            Name = "LCLICK_UP",
+            Name = UserInterfaceConstants.PRIMARY_CLICK_END,
             Type = InputActionType.MOUSE,
             State = InputActionState.RELEASE,
             Button = MouseButton.Left

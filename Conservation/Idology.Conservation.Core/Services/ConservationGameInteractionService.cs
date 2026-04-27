@@ -5,15 +5,18 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
     private readonly ConservationGameData _gameData;
     private readonly IInputManager _inputManager;
     private readonly IGameDateTimeProvider _gameDateTimeProvider;
+    private readonly IGameCommandService _gameCommandService;
 
     public ConservationGameInteractionService(
         ConservationGameData gameData,
         IInputManager inputManager,
-        IGameDateTimeProvider gameDateTimeProvider)
+        IGameDateTimeProvider gameDateTimeProvider,
+        IGameCommandService gameCommandService)
     {
         _gameData = gameData;
         _inputManager = inputManager;
         _gameDateTimeProvider = gameDateTimeProvider;
+        _gameCommandService = gameCommandService;
     }
 
     public void Update(float delta)
@@ -43,13 +46,19 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
                 _gameData.InteractionData.ScreenState = ScreenState.Region;
                 _gameData.ActiveRegion = _gameData.Regions[_gameData.InteractionData.DefaultScreenData.SelectedRegion.Value];
             }
-            else if (_inputManager.HandleActionIfInvoked(Constants.Action_Shortcut_Kakapo))
+            else if (_inputManager.IsActionInvoked(Constants.Action_Shortcut_Kakapo))
             {
-                _gameData.InteractionData.ScreenState = ScreenState.Kakapo;
+                if (_gameCommandService.HandleCommand(new SetSubSceneGameCommand { Id = Constants.SubScene_KakapoDetails }))
+                {
+                    _inputManager.HandleActionIfInvoked(Constants.Action_Shortcut_Kakapo);
+                }
             }
             else if (_inputManager.HandleActionIfInvoked(Constants.Action_Shortcut_Staff))
             {
-                _gameData.InteractionData.ScreenState = ScreenState.Staff;
+                if (_gameCommandService.HandleCommand(new SetSubSceneGameCommand { Id = Constants.SubScene_StaffDetails }))
+                {
+                    _inputManager.HandleActionIfInvoked(Constants.SubScene_StaffDetails);
+                }
             }
         }
         else if (_gameData.InteractionData.ScreenState is ScreenState.Region)
@@ -61,18 +70,14 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
                 _gameData.ActiveRegion = null;
             }
         }
-        else if (_gameData.InteractionData.ScreenState is ScreenState.Kakapo)
+        else if (_gameData.InteractionData.ScreenState is ScreenState.Staff or ScreenState.Kakapo)
         {
-            if (_inputManager.HandleActionIfInvoked(Constants.Action_Escape))
+            if (_inputManager.IsActionInvoked(Constants.Action_Escape))
             {
-                _gameData.InteractionData.ScreenState = ScreenState.Default;
-            }
-        }
-        else if (_gameData.InteractionData.ScreenState is ScreenState.Staff)
-        {
-            if (_inputManager.HandleActionIfInvoked(Constants.Action_Escape))
-            {
-                _gameData.InteractionData.ScreenState = ScreenState.Default;
+                if (_gameCommandService.HandleCommand(new PopSubSceneGameCommand()))
+                {
+                    _inputManager.HandleActionIfInvoked(Constants.Action_Escape);
+                }
             }
         }
     }

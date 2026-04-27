@@ -10,11 +10,11 @@ public sealed class TextButtonWidget : BaseWidget
     {
         if (LayoutBoundsContainMousePosition())
         {
-            if (!_mouseDownWithin && InputManager.HandleActionIfInvoked("LCLICK_DOWN"))
+            if (!_mouseDownWithin && InputManager.HandleActionIfInvoked(UserInterfaceConstants.PRIMARY_CLICK_START))
             {
                 _mouseDownWithin = true;
             }
-            else if (_mouseDownWithin && InputManager.HandleActionIfInvoked("LCLICK_UP"))
+            else if (_mouseDownWithin && InputManager.HandleActionIfInvoked(UserInterfaceConstants.PRIMARY_CLICK_END))
             {
                 OnClick?.Invoke(this, EventArgs.Empty);
                 _mouseDownWithin = false;
@@ -31,8 +31,6 @@ public sealed class TextButtonWidget : BaseWidget
 
     public override void Draw()
     {
-        const int TextSize = 64;
-
         if (BorderThickness.GetValueOrDefault() > 0)
         {
             Raylib.DrawRectangleLinesEx(
@@ -83,6 +81,7 @@ public sealed class TextButtonWidget : BaseWidget
         }
     }
 
+    public int TextSize { get; set; } = 64;
     public string TextContent { get; set; } = string.Empty;
     public event EventHandler? OnClick;
 }

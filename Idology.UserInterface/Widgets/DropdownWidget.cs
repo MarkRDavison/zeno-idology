@@ -15,11 +15,11 @@ public sealed class DropdownWidget : BaseWidget
 
         if (LayoutBoundsContainMousePosition())
         {
-            if (!_mouseDownWithin && InputManager.HandleActionIfInvoked("LCLICK_DOWN"))
+            if (!_mouseDownWithin && InputManager.HandleActionIfInvoked(UserInterfaceConstants.PRIMARY_CLICK_START))
             {
                 _mouseDownWithin = true;
             }
-            else if (_mouseDownWithin && InputManager.HandleActionIfInvoked("LCLICK_UP"))
+            else if (_mouseDownWithin && InputManager.HandleActionIfInvoked(UserInterfaceConstants.PRIMARY_CLICK_END))
             {
                 // Open dropdown
                 _mouseDownWithin = false;

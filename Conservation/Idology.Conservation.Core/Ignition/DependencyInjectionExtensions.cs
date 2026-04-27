@@ -13,7 +13,9 @@ public static class DependencyInjectionExtensions
             { "TITLE_SCREEN_LOAD", "Load" },
             { "TITLE_SCREEN_LOAD_DEV", "Load Dev" },
             { "TITLE_SCREEN_QUIT", "Quit" },
-            { "TOP_BAR_DATE_FORMAT", "htt - MMM d yyyy" }
+            { "TOP_BAR_DATE_FORMAT", "htt - MMM d yyyy" },
+            { "TOP_BAR_KAKAPO_DETAILS", "Kakapo" },
+            { "TOP_BAR_STAFF_DETAILS", "Staff" }
         });
 
         // Scenes
@@ -24,19 +26,30 @@ public static class DependencyInjectionExtensions
         // Subscenes
 
         services
-            .AddTransient<KakapoDetailsSubScene>();
+            .AddTransient<KakapoDetailsSubScene>()
+            .AddKeyedTransient<IUserInterfaceRoot, UserInterfaceRoot>(Constants.SubScene_KakapoDetails)
+            .AddTransient<StaffDetialsSubScene>()
+            .AddKeyedTransient<IUserInterfaceRoot, UserInterfaceRoot>(Constants.SubScene_StaffDetails);
 
         // Services
         services
             .AddScoped<ConservationGame>()
-            .AddScoped<ConservationGameRenderer>()
             .AddScoped<ConservationGameData>()
             .AddScoped<IConservationGameInteractionService, ConservationGameInteractionService>()
-            .AddScoped<IGameDateTimeProvider, GameDateTimeProvider>();
+            .AddScoped<IGameDateTimeProvider, GameDateTimeProvider>()
+            .AddScoped<IGameCommandService, GameCommandService>()
+            .AddScoped<IEventRoutingService, EventRoutingService>();
+
+        // Commands
+        services
+            .AddTransient<IGameCommandHandler<SetSubSceneGameCommand>, SetSubSceneGameCommandHandler>()
+            .AddTransient<IGameCommandHandler<PopSubSceneGameCommand>, PopSubSceneGameCommandHandler>();
 
         // Widgets
         services
-            .AddTransient<TopBarWidget>();
+            .AddTransient<TopBarWidget>()
+            .AddScoped<KakapoDetailsUiSubScenePanelWidget>()
+            .AddScoped<StaffDetailsUiSubScenePanelWidget>();
 
         return services;
     }

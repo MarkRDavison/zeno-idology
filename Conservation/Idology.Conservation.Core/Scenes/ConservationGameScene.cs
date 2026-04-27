@@ -10,32 +10,35 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
 {
     private readonly ConservationGameData _gameData;
     private readonly ConservationGame _game;
-    private readonly ConservationGameRenderer _gameRenderer;
     private readonly IInputManager _inputManager;
     private readonly IConservationGameInteractionService _conservationGameInteractionService;
     private readonly IGameDateTimeProvider _gameDateTimeProvider;
     private readonly IUserInterfaceRoot _userInterfaceRoot;
-    private readonly ConservationGameCamera _camera;
     private readonly IServiceProvider _serviceProvider;
+    private readonly IEventRoutingService _eventRoutingService;
+    private readonly ConservationGameCamera _camera;
+
+    private KakapoDetailsSubScene? _kakapoDetailsSubScene;
+    private StaffDetialsSubScene? _staffDetialsSubScene;
 
     public ConservationGameScene(
         ConservationGameData gameData,
         ConservationGame game,
-        ConservationGameRenderer gameRenderer,
         IInputManager inputManager,
         IConservationGameInteractionService conservationGameInteractionService,
         IGameDateTimeProvider gameDateTimeProvider,
         IUserInterfaceRoot userInterfaceRoot,
-        IServiceProvider serviceProvider)
+        IServiceProvider serviceProvider,
+        IEventRoutingService eventRoutingService)
     {
         _gameData = gameData;
         _game = game;
-        _gameRenderer = gameRenderer;
         _inputManager = inputManager;
         _conservationGameInteractionService = conservationGameInteractionService;
         _gameDateTimeProvider = gameDateTimeProvider;
         _userInterfaceRoot = userInterfaceRoot;
         _serviceProvider = serviceProvider;
+        _eventRoutingService = eventRoutingService;
 
         _camera = new ConservationGameCamera(inputManager)
         {
@@ -48,6 +51,10 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
 
     public override void Init(IScenePayload<ConservationGameScene>? payload)
     {
+        // TODO: Dispose.
+        _eventRoutingService.SetSubScene += OnSetSubScene;
+        _eventRoutingService.PopSubScene += OnPopSubScene;
+
         _userInterfaceRoot.SetBounds(new LayoutVector(Raylib.GetScreenWidth(), Raylib.GetScreenHeight()));
 
         InitUserInterface();
@@ -97,6 +104,42 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         }
     }
 
+    private void OnSetSubScene(object? sender, SetSubSceneGameCommand e)
+    {
+        if (e.Id is Constants.SubScene_KakapoDetails)
+        {
+            if (_kakapoDetailsSubScene is null)
+            {
+                _kakapoDetailsSubScene = _serviceProvider.GetRequiredService<KakapoDetailsSubScene>();
+                _kakapoDetailsSubScene.Init(new KakapoDetailsSubScenePayload());
+            }
+
+            PushSubScene(_kakapoDetailsSubScene);
+        }
+        else if (e.Id is Constants.SubScene_StaffDetails)
+        {
+            if (_staffDetialsSubScene is null)
+            {
+                _staffDetialsSubScene = _serviceProvider.GetRequiredService<StaffDetialsSubScene>();
+                _staffDetialsSubScene.Init(new StaffDetialsSubScenePayload());
+            }
+
+            PushSubScene(_staffDetialsSubScene);
+        }
+    }
+
+    private void OnPopSubScene(object? sender, PopSubSceneGameCommand e)
+    {
+        if (e.Clear)
+        {
+            PopAllScenes();
+        }
+        else
+        {
+            PopSubScene();
+        }
+    }
+
     private void InitUserInterface()
     {
         var root = _userInterfaceRoot.RootWidget;
@@ -123,11 +166,12 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
 
         _game.Update(delta);
 
-        _gameRenderer.Update(delta);
-
         _userInterfaceRoot.Update(delta);
 
-        _camera.Update(delta);
+        if (_gameData.InteractionData.ScreenState is ScreenState.Default or ScreenState.Region)
+        {
+            _camera.Update(delta);
+        }
 
         _inputManager.Update();
     }
@@ -137,15 +181,85 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         Raylib.BeginDrawing();
         Raylib.ClearBackground(Color.SkyBlue);
 
-        // TODO: Whats the relationship between the sub scene and the game renderer???
-        _gameRenderer.Draw(_camera.Camera);
+        DrawRootScene(_camera.Camera);
 
-        ForEachSubSceneReverse(ss => ss.Draw());
+        var subSceneCamera = new Camera2D(new Vector2(0.0f, TopBarWidget.Height), new(), 0.0f, 1.0f);
+
+        ForEachSubSceneReverse(ss => ss.Draw(subSceneCamera));
 
         _userInterfaceRoot.RootWidget.Draw();
 
         Raylib.DrawFPS(10, 58);
 
         Raylib.EndDrawing();
+    }
+
+    private void DrawRootScene(Camera2D camera)
+    {
+        const int TileSize = 64;
+
+        if (_gameData.InteractionData.ScreenState is ScreenState.Region)
+        {
+            if (_gameData.ActiveRegion is { } activeRegion)
+            {
+                Raylib.BeginMode2D(camera);
+                for (int y = 0; y < activeRegion.Height; ++y)
+                {
+                    for (int x = 0; x < activeRegion.Width; ++x)
+                    {
+                        var tile = activeRegion.Tiles[y * activeRegion.Width + x];
+
+                        Raylib.DrawRectangle(
+                            x * TileSize,
+                            y * TileSize,
+                            TileSize,
+                            TileSize,
+                            tile.Color);
+                    }
+                }
+                Raylib.EndMode2D();
+            }
+        }
+        else
+        {
+            Raylib.BeginMode2D(camera);
+            int regionIdx = 0;
+            foreach (var region in _gameData.Regions)
+            {
+                for (int y = 0; y < region.Height; ++y)
+                {
+                    for (int x = 0; x < region.Width; ++x)
+                    {
+                        var tile = region.Tiles[y * region.Width + x];
+
+                        Raylib.DrawRectangle(
+                            x * TileSize + (int)region.RegionOffset.X * TileSize,
+                            y * TileSize + (int)region.RegionOffset.Y * TileSize,
+                            TileSize,
+                            TileSize,
+                            tile.Color);
+                    }
+                }
+
+                if (_gameData.InteractionData.DefaultScreenData.SelectedRegion == regionIdx)
+                {
+                    // TODO: Width needs to be adjusted based on zoom level...
+                    Raylib.DrawRectangleLinesEx(
+                        new Rectangle(
+                            new Vector2(
+                                (int)region.RegionOffset.X * TileSize,
+                                (int)region.RegionOffset.Y * TileSize),
+                            new Vector2(
+                                TileSize * region.Width,
+                                TileSize * region.Height)
+                            ),
+                        (float)(TileSize / 4.0f),
+                        Color.White);
+                }
+
+                regionIdx++;
+            }
+            Raylib.EndMode2D();
+        }
     }
 }
