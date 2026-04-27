@@ -15,18 +15,25 @@ internal sealed class SetSubSceneGameCommandHandler : IGameCommandHandler<SetSub
 
     public bool HandleCommand(SetSubSceneGameCommand command)
     {
-        var mainSubScenes = new HashSet<string>
+        var mainSubScenes = new Dictionary<string, ScreenState>
         {
-            Constants.SubScene_KakapoDetails,
-            Constants.SubScene_StaffDetails
+            { Constants.SubScene_KakapoDetails, ScreenState.Kakapo },
+            { Constants.SubScene_StaffDetails, ScreenState.Staff },
+            { Constants.SubScene_ResearchDetails, ScreenState.Research },
+            { Constants.SubScene_TechnologyDetails, ScreenState.Technology },
+            { Constants.SubScene_FundingDetails, ScreenState.Funding }
         };
+
         var mainSubSceneScreenStates = new HashSet<ScreenState>
         {
             ScreenState.Kakapo,
-            ScreenState.Staff
+            ScreenState.Staff,
+            ScreenState.Research,
+            ScreenState.Technology,
+            ScreenState.Funding
         };
 
-        if (mainSubScenes.Contains(command.Id) &&
+        if (mainSubScenes.ContainsKey(command.Id) &&
             mainSubSceneScreenStates.Contains(_gameData.InteractionData.ScreenState))
         {
             _eventRoutingService.InvokePopSubScene(new PopSubSceneGameCommand { Clear = true });
@@ -36,13 +43,9 @@ internal sealed class SetSubSceneGameCommandHandler : IGameCommandHandler<SetSub
         if (_gameData.InteractionData.ScreenState is ScreenState.Default)
         {
             // TODO: Handle pushing on top of current rather than only from default???
-            if (command.Id is Constants.SubScene_KakapoDetails)
+            if (mainSubScenes.TryGetValue(command.Id, out var newScreenState))
             {
-                _gameData.InteractionData.ScreenState = ScreenState.Kakapo;
-            }
-            else if (command.Id is Constants.SubScene_StaffDetails)
-            {
-                _gameData.InteractionData.ScreenState = ScreenState.Staff;
+                _gameData.InteractionData.ScreenState = newScreenState;
             }
 
             _eventRoutingService.InvokeSetSubScene(command);

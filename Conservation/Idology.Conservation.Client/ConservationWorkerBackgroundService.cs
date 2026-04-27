@@ -104,6 +104,30 @@ internal sealed class ConservationWorkerBackgroundService : IdologyWorkerBackgro
             State = InputActionState.RELEASE,
             Key = KeyboardKey.F2
         });
+
+        inputManager.RegisterAction(new()
+        {
+            Name = Constants.Action_Shortcut_Research,
+            Type = InputActionType.KEYBOARD,
+            State = InputActionState.RELEASE,
+            Key = KeyboardKey.F3
+        });
+
+        inputManager.RegisterAction(new()
+        {
+            Name = Constants.Action_Shortcut_Technology,
+            Type = InputActionType.KEYBOARD,
+            State = InputActionState.RELEASE,
+            Key = KeyboardKey.F4
+        });
+
+        inputManager.RegisterAction(new()
+        {
+            Name = Constants.Action_Shortcut_Funding,
+            Type = InputActionType.KEYBOARD,
+            State = InputActionState.RELEASE,
+            Key = KeyboardKey.F5
+        });
     }
 
     protected override void LoadFonts(IFontManager fontManager)

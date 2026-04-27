@@ -25,37 +25,37 @@ internal sealed class TopBarWidget : PanelWidget
 
     public override void PostConstructInit()
     {
-        var kakapoDetailsButton = AddChild(new TextButtonWidget
+        var isFirst = true;
+
+        void addSubSceneButtonFxn(string translationKey, string sceneId)
         {
-            TextSize = 32,
-            TextContent = _translationService["TOP_BAR_KAKAPO_DETAILS"],
-            Foreground = Color.White,
-            Background = Color.Gray,
-            Border = Color.DarkGray,
-            BorderThickness = 2.0f,
-            Layout = new LayoutItem
+            var button = AddChild(new TextButtonWidget
             {
-                Behave = BehaveFlags.Center | BehaveFlags.VFill,
-                RequestedSize = new LayoutVector(128, 0)
-            }
-        });
-        kakapoDetailsButton.OnClick += (s, e) => _gameCommandService.HandleCommand(new SetSubSceneGameCommand { Id = Constants.SubScene_KakapoDetails });
-        var staffDetailsButton = AddChild(new TextButtonWidget
-        {
-            TextSize = 32,
-            TextContent = _translationService["TOP_BAR_STAFF_DETAILS"],
-            Foreground = Color.White,
-            Background = Color.Gray,
-            Border = Color.DarkGray,
-            BorderThickness = 2.0f,
-            Layout = new LayoutItem
-            {
-                RequestedMargin = new LayoutEdges(2.0f, 0.0f, 0.0f, 0.0f),
-                Behave = BehaveFlags.Center | BehaveFlags.VFill,
-                RequestedSize = new LayoutVector(128, 0)
-            }
-        });
-        staffDetailsButton.OnClick += (s, e) => _gameCommandService.HandleCommand(new SetSubSceneGameCommand { Id = Constants.SubScene_StaffDetails });
+                TextSize = 32,
+                TextContent = _translationService[translationKey],
+                Foreground = Color.White,
+                Background = Color.Gray,
+                Border = Color.DarkGray,
+                BorderThickness = 2.0f,
+                Layout = new LayoutItem
+                {
+                    RequestedMargin = new LayoutEdges(isFirst ? 0.0f : 2.0f, 0.0f, 0.0f, 0.0f),
+                    Behave = BehaveFlags.Center | BehaveFlags.VFill,
+                    RequestedSize = new LayoutVector(128, 0)
+                }
+            });
+
+            button.OnClick += (s, e) => _gameCommandService.HandleCommand(new SetSubSceneGameCommand { Id = sceneId });
+
+            isFirst = false;
+        }
+
+        addSubSceneButtonFxn("TOP_BAR_KAKAPO_DETAILS", Constants.SubScene_KakapoDetails);
+        addSubSceneButtonFxn("TOP_BAR_STAFF_DETAILS", Constants.SubScene_StaffDetails);
+        addSubSceneButtonFxn("TOP_BAR_RESEARCH_DETAILS", Constants.SubScene_ResearchDetails);
+        addSubSceneButtonFxn("TOP_BAR_TECHNOLOGY_DETAILS", Constants.SubScene_TechnologyDetails);
+        addSubSceneButtonFxn("TOP_BAR_FUNDING_DETAILS", Constants.SubScene_FundingDetails);
+
         // SPACER
         AddChild(new PanelWidget
         {
@@ -66,6 +66,7 @@ internal sealed class TopBarWidget : PanelWidget
                 Behave = BehaveFlags.Fill
             }
         });
+
         var tcw = AddChild(new TimeControlWidget(_gameDateTimeProvider)
         {
             Background = Color.Gray,

@@ -15,7 +15,10 @@ public static class DependencyInjectionExtensions
             { "TITLE_SCREEN_QUIT", "Quit" },
             { "TOP_BAR_DATE_FORMAT", "htt - MMM d yyyy" },
             { "TOP_BAR_KAKAPO_DETAILS", "Kakapo" },
-            { "TOP_BAR_STAFF_DETAILS", "Staff" }
+            { "TOP_BAR_STAFF_DETAILS", "Staff" },
+            { "TOP_BAR_RESEARCH_DETAILS", "Research" },
+            { "TOP_BAR_TECHNOLOGY_DETAILS", "Technology" },
+            { "TOP_BAR_FUNDING_DETAILS", "Funding" }
         });
 
         // Scenes
@@ -28,8 +31,14 @@ public static class DependencyInjectionExtensions
         services
             .AddTransient<KakapoDetailsSubScene>()
             .AddKeyedTransient<IUserInterfaceRoot, UserInterfaceRoot>(Constants.SubScene_KakapoDetails)
-            .AddTransient<StaffDetialsSubScene>()
-            .AddKeyedTransient<IUserInterfaceRoot, UserInterfaceRoot>(Constants.SubScene_StaffDetails);
+            .AddTransient<StaffDetailsSubScene>()
+            .AddKeyedTransient<IUserInterfaceRoot, UserInterfaceRoot>(Constants.SubScene_StaffDetails)
+            .AddTransient<ResearchSubScene>()
+            .AddKeyedTransient<IUserInterfaceRoot, UserInterfaceRoot>(Constants.SubScene_ResearchDetails)
+            .AddTransient<TechnologySubScene>()
+            .AddKeyedTransient<IUserInterfaceRoot, UserInterfaceRoot>(Constants.SubScene_TechnologyDetails)
+            .AddTransient<FundingSubScene>()
+            .AddKeyedTransient<IUserInterfaceRoot, UserInterfaceRoot>(Constants.SubScene_FundingDetails);
 
         // Services
         services
@@ -49,7 +58,10 @@ public static class DependencyInjectionExtensions
         services
             .AddTransient<TopBarWidget>()
             .AddScoped<KakapoDetailsUiSubScenePanelWidget>()
-            .AddScoped<StaffDetailsUiSubScenePanelWidget>();
+            .AddScoped<StaffDetailsUiSubScenePanelWidget>()
+            .AddScoped<ResearchUiSubScenePanelWidget>()
+            .AddScoped<TechnologyUiSubScenePanelWidget>()
+            .AddScoped<FundingUiSubScenePanelWidget>();
 
         return services;
     }

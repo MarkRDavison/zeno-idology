@@ -5,7 +5,10 @@ public enum ScreenState
     Default = 0,
     Region = 1,
     Kakapo = 2,
-    Staff = 3
+    Staff = 3,
+    Research = 4,
+    Technology = 5,
+    Funding = 6
 };
 
 public sealed class DefaultScreenData

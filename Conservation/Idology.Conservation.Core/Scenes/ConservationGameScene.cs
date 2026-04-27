@@ -19,7 +19,10 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
     private readonly ConservationGameCamera _camera;
 
     private KakapoDetailsSubScene? _kakapoDetailsSubScene;
-    private StaffDetialsSubScene? _staffDetialsSubScene;
+    private StaffDetailsSubScene? _staffDetialsSubScene;
+    private ResearchSubScene? _researchSubScene;
+    private TechnologySubScene? _technologySubScene;
+    private FundingSubScene? _fundingSubScene;
 
     public ConservationGameScene(
         ConservationGameData gameData,
@@ -106,25 +109,38 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
 
     private void OnSetSubScene(object? sender, SetSubSceneGameCommand e)
     {
-        if (e.Id is Constants.SubScene_KakapoDetails)
+        void handleSetSubScene<TSubScene, TSubScenePayload>(ref TSubScene? subScene)
+            where TSubScene : SubScene<TSubScene, TSubScenePayload>
+            where TSubScenePayload : class, new()
         {
-            if (_kakapoDetailsSubScene is null)
+            if (subScene is null)
             {
-                _kakapoDetailsSubScene = _serviceProvider.GetRequiredService<KakapoDetailsSubScene>();
-                _kakapoDetailsSubScene.Init(new KakapoDetailsSubScenePayload());
+                subScene = _serviceProvider.GetRequiredService<TSubScene>();
+                subScene.Init(new TSubScenePayload());
             }
 
-            PushSubScene(_kakapoDetailsSubScene);
+            PushSubScene(subScene);
+        }
+
+        if (e.Id is Constants.SubScene_KakapoDetails)
+        {
+            handleSetSubScene<KakapoDetailsSubScene, KakapoDetailsSubScenePayload>(ref _kakapoDetailsSubScene);
         }
         else if (e.Id is Constants.SubScene_StaffDetails)
         {
-            if (_staffDetialsSubScene is null)
-            {
-                _staffDetialsSubScene = _serviceProvider.GetRequiredService<StaffDetialsSubScene>();
-                _staffDetialsSubScene.Init(new StaffDetialsSubScenePayload());
-            }
-
-            PushSubScene(_staffDetialsSubScene);
+            handleSetSubScene<StaffDetailsSubScene, StaffDetailsSubScenePayload>(ref _staffDetialsSubScene);
+        }
+        else if (e.Id is Constants.SubScene_ResearchDetails)
+        {
+            handleSetSubScene<ResearchSubScene, ResearchSubScenePayload>(ref _researchSubScene);
+        }
+        else if (e.Id is Constants.SubScene_TechnologyDetails)
+        {
+            handleSetSubScene<TechnologySubScene, TechnologySubScenePayload>(ref _technologySubScene);
+        }
+        else if (e.Id is Constants.SubScene_FundingDetails)
+        {
+            handleSetSubScene<FundingSubScene, FundingSubScenePayload>(ref _fundingSubScene);
         }
     }
 
