@@ -1,4 +1,4 @@
-﻿using Idology.Conservation.Core.Services.GameCommands.SetScreenState;
+﻿using Idology.Conservation.Core.Services.GameCommands.InfoScreen;
 
 namespace Idology.Conservation.Core.Ignition;
 
@@ -44,7 +44,8 @@ public static class DependencyInjectionExtensions
 
         // Commands
         services
-            .AddTransient<IGameCommandHandler<SetScreenStateGameCommand>, SetScreenStateGameCommandHandler>();
+            .AddTransient<IGameCommandHandler<SetScreenStateGameCommand>, SetScreenStateGameCommandHandler>()
+            .AddTransient<IGameCommandHandler<SetInfoScreenGameCommand>, SetInfoScreenGameCommandHandler>();
 
         // Widgets
         services
@@ -53,7 +54,8 @@ public static class DependencyInjectionExtensions
             .AddScoped<StaffDetailsUiSubScenePanelWidget>()
             .AddScoped<ResearchUiSubScenePanelWidget>()
             .AddScoped<TechnologyUiSubScenePanelWidget>()
-            .AddScoped<FundingUiSubScenePanelWidget>();
+            .AddScoped<FundingUiSubScenePanelWidget>()
+            .AddScoped<InfoContextPanelWidget>();
 
         return services;
     }

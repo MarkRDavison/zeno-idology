@@ -1,0 +1,10 @@
+﻿namespace Idology.Conservation.Core.Services.GameCommands.InfoScreen;
+
+public sealed record RegionInfoScreenPayload(int RegionId, bool IsSummary);
+
+public sealed class SetInfoScreenGameCommand : IGameCommand
+{
+    public required bool Open { get; init; }
+    public required InfoState State { get; init; }
+    public required object? Context { get; init; }
+}

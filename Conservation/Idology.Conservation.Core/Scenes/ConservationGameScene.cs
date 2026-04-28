@@ -110,7 +110,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                 _gameData.StaffData.Add(new(8, "Vol-4"));
             }
 
-            List<string> regions = ["region-1", "region-2", "region-3"];
+            List<string> regions = ["region-1", "region-2", "region-3", "region-4"];
 
             foreach (var r in regions)
             {
@@ -164,6 +164,8 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
 
         root.AddChild(_serviceProvider.GetRequiredService<TopBarWidget>());
 
+        root.AddChild(_serviceProvider.GetRequiredService<InfoContextPanelWidget>());
+
         {
             _kakapoDetailsSubSceneWidget = root.AddChild(_serviceProvider.GetRequiredService<KakapoDetailsUiSubScenePanelWidget>());
             _kakapoDetailsSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
@@ -210,7 +212,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
     public override void Draw()
     {
         Raylib.BeginDrawing();
-        Raylib.ClearBackground(Color.SkyBlue);
+        Raylib.ClearBackground(Color.Blue);
 
         DrawRootScene(_camera.Camera);
 
@@ -233,6 +235,11 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                     for (int x = 0; x < activeRegion.Width; ++x)
                     {
                         var tile = activeRegion.Tiles[y * activeRegion.Width + x];
+
+                        if (tile.TileType is TileType.Water or TileType.Unset)
+                        {
+                            continue;
+                        }
 
                         Raylib.DrawRectangle(
                             x * TileSize,
@@ -257,6 +264,11 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                     {
                         var tile = region.Tiles[y * region.Width + x];
 
+                        if (tile.TileType is TileType.Water or TileType.Unset)
+                        {
+                            continue;
+                        }
+
                         Raylib.DrawRectangle(
                             x * TileSize + (int)region.RegionOffset.X * TileSize,
                             y * TileSize + (int)region.RegionOffset.Y * TileSize,
@@ -269,6 +281,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                 if (_gameData.InteractionData.DefaultScreenData.SelectedRegion == regionIdx)
                 {
                     // TODO: Width needs to be adjusted based on zoom level...
+                    // Keeping it the same looks weird, so it can get smaller just needs a minimum width
                     Raylib.DrawRectangleLinesEx(
                         new Rectangle(
                             new Vector2(
@@ -278,7 +291,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                                 TileSize * region.Width,
                                 TileSize * region.Height)
                             ),
-                        (float)(TileSize / 4.0f),
+                        (float)(TileSize / 16.0f) / _camera.Zoom,
                         Color.White);
                 }
 

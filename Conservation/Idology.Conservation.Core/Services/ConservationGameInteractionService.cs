@@ -66,13 +66,25 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
                 {
                     _gameData.InteractionData.DefaultScreenData.SelectedRegion = (_gameData.InteractionData.DefaultScreenData.SelectedRegion + 1) % _gameData.Regions.Count;
                 }
+
+                if (_gameData.InteractionData.DefaultScreenData.SelectedRegion is not null)
+                {
+                    _gameCommandService.HandleCommand(new SetInfoScreenGameCommand
+                    {
+                        Open = true,
+                        State = InfoState.RegionSummary,
+                        Context = new RegionInfoScreenPayload(_gameData.InteractionData.DefaultScreenData.SelectedRegion.Value, true)
+                    });
+                }
             }
             else if (_gameData.InteractionData.DefaultScreenData.SelectedRegion is not null &&
                 _inputManager.HandleActionIfInvoked(Constants.Action_Enter))
             {
-                // TODO: Push and pop camera/transform matrices???
+                // TODO: Push and pop camera/transform matrices or position/zoom levels???
                 _gameData.InteractionData.ScreenState = ScreenState.Region;
                 _gameData.ActiveRegion = _gameData.Regions[_gameData.InteractionData.DefaultScreenData.SelectedRegion.Value];
+
+                _gameCommandService.HandleCommand(new SetInfoScreenGameCommand { Open = true, State = InfoState.Region, Context = new RegionInfoScreenPayload(_gameData.InteractionData.DefaultScreenData.SelectedRegion.Value, false) });
             }
         }
         else if (_gameData.InteractionData.ScreenState is ScreenState.Region)
