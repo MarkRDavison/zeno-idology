@@ -79,7 +79,7 @@ public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
                     }
                 });
 
-                static string GetBirthDiscoveryInfo(KakapoData kakapo)
+                static string GetBirthDiscoveryInfo(KakapoModel kakapo)
                 {
                     if (kakapo.Origin.Date is null)
                     {
