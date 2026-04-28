@@ -7,4 +7,5 @@ public sealed record KakapoModel(
     int? MotherId,
     int? FatherId,
     OriginInfo Origin,
-    DateOnly? Death);
+    DateOnly? Death,
+    int? RegionId);

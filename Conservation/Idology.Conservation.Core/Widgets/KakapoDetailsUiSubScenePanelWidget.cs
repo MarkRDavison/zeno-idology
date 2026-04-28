@@ -175,6 +175,25 @@ public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
                         }
                     });
                 }
+
+                if (kd.RegionId is { } regionId && regionId > 0)
+                {
+                    secondaryColumnPanel.AddChild(new LabelWidget
+                    {
+                        Foreground = Color.White,
+                        // TODO: Instead of directly setting the text create a binding/func<string>?
+                        // TODO: Get the name of the region instead
+                        TextContent = $"- Lives on region {regionId}",
+                        FontSize = 20,
+                        Layout =
+                        {
+                            Align = AlignFlags.Start,
+                            RequestedMargin = new LayoutEdges(4.0f),
+                            Behave = BehaveFlags.VCenter | BehaveFlags.Left,
+                            RequestedSize = new LayoutVector(0, 24)
+                        }
+                    });
+                }
             }
         }
     }
