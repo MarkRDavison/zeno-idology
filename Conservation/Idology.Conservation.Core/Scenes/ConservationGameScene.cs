@@ -61,8 +61,6 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
 
         _userInterfaceRoot.SetBounds(new LayoutVector(Raylib.GetScreenWidth(), Raylib.GetScreenHeight()));
 
-        InitUserInterface();
-
         {
             _gameData.ActiveRegion = null;
             _gameData.Regions.Clear();
@@ -71,33 +69,38 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
 
             // TODO: Load from files....
             // https://encyclopedia.pub/entry/37611
-            _gameData.KakapoData.Add(new(1, "Flossie", true, null, null, new DateOnly(1982, 1, 1), null));
-            _gameData.KakapoData.Add(new(2, "Solstice", true, null, null, new DateOnly(1989, 1, 1), null));
-            _gameData.KakapoData.Add(new(3, "Nora", true, null, null, new DateOnly(1980, 1, 1), null));
-            _gameData.KakapoData.Add(new(4, "Rakiura", true, 1, null, new DateOnly(2002, 2, 19), null));
-            _gameData.KakapoData.Add(new(5, "Esperance", true, 1, null, new DateOnly(2002, 2, 17), null));
-            _gameData.KakapoData.Add(new(6, "Margaret-Maree", true, null, null, new DateOnly(1986, 1, 1), null));
-            _gameData.KakapoData.Add(new(7, "Marama", true, null, null, new DateOnly(2002, 1, 1), null));
-            _gameData.KakapoData.Add(new(8, "Stella", true, 2, null, new DateOnly(2011, 1, 1), null));
-            _gameData.KakapoData.Add(new(9, "Heather", true, 1, null, new DateOnly(1981, 1, 1), null));
-            _gameData.KakapoData.Add(new(10, "Ako", true, 5, null, new DateOnly(2019, 1, 1), null));
-            _gameData.KakapoData.Add(new(11, "Alice", true, null, null, new DateOnly(1981, 1, 1), null));
-            _gameData.KakapoData.Add(new(12, "Lisa", true, null, null, new DateOnly(1982, 1, 1), null));
-            _gameData.KakapoData.Add(new(13, "Wendy", true, null, null, new DateOnly(1982, 1, 1), null));
-            _gameData.KakapoData.Add(new(14, "Atareta", true, 12, null, new DateOnly(2011, 1, 1), null));
-            _gameData.KakapoData.Add(new(15, "Tia", true, 4, null, new DateOnly(2011, 1, 1), null));
-            _gameData.KakapoData.Add(new(16, "Toitiiti", true, 4, null, new DateOnly(2011, 1, 1), null));
-            _gameData.KakapoData.Add(new(17, "Yasmine", true, 1, null, new DateOnly(2005, 1, 1), null));
-            _gameData.KakapoData.Add(new(18, "Zephyr", true, 3, null, new DateOnly(1981, 1, 1), null));
-            _gameData.KakapoData.Add(new(19, "Vori", true, 11, null, new DateOnly(2019, 1, 1), null));
-            _gameData.KakapoData.Add(new(20, "Tohu", true, 9, null, new DateOnly(2014, 1, 1), null));
-            _gameData.KakapoData.Add(new(21, "Aparima", true, 13, null, new DateOnly(2002, 1, 1), null));
-            _gameData.KakapoData.Add(new(22, "JEM", true, 21, null, new DateOnly(2008, 1, 1), null));
+
+            _gameData.KakapoData.Add(new KakapoData(1, "Flossie", Gender.Female, null, null, new OriginInfo(new DateOnly(1982, 1, 1), OriginDateType.Discovered), null));
+            _gameData.KakapoData.Add(new KakapoData(2, "Solstice", Gender.Female, null, null, new OriginInfo(new DateOnly(1989, 1, 1), OriginDateType.Discovered, "LAST_DISCOVERD_WILD"), null));
+            _gameData.KakapoData.Add(new KakapoData(3, "Nora", Gender.Female, null, null, new OriginInfo(new DateOnly(1980, 1, 1), OriginDateType.Discovered), null));
+            _gameData.KakapoData.Add(new KakapoData(4, "Rakiura", Gender.Female, 1, null, new OriginInfo(new DateOnly(2002, 2, 19), OriginDateType.KnownBirth), null));
+            _gameData.KakapoData.Add(new KakapoData(5, "Esperance", Gender.Female, 1, null, new OriginInfo(new DateOnly(2002, 2, 17), OriginDateType.EstimatedBirth), null));
+            _gameData.KakapoData.Add(new KakapoData(6, "Margaret-Maree", Gender.Female, null, null, new OriginInfo(new DateOnly(1986, 1, 1), OriginDateType.Discovered), null));
+            _gameData.KakapoData.Add(new KakapoData(7, "Marama", Gender.Female, 6, null, new OriginInfo(new DateOnly(2002, 1, 1), OriginDateType.EstimatedBirth), null));
+            _gameData.KakapoData.Add(new KakapoData(8, "Stella", Gender.Female, 2, null, new OriginInfo(new DateOnly(2011, 1, 1), OriginDateType.EstimatedBirth), null));
+            _gameData.KakapoData.Add(new KakapoData(9, "Heather", Gender.Female, 1, null, new OriginInfo(new DateOnly(1981, 1, 1), OriginDateType.EstimatedBirth), null));
+            _gameData.KakapoData.Add(new KakapoData(10, "Ako", Gender.Female, 5, null, new OriginInfo(new DateOnly(2019, 1, 1), OriginDateType.EstimatedBirth), null));
+            _gameData.KakapoData.Add(new KakapoData(11, "Alice", Gender.Female, null, null, new OriginInfo(new DateOnly(1981, 1, 1), OriginDateType.EstimatedBirth), null));
+            _gameData.KakapoData.Add(new KakapoData(12, "Lisa", Gender.Female, null, null, new OriginInfo(new DateOnly(1982, 1, 1), OriginDateType.EstimatedBirth), null));
+            _gameData.KakapoData.Add(new KakapoData(13, "Wendy", Gender.Female, null, null, new OriginInfo(new DateOnly(1982, 1, 1), OriginDateType.EstimatedBirth), null));
+            _gameData.KakapoData.Add(new KakapoData(14, "Atareta", Gender.Female, 12, null, new OriginInfo(new DateOnly(2011, 1, 1), OriginDateType.EstimatedBirth), null));
+            _gameData.KakapoData.Add(new KakapoData(15, "Tia", Gender.Female, 4, null, new OriginInfo(new DateOnly(2011, 1, 1), OriginDateType.EstimatedBirth), null));
+            _gameData.KakapoData.Add(new KakapoData(16, "Toitiiti", Gender.Female, 4, null, new OriginInfo(new DateOnly(2008, 1, 1), OriginDateType.EstimatedBirth), null));
+            _gameData.KakapoData.Add(new KakapoData(17, "Yasmine", Gender.Female, 1, null, new OriginInfo(new DateOnly(2005, 1, 1), OriginDateType.EstimatedBirth), null));
+            _gameData.KakapoData.Add(new KakapoData(18, "Zephyr", Gender.Female, 3, null, new OriginInfo(new DateOnly(1981, 1, 1), OriginDateType.EstimatedBirth), null));
+            _gameData.KakapoData.Add(new KakapoData(19, "Vori", Gender.Female, 11, null, new OriginInfo(new DateOnly(2019, 1, 1), OriginDateType.EstimatedBirth), null));
+            _gameData.KakapoData.Add(new KakapoData(20, "Tohu", Gender.Female, 9, null, new OriginInfo(new DateOnly(2014, 1, 1), OriginDateType.EstimatedBirth), null));
+            _gameData.KakapoData.Add(new KakapoData(21, "Aparima", Gender.Female, 13, null, new OriginInfo(new DateOnly(2002, 1, 1), OriginDateType.EstimatedBirth), null));
+            _gameData.KakapoData.Add(new KakapoData(221, "JEM", Gender.Female, 21, null, new OriginInfo(new DateOnly(2008, 1, 1), OriginDateType.EstimatedBirth), null));
 
             _gameData.StaffData.Add(new(1, "Tom"));
             _gameData.StaffData.Add(new(2, "Sarah"));
             _gameData.StaffData.Add(new(3, "Theo"));
             _gameData.StaffData.Add(new(4, "Danielle"));
+            _gameData.StaffData.Add(new(5, "Vol-1"));
+            _gameData.StaffData.Add(new(6, "Vol-2"));
+            _gameData.StaffData.Add(new(7, "Vol-3"));
+            _gameData.StaffData.Add(new(8, "Vol-4"));
 
             List<string> regions = ["region-1", "region-2", "region-3"];
 
@@ -123,6 +126,8 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                 }
             }
         }
+
+        InitUserInterface();
     }
 
     private void OnSetScreenState(object? sender, SetScreenStateGameCommand e)
