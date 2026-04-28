@@ -29,6 +29,7 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
             ScreenState.Technology,
             ScreenState.Funding
         };
+
         var shortcutsToScreenStates = new Dictionary<string, ScreenState>
         {
             { Constants.Action_Shortcut_Kakapo, ScreenState.Kakapo },
