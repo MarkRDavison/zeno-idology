@@ -336,6 +336,54 @@ public class TestCases
     }
 
     [TestMethod]
+    public void RegionLabelAlignmentTopLeft()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(200, 100),
+            Contain = ContainFlags.Column,
+            Align = AlignFlags.Start,
+        };
+
+        var child = new LayoutItem
+        {
+            RequestedSize = new(0, 36),
+            RequestedMargin = new(4, 0, 0, 0),
+            Behave = BehaveFlags.Left | BehaveFlags.Top,
+        };
+
+        root.AddChild(child);
+        root.Run();
+
+        Assert.AreEqual(4.0f, child.Rect.X);
+        Assert.AreEqual(0.0f, child.Rect.Y);
+    }
+
+    [TestMethod]
+    public void WidgetPanelPlacementMatchesLayoutItem()
+    {
+        // Use actual PanelWidget instances to ensure widget plumbing doesn't change layout
+        var parent = new Idology.UserInterface.Widgets.PanelWidget();
+        parent.Layout.RequestedSize = new(200, 100);
+        parent.Layout.Contain = ContainFlags.Column;
+        parent.Layout.Align = AlignFlags.Start;
+
+        var childPanel = new Idology.UserInterface.Widgets.PanelWidget();
+        childPanel.Layout.RequestedSize = new(0, 36);
+        childPanel.Layout.RequestedMargin = new(4, 0, 0, 0);
+        childPanel.Layout.Behave = BehaveFlags.Left | BehaveFlags.Top;
+
+        // Add as widget child (propagates widget-level plumbing)
+        parent.AddChild(childPanel);
+
+        // Run layout from the parent layout item
+        parent.Layout.Run();
+
+        Assert.AreEqual(4.0f, childPanel.Layout.Rect.X);
+        Assert.AreEqual(0.0f, childPanel.Layout.Rect.Y);
+    }
+
+    [TestMethod]
     public void DeepNest1()
     {
         const int numItems = 500;

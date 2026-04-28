@@ -15,22 +15,35 @@ public abstract class BaseWidget : IWidget
     public float? BorderRoundness { get; set; }
     public float? BorderThickness { get; set; }
 
-    public TWidget AddChild<TWidget>(TWidget child) where TWidget : BaseWidget
+    public void AddGenericChild(BaseWidget child)
     {
-        if (child is BaseWidget bw)
-        {
-            bw.InputManager = InputManager;
-            bw.UserInterfaceRoot = UserInterfaceRoot;
-        }
-
         // TODO: Need to keep layout/widget in sync when adding/removing...
         Layout.AddChild(child.Layout);
         _children.Add(child);
         child.Parent = this;
 
         child.PostConstructInit();
+    }
+
+    public TWidget AddChild<TWidget>(TWidget child) where TWidget : BaseWidget
+    {
+        child.InputManager = InputManager;
+        child.UserInterfaceRoot = UserInterfaceRoot;
+
+        AddGenericChild(child);
 
         return child;
+    }
+
+    protected void ClearChildren()
+    {
+        foreach (var c in Layout.Children)
+        {
+            c.Reset(true);
+        }
+
+        _children.Clear();
+        Layout.FirstChild = null;
     }
 
     protected bool LayoutBoundsContainMousePosition()

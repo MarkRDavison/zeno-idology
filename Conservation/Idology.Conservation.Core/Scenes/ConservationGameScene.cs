@@ -69,7 +69,12 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
 
             // TODO: Load from files....
             {
-                // TODO: Validate data, that FatherId -> Male, MotherId -> Female etc
+                // TODO: Validate data, that
+                // FatherId -> Male
+                // MotherId -> Female
+                // Birth/death dates in order
+                // Birth of parent comes before birth of child
+                // Death of parent comes after birth of child ??? (Maybe not true if egg laid, then parent died, then baby hatched???)
                 // https://encyclopedia.pub/entry/37611
                 _gameData.KakapoData.Add(new KakapoModel(1, "Flossie", Gender.Female, null, null, new OriginInfo(new DateOnly(1982, 1, 1), OriginDateType.Discovered), null, 1));
                 _gameData.KakapoData.Add(new KakapoModel(2, "Solstice", Gender.Female, null, null, new OriginInfo(new DateOnly(1989, 1, 1), OriginDateType.Discovered, "LAST_DISCOVERD_WILD"), null, 1));

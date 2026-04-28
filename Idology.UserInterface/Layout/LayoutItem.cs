@@ -21,6 +21,9 @@ public class LayoutItem
 
     public LayoutRect Rect = new();
 
+    /// <summary>
+    /// Controls how any children contained by this layout will be laid out
+    /// </summary>
     public ContainFlags Contain
     {
         get => (ContainFlags)(_flags & ContainFlagsMask);

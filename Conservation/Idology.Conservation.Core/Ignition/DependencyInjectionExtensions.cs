@@ -1,4 +1,4 @@
-﻿using Idology.Conservation.Core.Services.GameCommands.InfoScreen;
+﻿using Idology.Conservation.Core.Widgets.InfoContextSubWIdgets;
 
 namespace Idology.Conservation.Core.Ignition;
 
@@ -56,6 +56,11 @@ public static class DependencyInjectionExtensions
             .AddScoped<TechnologyUiSubScenePanelWidget>()
             .AddScoped<FundingUiSubScenePanelWidget>()
             .AddScoped<InfoContextPanelWidget>();
+
+        // Info panel sub widgets
+        services
+            .AddTransient<RegionSummaryInfoContextSubWidget>()
+            .AddTransient<RegionInfoContextSubWidget>();
 
         return services;
     }

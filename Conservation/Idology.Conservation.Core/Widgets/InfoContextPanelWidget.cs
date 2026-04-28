@@ -1,14 +1,20 @@
-﻿namespace Idology.Conservation.Core.Widgets;
+﻿using Idology.Conservation.Core.Widgets.InfoContextSubWIdgets;
+
+namespace Idology.Conservation.Core.Widgets;
 
 internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
 {
     private bool _disposedValue;
 
     private readonly IEventRoutingService _eventRoutingService;
+    private readonly IServiceProvider _serviceProvider;
 
-    public InfoContextPanelWidget(IEventRoutingService eventRoutingService)
+    public InfoContextPanelWidget(
+        IEventRoutingService eventRoutingService,
+        IServiceProvider serviceProvider)
     {
         _eventRoutingService = eventRoutingService;
+        _serviceProvider = serviceProvider;
     }
 
     public override void PostConstructInit()
@@ -21,14 +27,16 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
         Layout.RequestedPadding = new LayoutEdges(8.0f);
         Layout.RequestedMargin = new LayoutEdges(8.0f);
         Layout.Behave = BehaveFlags.VFill | BehaveFlags.Right;
-        Layout.Contain = ContainFlags.Column;
-        Layout.ItemFlags = ItemFlags.HFixed;
+        Layout.Contain = ContainFlags.Flex;
+        Layout.Align = AlignFlags.Start;
 
         _eventRoutingService.SetInfoState += OnSetInfoState;
     }
 
     private void OnSetInfoState(object? sender, SetInfoScreenGameCommand e)
     {
+        ClearChildren();
+
         if (!e.Open)
         {
             Layout.Visibility = Visibility.Collapsed;
@@ -37,12 +45,37 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
 
         Layout.Visibility = Visibility.Visible;
 
-        switch (e.State)
+        var initializeSubWidgetFactory = new Dictionary<InfoState, Func<IServiceProvider, BaseWidget>>
         {
-            case InfoState.RegionSummary:
-                break;
-            case InfoState.Region:
-                break;
+            {
+                InfoState.RegionSummary,
+                _ =>
+                {
+                    var widget = _.GetRequiredService<RegionSummaryInfoContextSubWidget>();
+                    if (e.Context is RegionInfoScreenPayload p)
+                    {
+                        widget.SetRegionId(p.RegionId);
+                    }
+                    return widget;
+                }
+            },
+            {
+                InfoState.Region,
+                _ =>
+                {
+                    var widget = _.GetRequiredService<RegionInfoContextSubWidget>();
+                    if (e.Context is RegionInfoScreenPayload p)
+                    {
+                        widget.SetRegionId(p.RegionId);
+                    }
+                    return widget;
+                }
+            }
+        };
+
+        if (initializeSubWidgetFactory.TryGetValue(e.State, out var newSubWidget))
+        {
+            AddGenericChild(newSubWidget(_serviceProvider));
         }
     }
 
