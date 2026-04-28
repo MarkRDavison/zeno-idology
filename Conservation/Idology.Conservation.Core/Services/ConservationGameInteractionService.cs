@@ -118,6 +118,8 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
         {
             if (_inputManager.IsActionInvoked(Constants.Action_Escape))
             {
+                // TODO: BUG: Restore previously opened info panel?
+                // Or should I allow the main sub scenes to be over the top of the info panel???
                 if (_gameCommandService.HandleCommand(new SetScreenStateGameCommand { ScreenState = ScreenState.Default }))
                 {
                     _inputManager.HandleActionIfInvoked(Constants.Action_Escape);

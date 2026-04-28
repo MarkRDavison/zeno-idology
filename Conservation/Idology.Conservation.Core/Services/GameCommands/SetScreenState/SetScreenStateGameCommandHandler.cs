@@ -4,13 +4,16 @@ internal sealed class SetScreenStateGameCommandHandler : IGameCommandHandler<Set
 {
     private readonly ConservationGameData _gameData;
     private readonly IEventRoutingService _eventRoutingService;
+    private readonly IGameCommandService _gameCommandService;
 
     public SetScreenStateGameCommandHandler(
         ConservationGameData gameData,
-        IEventRoutingService eventRoutingService)
+        IEventRoutingService eventRoutingService,
+        IGameCommandService gameCommandService)
     {
         _gameData = gameData;
         _eventRoutingService = eventRoutingService;
+        _gameCommandService = gameCommandService;
     }
 
     public bool HandleCommand(SetScreenStateGameCommand command)
@@ -19,6 +22,12 @@ internal sealed class SetScreenStateGameCommandHandler : IGameCommandHandler<Set
         {
             _gameData.InteractionData.ScreenState = command.ScreenState;
 
+            _gameCommandService.HandleCommand(new SetInfoScreenGameCommand
+            {
+                Open = false,
+                State = InfoState.Hidden,
+                Context = null
+            });
             _eventRoutingService.InvokeSetScreenState(command);
 
             return true;
