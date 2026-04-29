@@ -22,12 +22,6 @@ internal sealed class SetScreenStateGameCommandHandler : IGameCommandHandler<Set
         {
             _gameData.InteractionData.ScreenState = command.ScreenState;
 
-            _gameCommandService.HandleCommand(new SetInfoScreenGameCommand
-            {
-                Open = false,
-                State = InfoState.Hidden,
-                Context = null
-            });
             _eventRoutingService.InvokeSetScreenState(command);
 
             return true;

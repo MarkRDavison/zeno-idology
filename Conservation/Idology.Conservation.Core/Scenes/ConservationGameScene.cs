@@ -169,26 +169,35 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
 
         root.AddChild(_serviceProvider.GetRequiredService<TopBarWidget>());
 
-        root.AddChild(_serviceProvider.GetRequiredService<InfoContextPanelWidget>());
+        var contentPanel = root.AddChild(new PanelWidget
+        {
+            Layout = new LayoutItem
+            {
+                Behave = BehaveFlags.Fill,
+                Contain = ContainFlags.Layout
+            }
+        });
+
+        contentPanel.AddChild(_serviceProvider.GetRequiredService<InfoContextPanelWidget>());
 
         {
-            _kakapoDetailsSubSceneWidget = root.AddChild(_serviceProvider.GetRequiredService<KakapoDetailsUiSubScenePanelWidget>());
+            _kakapoDetailsSubSceneWidget = contentPanel.AddChild(_serviceProvider.GetRequiredService<KakapoDetailsUiSubScenePanelWidget>());
             _kakapoDetailsSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
         }
         {
-            _staffDetialsSubSceneWidget = root.AddChild(_serviceProvider.GetRequiredService<StaffDetailsUiSubScenePanelWidget>());
+            _staffDetialsSubSceneWidget = contentPanel.AddChild(_serviceProvider.GetRequiredService<StaffDetailsUiSubScenePanelWidget>());
             _staffDetialsSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
         }
         {
-            _researchSubSceneWidget = root.AddChild(_serviceProvider.GetRequiredService<ResearchUiSubScenePanelWidget>());
+            _researchSubSceneWidget = contentPanel.AddChild(_serviceProvider.GetRequiredService<ResearchUiSubScenePanelWidget>());
             _researchSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
         }
         {
-            _technologySubSceneWidget = root.AddChild(_serviceProvider.GetRequiredService<TechnologyUiSubScenePanelWidget>());
+            _technologySubSceneWidget = contentPanel.AddChild(_serviceProvider.GetRequiredService<TechnologyUiSubScenePanelWidget>());
             _technologySubSceneWidget.Layout.Visibility = Visibility.Collapsed;
         }
         {
-            _fundingSubSceneWidget = root.AddChild(_serviceProvider.GetRequiredService<FundingUiSubScenePanelWidget>());
+            _fundingSubSceneWidget = contentPanel.AddChild(_serviceProvider.GetRequiredService<FundingUiSubScenePanelWidget>());
             _fundingSubSceneWidget.Layout.Visibility = Visibility.Collapsed;
         }
     }
