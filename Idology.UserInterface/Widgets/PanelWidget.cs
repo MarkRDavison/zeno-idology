@@ -59,17 +59,6 @@ public class PanelWidget : BaseWidget
     {
         DrawPanelSelf();
 
-        // Debug: if a panel has a red background, log its and its descendants' layout rects
-        // This helps diagnose cases where a child appears centered at runtime.
-        if (Background.Equals(Color.Red))
-        {
-            System.Console.WriteLine($"DEBUG PanelWidget ({GetType().Name}) rect={Layout.Rect}");
-            ForEachChildRecursively(c =>
-            {
-                System.Console.WriteLine($"DEBUG Child ({c.GetType().Name}) rect={c.Layout.Rect}");
-            });
-        }
-
         DrawChildren();
     }
 }

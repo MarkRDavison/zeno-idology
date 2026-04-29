@@ -3,9 +3,11 @@
 public sealed class TechnologyUiSubScenePanelWidget : UiSubScenePanelWidget
 {
     public TechnologyUiSubScenePanelWidget(
-        ITranslationService translationService
+        ITranslationService translationService,
+        IGameCommandService gameCommandService
     ) : base(
-        translationService)
+        translationService,
+        gameCommandService)
     {
     }
 
@@ -13,6 +15,9 @@ public sealed class TechnologyUiSubScenePanelWidget : UiSubScenePanelWidget
 
     public override void PostConstructInit()
     {
-        var scrollableWidget = AddCommonWidgets();
+        var scrollableWidget = AddCommonWidgets(_ =>
+        {
+
+        });
     }
 }

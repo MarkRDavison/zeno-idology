@@ -6,9 +6,11 @@ public sealed class StaffDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
 
     public StaffDetailsUiSubScenePanelWidget(
         ConservationGameData gameData,
-        ITranslationService translationService
+        ITranslationService translationService,
+        IGameCommandService gameCommandService
     ) : base(
-        translationService)
+        translationService,
+        gameCommandService)
     {
         _gameData = gameData;
     }
@@ -17,7 +19,10 @@ public sealed class StaffDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
 
     public override void PostConstructInit()
     {
-        var scrollableWidget = AddCommonWidgets();
+        var scrollableWidget = AddCommonWidgets(_ =>
+        {
+
+        });
 
         foreach (var s in _gameData.StaffData)
         {

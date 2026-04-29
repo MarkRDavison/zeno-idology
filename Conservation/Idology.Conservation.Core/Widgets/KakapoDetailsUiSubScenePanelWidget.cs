@@ -8,9 +8,11 @@ public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
     public KakapoDetailsUiSubScenePanelWidget(
         ITranslationService translationService,
         ConservationGameData gameData,
-        IGameDateTimeProvider gameDateTimeProvider
+        IGameDateTimeProvider gameDateTimeProvider,
+        IGameCommandService gameCommandService
     ) : base(
-        translationService)
+        translationService,
+        gameCommandService)
     {
         _gameData = gameData;
         _gameDateTimeProvider = gameDateTimeProvider;
@@ -21,8 +23,10 @@ public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
     // TODO: localization...
     public override void PostConstructInit()
     {
-        // Add ability to add content after the title, (number of birds, filtering options etc)
-        var scrollableWidget = AddCommonWidgets();
+        var scrollableWidget = AddCommonWidgets(_ =>
+        {
+            // TODO: Move to common widgets?
+        });
 
         foreach (var kd in _gameData.KakapoData)
         {

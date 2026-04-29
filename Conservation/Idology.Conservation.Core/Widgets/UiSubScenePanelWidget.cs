@@ -3,9 +3,12 @@
 public abstract class UiSubScenePanelWidget : PanelWidget
 {
 
-    protected UiSubScenePanelWidget(ITranslationService translationService)
+    protected UiSubScenePanelWidget(
+        ITranslationService translationService,
+        IGameCommandService gameCommandService)
     {
         TranslationService = translationService;
+        GameCommandService = gameCommandService;
 
         Background = Color.Gray;
         Border = Color.DarkGray;
@@ -18,10 +21,22 @@ public abstract class UiSubScenePanelWidget : PanelWidget
 
     public abstract string TitleTranslationKey { get; }
     public ITranslationService TranslationService { get; }
+    public IGameCommandService GameCommandService { get; }
 
-    protected ScrollablePanelWidget AddCommonWidgets()
+    protected ScrollablePanelWidget AddCommonWidgets(Action<BaseWidget> postTitleContentAction)
     {
-        AddChild(new LabelWidget
+        // TODO: Add row with label and child content
+        var headerRow = AddChild(new PanelWidget
+        {
+            Layout =
+            {
+                Behave = BehaveFlags.HFill,
+                Align = AlignFlags.Start,
+                Contain = ContainFlags.Row
+            }
+        });
+
+        headerRow.AddChild(new LabelWidget
         {
             TextContent = TranslationService[TitleTranslationKey],
             Foreground = Color.White,
@@ -32,6 +47,33 @@ public abstract class UiSubScenePanelWidget : PanelWidget
                 RequestedSize = new LayoutVector(0, 36)
             }
         });
+
+        headerRow.AddChild(new SpacerWidget
+        {
+            Layout =
+                {
+                    Contain = ContainFlags.Row
+                }
+        });
+
+        if (postTitleContentAction is not null)
+        {
+            postTitleContentAction(headerRow);
+        }
+
+        var closePanelButton = headerRow.AddChild(new IconButtonWidget
+        {
+            Foreground = Color.White,
+            IconTextureName = "icon-x-24",
+            Layout = new LayoutItem
+            {
+                RequestedPadding = new LayoutEdges(2.0f),
+                RequestedSize = new LayoutVector(32, 32),
+                Contain = ContainFlags.Row,
+            }
+        });
+
+        closePanelButton.OnClick += (s, e) => GameCommandService.HandleCommand(new SetScreenStateGameCommand { ScreenState = ScreenState.Default });
 
         return AddChild(new ScrollablePanelWidget
         {

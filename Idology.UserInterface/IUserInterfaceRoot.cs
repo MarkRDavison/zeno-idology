@@ -6,4 +6,6 @@ public interface IUserInterfaceRoot
     void SetBounds(LayoutVector bounds);
 
     IWidget RootWidget { get; }
+
+    ITextureManager TextureManager { get; }
 }

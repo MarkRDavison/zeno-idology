@@ -7,10 +7,13 @@ public sealed class UserInterfaceRoot : IUserInterfaceRoot
 
     private readonly IInputManager _inputManager;
 
-    public UserInterfaceRoot(IInputManager inputManager)
+    public UserInterfaceRoot(
+        IInputManager inputManager,
+        ITextureManager textureManager)
     {
         _bounds = new();
         _inputManager = inputManager;
+        TextureManager = textureManager;
     }
 
     public void Update(float delta)
@@ -47,4 +50,5 @@ public sealed class UserInterfaceRoot : IUserInterfaceRoot
             return _rootWidget;
         }
     }
+    public ITextureManager TextureManager { get; }
 }
