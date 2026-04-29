@@ -21,7 +21,7 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
         Border = Color.DarkGray;
         BorderThickness = 2.0f;
         Layout.Visibility = Visibility.Collapsed;
-        Layout.RequestedSize = new LayoutVector(512.0f, 0.0f);
+        Layout.RequestedSize = new LayoutVector(512.0f, 0.0f); // TODO: Constant
         Layout.RequestedPadding = new LayoutEdges(8.0f);
         Layout.RequestedMargin = new LayoutEdges(8.0f);
         Layout.Behave = BehaveFlags.VFill | BehaveFlags.Right;

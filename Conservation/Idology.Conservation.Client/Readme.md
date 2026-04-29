@@ -55,6 +55,21 @@ Manage staff/volunteers
 
 [Late](Wiki/Stages/Late.md)
 
+## Simulations
+
+Basically the main *thing* that happens without user interaction
+
+[Region](Wiki/Simulations/RegionSimulations.md)
+
+TODO: Tech
+
+TODO: Research
+
+TODO: Funding
+
+TODO: Politics/Public engagement
+
+
 ## Unsorted thoughts
 
 ### Technical

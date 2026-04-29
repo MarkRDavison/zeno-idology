@@ -14,4 +14,6 @@ public interface IGameDateTimeProvider
 
     void SetPauseState(bool paused);
     void SetTimeSpeed(int speed);
+
+    event EventHandler<TimeSpan> TimeIncremented;
 }

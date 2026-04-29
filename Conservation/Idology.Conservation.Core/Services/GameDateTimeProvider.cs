@@ -6,6 +6,7 @@ internal sealed class GameDateTimeProvider : IGameDateTimeProvider
 
     public void Increment(TimeSpan offset)
     {
+        TimeIncremented?.Invoke(this, offset);
         _now += offset;
     }
 
@@ -31,4 +32,6 @@ internal sealed class GameDateTimeProvider : IGameDateTimeProvider
 
     public float TimeSpeed { get; private set; } = 1.0f;
     public bool IsPaused { get; private set; }
+
+    public event EventHandler<TimeSpan> TimeIncremented = default!;
 }

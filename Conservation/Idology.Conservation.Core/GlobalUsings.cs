@@ -8,6 +8,7 @@ global using Idology.Conservation.Core.Services.GameCommands;
 global using Idology.Conservation.Core.Services.GameCommands.InfoScreen;
 global using Idology.Conservation.Core.Services.GameCommands.SetScreenState;
 global using Idology.Conservation.Core.Services.Routing;
+global using Idology.Conservation.Core.Simulation;
 global using Idology.Conservation.Core.Widgets;
 global using Idology.Conservation.Core.Widgets.InfoContextSubWidgets;
 global using Idology.Engine.Core;

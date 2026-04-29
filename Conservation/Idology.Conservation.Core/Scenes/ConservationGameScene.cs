@@ -122,6 +122,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                 var regionData = RegionModel.Create(r);
 
                 _gameData.Regions.Add(regionData.ToRegionData());
+                _gameData.RegionSimulations.Add(new RegionSimulation(regionData.RegionModelData.Name));
             }
 
             if (payload is ConservationGameScenePayload cgsp)

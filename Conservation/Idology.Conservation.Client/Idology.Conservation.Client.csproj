@@ -20,6 +20,7 @@
   <ItemGroup>
     <Folder Include="Assets\Data\" />
     <Folder Include="Assets\DevSaves\" />
+    <Folder Include="Wiki\Simulations\" />
     <Folder Include="Wiki\Seasons\" />
     <Folder Include="Wiki\Screens\" />
   </ItemGroup>

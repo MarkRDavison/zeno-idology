@@ -8,4 +8,6 @@ public sealed class ConservationGameData
 
     public List<KakapoModel> KakapoData { get; } = [];
     public List<StaffData> StaffData { get; } = [];
+
+    public List<RegionSimulation> RegionSimulations { get; } = [];
 }
