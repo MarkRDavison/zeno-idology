@@ -22,14 +22,13 @@ internal sealed class TopBarWidget : PanelWidget
         Layout.RequestedSize = new LayoutVector(0, Height);
         Layout.Contain = ContainFlags.Row;
         Layout.Behave = BehaveFlags.HFill | BehaveFlags.Top;
+        Layout.Gap = 4.0f;
 
         _gameCommandService = gameCommandService;
     }
 
     public override void PostConstructInit()
     {
-        var isFirst = true;
-
         void AddSubWidgetButton(string translationKey, ScreenState screenState)
         {
             var button = AddChild(new TextButtonWidget
@@ -42,16 +41,12 @@ internal sealed class TopBarWidget : PanelWidget
                 BorderThickness = 2.0f,
                 Layout = new LayoutItem
                 {
-                    // TODO: Replace this with a Gap/Spacing property on the parent...
-                    RequestedMargin = new LayoutEdges(isFirst ? 0.0f : 4.0f, 0.0f, 0.0f, 0.0f),
                     Behave = BehaveFlags.Center | BehaveFlags.VFill,
                     RequestedSize = new LayoutVector(128, 0)
                 }
             });
 
             button.OnClick += (s, e) => _gameCommandService.HandleCommand(new SetScreenStateGameCommand { ScreenState = screenState });
-
-            isFirst = false;
         }
 
         AddSubWidgetButton("TOP_BAR_KAKAPO_DETAILS", ScreenState.Kakapo);
@@ -60,7 +55,6 @@ internal sealed class TopBarWidget : PanelWidget
         AddSubWidgetButton("TOP_BAR_TECHNOLOGY_DETAILS", ScreenState.Technology);
         AddSubWidgetButton("TOP_BAR_FUNDING_DETAILS", ScreenState.Funding);
 
-        isFirst = false;
         // SPACER
         AddChild(new PanelWidget
         {
@@ -79,7 +73,6 @@ internal sealed class TopBarWidget : PanelWidget
             BorderThickness = 2.0f,
             Layout = new LayoutItem
             {
-                RequestedMargin = new LayoutEdges(0.0f, 0.0f, 2.0f, 0.0f),
                 RequestedSize = new LayoutVector(156, 0),
                 Contain = ContainFlags.Row,
                 Behave = BehaveFlags.VFill

@@ -19,6 +19,8 @@ public class LayoutItem
     public LayoutEdges RequestedPadding = new();
     public LayoutVector RequestedSize = new();
 
+    public float Gap { get; set; } = 0.0f;
+
     public LayoutRect Rect = new();
 
     /// <summary>
@@ -91,7 +93,7 @@ public class LayoutItem
         get
         {
             var child = FirstChild;
-            while (child != null)
+            while (child is not null)
             {
                 yield return child;
                 child = child.NextSibling;
@@ -104,7 +106,7 @@ public class LayoutItem
         get
         {
             var item = this;
-            while (item.NextSibling != null)
+            while (item.NextSibling is not null)
             {
                 yield return item.NextSibling;
                 item = item.NextSibling;
@@ -165,7 +167,7 @@ public class LayoutItem
         Debug.Assert(child != this, "Must not be the same item");
         Debug.Assert(!child.IsInserted, "Must not already be inserted");
 
-        if (FirstChild == null)
+        if (FirstChild is null)
         {
             // We have no existing children, make inserted item the first child.
             FirstChild = child;
@@ -187,7 +189,7 @@ public class LayoutItem
         LayoutItem? lastChild = null;
         foreach (var child in children)
         {
-            if (lastChild == null)
+            if (lastChild is null)
             {
                 AddChild(child);
             }
@@ -307,13 +309,26 @@ public class LayoutItem
     private float CalcStackedSize(int dim)
     {
         int wdim = dim + 2;
-        float need_size = 0;
+
+        float needSize = 0;
+        int count = 0;
+
         foreach (var child in Children.Where(c => c.ImpactsLayout))
         {
-            need_size += child.Rect[dim] + child.Rect[wdim] + child.RequestedMargin[wdim];
+            needSize +=
+                child.Rect[dim] +
+                child.Rect[wdim] +
+                child.RequestedMargin[wdim];
+
+            count++;
         }
 
-        return RequestedPadding.GetDimension(dim) + need_size;
+        if (count > 1)
+        {
+            needSize += Gap * (count - 1);
+        }
+
+        return RequestedPadding.GetDimension(dim) + needSize;
     }
 
     private float CalcOverlayedSize(int dim)
@@ -333,19 +348,40 @@ public class LayoutItem
     private float CalcWrappedStackedSize(int dim)
     {
         int wdim = dim + 2;
-        float need_size = 0;
-        float need_size2 = 0;
+
+        float lineSize = 0;
+        float maxLine = 0;
+        int lineCount = 0;
+
         foreach (var child in Children.Where(c => c.ImpactsLayout))
         {
             if (child.Behave.HasFlag(BehaveFlags.Break))
             {
-                need_size2 = Math.Max(need_size2, need_size);
-                need_size = 0;
+                if (lineCount > 1)
+                {
+                    lineSize += Gap * (lineCount - 1);
+                }
+
+                maxLine = Math.Max(maxLine, lineSize);
+
+                lineSize = 0;
+                lineCount = 0;
             }
-            need_size += child.Rect[dim] + child.Rect[wdim] + child.RequestedMargin[wdim];
+
+            lineSize +=
+                child.Rect[dim] +
+                child.Rect[wdim] +
+                child.RequestedMargin[wdim];
+
+            lineCount++;
         }
 
-        return RequestedPadding.GetDimension(dim) + Math.Max(need_size2, need_size);
+        if (lineCount > 1)
+        {
+            lineSize += Gap * (lineCount - 1);
+        }
+
+        return RequestedPadding.GetDimension(dim) + Math.Max(maxLine, lineSize);
     }
 
     private float CalcWrappedOverlayedSize(int dim)
@@ -426,57 +462,73 @@ public class LayoutItem
         float max_x2 = Rect[dim] + space + RequestedPadding[dim];
 
         var startChild = FirstChild;
-        while (startChild != null)
+
+        while (startChild is not null)
         {
             float used = 0;
-            int count = 0; // count of fillers
-            int squeezed_count = 0; // count of squeezable elements
+            int count = 0;             // fillers (HFill)
+            int squeezed_count = 0;    // squeezable items
             int total = 0;
             bool hardbreak = false;
-            // first pass: count items that need to be expanded,
-            // and the space that is used
+
             var child = startChild;
             LayoutItem? endChild = null;
-            while (child != null)
+
+            bool firstItem = true;
+
+            // -------------------------------------------------
+            // FIRST PASS — measure used space
+            // -------------------------------------------------
+            while (child is not null)
             {
                 if (child.ImpactsLayout)
                 {
                     var flags = (BehaveFlags)((uint)child.Behave >> dim);
                     var fflags = (ItemFlags)((uint)child.ItemFlagsHFixed >> dim);
+
                     float extend = used;
+
+                    // GAP
+                    if (!firstItem)
+                    {
+                        extend += Gap;
+                    }
+
                     if (flags.HasFlag(BehaveFlags.HFill))
                     {
                         count++;
-                        extend += child.Rect[dim] + child.RequestedMargin[wdim];
+                        extend += child.Rect[dim]
+                               + child.RequestedMargin[wdim];
                     }
                     else
                     {
                         if (!fflags.HasFlag(ItemFlags.HFixed))
-                        {
                             squeezed_count++;
-                        }
-                        extend += child.Rect[dim] + child.Rect[wdim] + child.RequestedMargin[wdim];
+
+                        extend += child.Rect[dim]
+                               + child.Rect[wdim]
+                               + child.RequestedMargin[wdim];
                     }
-                    // wrap on end of line or manual flag
-                    if (wrap && total > 0 && ((extend > space) || child.Behave.HasFlag(BehaveFlags.Break)))
+
+                    // wrapping logic
+                    if (wrap && total > 0 &&
+                        ((extend > space) ||
+                         child.Behave.HasFlag(BehaveFlags.Break)))
                     {
                         endChild = child;
                         hardbreak = child.Behave.HasFlag(BehaveFlags.Break);
-                        // add marker for subsequent queries
+
+                        // preserve break marker
                         child._flags |= (uint)BehaveFlags.Break;
                         break;
                     }
-                    else
-                    {
-                        used = extend;
-                        child = child.NextSibling;
-                    }
+
+                    used = extend;
                     total++;
+                    firstItem = false;
                 }
-                else
-                {
-                    child = child.NextSibling;
-                }
+
+                child = child.NextSibling;
             }
 
             float extra_space = space - used;
@@ -496,9 +548,7 @@ public class LayoutItem
                     switch (Align)
                     {
                         case AlignFlags.Justify:
-                            // justify when not wrapping or not in last line,
-                            // or not manually breaking
-                            if (!wrap || ((endChild != null) && !hardbreak))
+                            if (!wrap || ((endChild is not null) && !hardbreak))
                             {
                                 spacer = extra_space / (total - 1);
                             }
@@ -517,33 +567,38 @@ public class LayoutItem
                     }
                 }
             }
-            else if (!wrap && (squeezed_count > 0))
+            else if (!wrap && squeezed_count > 0)
             {
-                // In floating point, it's possible to end up with some small negative
-                // value for extra_space, while also have a 0.0 squeezed_count. This
-                // would cause divide by zero. Instead, we'll check to see if
-                // squeezed_count is > 0. I believe this produces the same results as
-                // the original oui int-only code. However, I don't have any tests for
-                // it, so I'll leave it if-def'd for now.
                 eater = extra_space / squeezed_count;
             }
 
-            // distribute width among items
+            // -------------------------------------------------
+            // SECOND PASS — assign positions/sizes
+            // -------------------------------------------------
             float x = Rect[dim] + RequestedPadding[dim];
-            float x1;
-            // second pass: distribute and rescale
             child = startChild;
-            while (child != endChild && child != null)
+
+            firstItem = true;
+
+            while (child != endChild && child is not null)
             {
                 if (child.ImpactsLayout)
                 {
-                    float ix0, ix1;
                     var flags = (BehaveFlags)((uint)child.Behave >> dim);
                     var fflags = (ItemFlags)((uint)child.ItemFlagsHFixed >> dim);
 
+                    // GAP
+                    if (!firstItem)
+                    {
+                        x += Gap;
+                    }
+
                     x += child.Rect[dim] + extra_margin;
+
+                    float x1;
+
                     if (flags.HasFlag(BehaveFlags.HFill))
-                    { // grow
+                    {
                         x1 = x + filler;
                     }
                     else if (fflags.HasFlag(ItemFlags.HFixed))
@@ -551,24 +606,24 @@ public class LayoutItem
                         x1 = x + child.Rect[wdim];
                     }
                     else
-                    { // squeeze
+                    {
                         x1 = x + Math.Max(0.0f, child.Rect[wdim] + eater);
                     }
 
-                    ix0 = x;
-                    if (wrap)
-                    {
-                        ix1 = Math.Min(max_x2 - child.RequestedMargin[wdim], x1);
-                    }
-                    else
-                    {
-                        ix1 = x1;
-                    }
-                    child.Rect[dim] = ix0; // pos
-                    child.Rect[wdim] = ix1 - ix0; // size
+                    float ix0 = x;
+                    float ix1 = wrap
+                        ? Math.Min(max_x2 - child.RequestedMargin[wdim], x1)
+                        : x1;
+
+                    child.Rect[dim] = ix0;
+                    child.Rect[wdim] = ix1 - ix0;
+
                     x = x1 + child.RequestedMargin[wdim];
                     extra_margin = spacer;
+
+                    firstItem = false;
                 }
+
                 child = child.NextSibling;
             }
 
@@ -635,7 +690,7 @@ public class LayoutItem
     {
         int wdim = dim + 2;
         var item = startItem;
-        while (item != endItem && item != null)
+        while (item != endItem && item is not null)
         {
             if (item.ImpactsLayout)
             {

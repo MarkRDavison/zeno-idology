@@ -6,8 +6,8 @@ public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
     private readonly IGameDateTimeProvider _gameDateTimeProvider;
 
     public KakapoDetailsUiSubScenePanelWidget(
-        ConservationGameData gameData,
         ITranslationService translationService,
+        ConservationGameData gameData,
         IGameDateTimeProvider gameDateTimeProvider
     ) : base(
         translationService)
@@ -34,7 +34,6 @@ public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
                 Layout =
                 {
                     RequestedPadding = new LayoutEdges(8.0f),
-                    RequestedMargin = new LayoutEdges(0.0f, 0.0f, 0.0f, 2.0f), // TODO: REPLACE WITH PARENT GAP
                     Behave = BehaveFlags.HFill,
                     Contain = ContainFlags.Column,
                     ItemFlags = ItemFlags.VFixed

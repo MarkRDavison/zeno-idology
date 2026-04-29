@@ -40,6 +40,7 @@ public abstract class UiSubScenePanelWidget : PanelWidget
             BorderThickness = 2.0f,
             Layout =
             {
+                Gap = 2.0f,
                 Behave = BehaveFlags.Fill,
                 Contain = ContainFlags.Column,
                 Align = AlignFlags.Start,

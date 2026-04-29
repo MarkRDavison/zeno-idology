@@ -95,7 +95,12 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
                 _gameData.InteractionData.ScreenState = ScreenState.Region;
                 _gameData.ActiveRegion = _gameData.Regions[_gameData.InteractionData.DefaultScreenData.SelectedRegion.Value];
 
-                _gameCommandService.HandleCommand(new SetInfoScreenGameCommand { Open = true, State = InfoState.Region, Context = new RegionInfoScreenPayload(_gameData.InteractionData.DefaultScreenData.SelectedRegion.Value, false) });
+                _gameCommandService.HandleCommand(new SetInfoScreenGameCommand
+                {
+                    Open = true,
+                    State = InfoState.Region,
+                    Context = new RegionInfoScreenPayload(_gameData.InteractionData.DefaultScreenData.SelectedRegion.Value, false)
+                });
             }
         }
         else if (_gameData.InteractionData.ScreenState is ScreenState.Region)

@@ -1219,4 +1219,290 @@ public class TestCases
             Assert.AreEqual(new(0, expectedY, 100, 50), children[i].Rect, $"Child {i} position mismatch");
         }
     }
+
+    [TestMethod]
+    public void SimpleColumnGapWorks()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(100, 110),
+            Contain = ContainFlags.Column,
+            Gap = 10.0f
+        };
+
+        var c1 = new LayoutItem
+        {
+            Behave = BehaveFlags.Fill
+        };
+
+        var c2 = new LayoutItem
+        {
+            Behave = BehaveFlags.Fill
+        };
+
+        root.AddChildren([c1, c2]);
+
+        root.Run();
+
+        Assert.AreEqual(new LayoutRect(0, 0, 100, 110), root.Rect);
+        Assert.AreEqual(new LayoutRect(0, 0, 100, 50), c1.Rect);
+        Assert.AreEqual(new LayoutRect(0, 60, 100, 50), c2.Rect);
+    }
+
+    [TestMethod]
+    public void SimpleRowGapWorks()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(110, 100),
+            Contain = ContainFlags.Row,
+            Gap = 10.0f
+        };
+
+        var c1 = new LayoutItem
+        {
+            Behave = BehaveFlags.Fill
+        };
+
+        var c2 = new LayoutItem
+        {
+            Behave = BehaveFlags.Fill
+        };
+
+        root.AddChildren([c1, c2]);
+
+        root.Run();
+
+        Assert.AreEqual(new LayoutRect(0, 0, 110, 100), root.Rect);
+        Assert.AreEqual(new LayoutRect(0, 0, 50, 100), c1.Rect);
+        Assert.AreEqual(new LayoutRect(60, 0, 50, 100), c2.Rect);
+    }
+
+    [TestMethod]
+    public void GapNotAppliedToEdges()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(100, 100),
+            Contain = ContainFlags.Column,
+            Align = AlignFlags.Start,
+            Gap = 10
+        };
+
+        var c1 = new LayoutItem { RequestedSize = new(100, 10) };
+        var c2 = new LayoutItem { RequestedSize = new(100, 10) };
+
+        root.AddChildren([c1, c2]);
+
+        root.Run();
+
+        Assert.AreEqual(0, c1.Rect.Y);
+        Assert.AreEqual(20, c2.Rect.Y); // 10 height + 10 gap
+    }
+
+    [TestMethod]
+    public void GapIgnoredWithSingleChild()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(100, 100),
+            Contain = ContainFlags.Column,
+            Gap = 50
+        };
+
+        var child = new LayoutItem { Behave = BehaveFlags.Fill };
+
+        root.AddChild(child);
+
+        root.Run();
+
+        Assert.AreEqual(new LayoutRect(0, 0, 100, 100), child.Rect);
+    }
+
+    [TestMethod]
+    public void GapSkipsCollapsedChildren()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(100, 120),
+            Contain = ContainFlags.Column,
+            Align = AlignFlags.Start,
+            Gap = 10
+        };
+
+        var c1 = new LayoutItem { RequestedSize = new(100, 20) };
+        var collapsed = new LayoutItem
+        {
+            RequestedSize = new(100, 20),
+            Visibility = Visibility.Collapsed
+        };
+        var c2 = new LayoutItem { RequestedSize = new(100, 20) };
+
+        root.AddChildren([c1, collapsed, c2]);
+
+        root.Run();
+
+        // Only one gap should exist
+        Assert.AreEqual(30, c2.Rect.Y);
+    }
+
+    [TestMethod]
+    public void MultipleGapsAccumulate()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(100, 160),
+            Contain = ContainFlags.Column,
+            Align = AlignFlags.Start,
+            Gap = 10
+        };
+
+        var items = Enumerable.Range(0, 4)
+            .Select(_ => new LayoutItem { RequestedSize = new(100, 20) })
+            .ToArray();
+
+        root.AddChildren(items);
+
+        root.Run();
+
+        Assert.AreEqual(0, items[0].Rect.Y);
+        Assert.AreEqual(30, items[1].Rect.Y);
+        Assert.AreEqual(60, items[2].Rect.Y);
+        Assert.AreEqual(90, items[3].Rect.Y);
+    }
+
+    [TestMethod]
+    public void GapRespectsPadding()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(100, 120),
+            Contain = ContainFlags.Column,
+            Align = AlignFlags.Start,
+            Gap = 10,
+            RequestedPadding = new LayoutEdges(5)
+        };
+
+        var c1 = new LayoutItem { RequestedSize = new(100, 20) };
+        var c2 = new LayoutItem { RequestedSize = new(100, 20) };
+
+        root.AddChildren([c1, c2]);
+
+        root.Run();
+
+        Assert.AreEqual(5, c1.Rect.Y);
+        Assert.AreEqual(35, c2.Rect.Y); // padding + height + gap
+    }
+
+    [TestMethod]
+    public void GapAndJustifyWorkTogether()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(300, 100),
+            Contain = ContainFlags.Row,
+            Align = AlignFlags.Justify,
+            Gap = 10
+        };
+
+        var c1 = new LayoutItem { RequestedSize = new(50, 100) };
+        var c2 = new LayoutItem { RequestedSize = new(50, 100) };
+        var c3 = new LayoutItem { RequestedSize = new(50, 100) };
+
+        root.AddChildren([c1, c2, c3]);
+
+        root.Run();
+
+        Assert.IsTrue(c2.Rect.X > c1.Rect.X + c1.Rect.Width);
+        Assert.IsTrue(c3.Rect.X > c2.Rect.X + c2.Rect.Width);
+    }
+
+    [TestMethod]
+    public void GapWorksWithWrap()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(100, 200),
+            Contain = ContainFlags.Row | ContainFlags.Wrap,
+            Gap = 10
+        };
+
+        var items = Enumerable.Range(0, 4)
+            .Select(_ => new LayoutItem { RequestedSize = new(45, 20) })
+            .ToArray();
+
+        root.AddChildren(items);
+
+        root.Run();
+
+        // first row
+        Assert.AreEqual(0, items[0].Rect.Y);
+        Assert.AreEqual(0, items[1].Rect.Y);
+
+        // second row must advance vertically
+        Assert.IsTrue(items[2].Rect.Y > items[0].Rect.Y);
+    }
+
+    [TestMethod]
+    public void GapReducesAvailableFillSpace()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(110, 100),
+            Contain = ContainFlags.Row,
+            Gap = 10
+        };
+
+        var c1 = new LayoutItem { Behave = BehaveFlags.Fill };
+        var c2 = new LayoutItem { Behave = BehaveFlags.Fill };
+
+        root.AddChildren([c1, c2]);
+
+        root.Run();
+
+        Assert.AreEqual(50, c1.Rect.Width);
+        Assert.AreEqual(50, c2.Rect.Width);
+    }
+
+    [TestMethod]
+    public void ZeroGapBehavesLikeOriginalLayout()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(100, 100),
+            Contain = ContainFlags.Column,
+            Gap = 0
+        };
+
+        var c1 = new LayoutItem { Behave = BehaveFlags.Fill };
+        var c2 = new LayoutItem { Behave = BehaveFlags.Fill };
+
+        root.AddChildren([c1, c2]);
+
+        root.Run();
+
+        Assert.AreEqual(50, c1.Rect.Height);
+        Assert.AreEqual(50, c2.Rect.Height);
+    }
+
+    [TestMethod]
+    public void LargeGapCanForceSqueeze()
+    {
+        var root = new LayoutItem
+        {
+            RequestedSize = new(100, 60),
+            Contain = ContainFlags.Column,
+            Gap = 40
+        };
+
+        var c1 = new LayoutItem { RequestedSize = new(100, 30) };
+        var c2 = new LayoutItem { RequestedSize = new(100, 30) };
+
+        root.AddChildren([c1, c2]);
+
+        root.Run();
+
+        Assert.IsTrue(c1.Rect.Height >= 0);
+        Assert.IsTrue(c2.Rect.Height >= 0);
+    }
 }

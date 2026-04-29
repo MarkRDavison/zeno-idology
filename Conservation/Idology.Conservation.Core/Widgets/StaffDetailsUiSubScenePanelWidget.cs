@@ -29,7 +29,6 @@ public sealed class StaffDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
                 Layout =
                 {
                     RequestedPadding = new LayoutEdges(8.0f),
-                    RequestedMargin = new LayoutEdges(0.0f, 0.0f, 0.0f, 2.0f), // TODO: REPLACE WITH PARENT GAP
                     Behave = BehaveFlags.HFill,
                     Contain = ContainFlags.Row,
                     Align = AlignFlags.Start,
