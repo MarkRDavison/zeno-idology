@@ -15,9 +15,6 @@ public sealed class FundingUiSubScenePanelWidget : UiSubScenePanelWidget
 
     public override void PostConstructInit()
     {
-        var scrollableWidget = AddCommonWidgets(_ =>
-        {
-
-        });
+        var scrollableWidget = AddCommonWidgets();
     }
 }

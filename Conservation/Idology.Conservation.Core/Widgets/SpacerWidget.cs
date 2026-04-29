@@ -2,9 +2,10 @@
 
 public class SpacerWidget : PanelWidget
 {
-    public SpacerWidget()
+    public SpacerWidget(ContainFlags containFlags)
     {
         Layout.RequestedSize = new LayoutVector(0, 0);
         Layout.Behave = BehaveFlags.Fill;
+        Layout.Contain = containFlags;
     }
 }

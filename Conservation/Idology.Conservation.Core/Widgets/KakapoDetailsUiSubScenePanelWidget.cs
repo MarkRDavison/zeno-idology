@@ -23,10 +23,7 @@ public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
     // TODO: localization...
     public override void PostConstructInit()
     {
-        var scrollableWidget = AddCommonWidgets(_ =>
-        {
-            // TODO: Move to common widgets?
-        });
+        var scrollableWidget = AddCommonWidgets();
 
         foreach (var kd in _gameData.KakapoData)
         {

@@ -23,9 +23,8 @@ public abstract class UiSubScenePanelWidget : PanelWidget
     public ITranslationService TranslationService { get; }
     public IGameCommandService GameCommandService { get; }
 
-    protected ScrollablePanelWidget AddCommonWidgets(Action<BaseWidget> postTitleContentAction)
+    protected ScrollablePanelWidget AddCommonWidgets(Action<BaseWidget>? postTitleContentAction = null)
     {
-        // TODO: Add row with label and child content
         var headerRow = AddChild(new PanelWidget
         {
             Layout =
@@ -48,13 +47,7 @@ public abstract class UiSubScenePanelWidget : PanelWidget
             }
         });
 
-        headerRow.AddChild(new SpacerWidget
-        {
-            Layout =
-                {
-                    Contain = ContainFlags.Row
-                }
-        });
+        headerRow.AddChild(new SpacerWidget(ContainFlags.Row));
 
         if (postTitleContentAction is not null)
         {
@@ -64,12 +57,13 @@ public abstract class UiSubScenePanelWidget : PanelWidget
         var closePanelButton = headerRow.AddChild(new IconButtonWidget
         {
             Foreground = Color.White,
-            IconTextureName = "icon-x-24",
+            IconTextureName = "icon-x-24", // TODO: Constant...
             Layout = new LayoutItem
             {
                 RequestedPadding = new LayoutEdges(2.0f),
                 RequestedSize = new LayoutVector(32, 32),
                 Contain = ContainFlags.Row,
+                Behave = BehaveFlags.Top | BehaveFlags.Right
             }
         });
 

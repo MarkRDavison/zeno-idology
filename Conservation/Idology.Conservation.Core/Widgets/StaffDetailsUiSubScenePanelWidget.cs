@@ -19,10 +19,7 @@ public sealed class StaffDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
 
     public override void PostConstructInit()
     {
-        var scrollableWidget = AddCommonWidgets(_ =>
-        {
-
-        });
+        var scrollableWidget = AddCommonWidgets();
 
         foreach (var s in _gameData.StaffData)
         {
