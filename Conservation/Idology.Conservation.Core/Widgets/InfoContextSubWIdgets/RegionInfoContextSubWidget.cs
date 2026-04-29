@@ -1,4 +1,4 @@
-﻿namespace Idology.Conservation.Core.Widgets.InfoContextSubWIdgets;
+﻿namespace Idology.Conservation.Core.Widgets.InfoContextSubWidgets;
 
 internal sealed class RegionInfoContextSubWidget : BaseWidget
 {

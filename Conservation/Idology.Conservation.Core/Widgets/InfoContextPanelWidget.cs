@@ -1,6 +1,4 @@
-﻿using Idology.Conservation.Core.Widgets.InfoContextSubWIdgets;
-
-namespace Idology.Conservation.Core.Widgets;
+﻿namespace Idology.Conservation.Core.Widgets;
 
 internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
 {

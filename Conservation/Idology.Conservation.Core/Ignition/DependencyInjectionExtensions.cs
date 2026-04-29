@@ -1,6 +1,4 @@
-﻿using Idology.Conservation.Core.Widgets.InfoContextSubWIdgets;
-
-namespace Idology.Conservation.Core.Ignition;
+﻿namespace Idology.Conservation.Core.Ignition;
 
 public static class DependencyInjectionExtensions
 {
