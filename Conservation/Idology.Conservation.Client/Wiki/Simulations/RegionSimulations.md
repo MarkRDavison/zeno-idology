@@ -91,6 +91,12 @@ This is everything else that the Kakapo eat.
 ### Misc thoughts
 
 When Kakapo are simulated and they move around, they may find a situation where they cannot all be distributed in such a way that they all have as much space as they need.
+
 Different Kakapo might want more range, be more adventurous, be more fearful/fearless.
+
 If they cannot get all the space they need, and they are fearful, and their neighbours are fearless, they may not have enough food.
 Alternatively for the opposite they might bully other Kakapo.
+
+Different terrain can influence how much territory a Kakapo wants, and what shape, maybe they have a distance they are prepared to cover, but if there are cliffs/rivers it reduces that?
+
+Desired territory can be influenced based on food availability, rocky places aren't that desirable.

@@ -37,7 +37,7 @@ public sealed class ConservationSimulationTestScene : ConservationScene<Conserva
 
         _camera = new ConservationGameCamera(_inputManager)
         {
-            // TODO: Better way of applying defaults...
+            // TODO: Better way of applying defaults... maybe in world coords not screen ones?
             Target = new Vector2(1400, 900),
             Offset = new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2),
             Zoom = 0.4f
@@ -50,7 +50,7 @@ public sealed class ConservationSimulationTestScene : ConservationScene<Conserva
         {
             if (y != 0 && y != Height - 1)
             {
-                _kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(Width / 2 + Random.Shared.Next(-5, 5), y)));
+                _kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(Width / 2 + Random.Shared.Next(-Width / 3, Width / 3), y)));
             }
 
             for (int x = 0; x < Width; ++x)
