@@ -10,61 +10,49 @@ static class IslandRelaxation
         int width,
         int height)
     {
-        const int MAX = 4;
+        const int MAX = 5;
 
         for (int it = 0; it < iterations; it++)
         {
             var occupationScore = new Dictionary<Vector2, int>();
-            var occupied = new HashSet<Vector2>();
 
-            foreach (var e in entities)
+            foreach (var startKakapo in entities)
             {
-                occupationScore[e.CurrentLocation] = MAX;
-                occupied.Add(e.CurrentLocation);
-            }
+                var distanceMap = new Dictionary<Vector2, int> { { startKakapo.CurrentLocation, 0 } };
+                var queueForDistance = new Queue<Vector2>(new[] { startKakapo.CurrentLocation });
 
-            var queue = new Queue<Vector2>();
-            foreach (var e in entities)
-            {
-                queue.Enqueue(e.CurrentLocation);
-            }
-
-            var distanceMap = new Dictionary<Vector2, int>();
-            var queueForDistance = new Queue<Vector2>();
-
-            foreach (var e in entities)
-            {
-                distanceMap[e.CurrentLocation] = 0;
-                queueForDistance.Enqueue(e.CurrentLocation);
-            }
-
-            while (queueForDistance.Count > 0)
-            {
-                var current = queueForDistance.Dequeue();
-                var currentDistance = distanceMap[current];
-
-                var neighbors = Neighbours(current, rng);
-                foreach (var neighbor in neighbors)
+                while (queueForDistance.Count > 0)
                 {
-                    if (validCells.Contains(neighbor) && !distanceMap.ContainsKey(neighbor))
+                    var current = queueForDistance.Dequeue();
+                    var currentDistance = distanceMap[current];
+
+                    var neighbors = Neighbours(current, rng);
+                    foreach (var neighbor in neighbors)
                     {
-                        distanceMap[neighbor] = currentDistance + 1;
-                        queueForDistance.Enqueue(neighbor);
-                    }
-                    else if (validCells.Contains(neighbor) && distanceMap.ContainsKey(neighbor) && currentDistance + 1 < distanceMap[neighbor])
-                    {
-                        distanceMap[neighbor] = currentDistance + 1;
-                        queueForDistance.Enqueue(neighbor);
+                        if (validCells.Contains(neighbor) && (!distanceMap.ContainsKey(neighbor) || currentDistance + 1 < distanceMap[neighbor]))
+                        {
+                            distanceMap[neighbor] = currentDistance + 1;
+                            queueForDistance.Enqueue(neighbor);
+                        }
                     }
                 }
-            }
 
-            foreach (var kvp in distanceMap)
-            {
-                var location = kvp.Key;
-                var distance = kvp.Value;
-                var score = Math.Max(0, MAX - distance);
-                occupationScore[location] = score;
+                foreach (var kvp in distanceMap)
+                {
+                    var location = kvp.Key;
+                    var distance = kvp.Value;
+
+                    var score = Math.Max(0, MAX - distance);
+
+                    if (occupationScore.ContainsKey(location))
+                    {
+                        occupationScore[location] += score;
+                    }
+                    else
+                    {
+                        occupationScore[location] = score;
+                    }
+                }
             }
 
             for (int y = 0; y < height; ++y)
@@ -75,7 +63,11 @@ static class IslandRelaxation
                     {
                         if (score == 0)
                         {
-                            Console.Write(" . ");
+                            Console.Write("  . ");
+                        }
+                        else if (score < 10)
+                        {
+                            Console.Write("  {0} ", score);
                         }
                         else
                         {
@@ -84,9 +76,10 @@ static class IslandRelaxation
                     }
                     else
                     {
-                        Console.Write(" . ");
+                        Console.Write("  . ");
                     }
                 }
+
                 Console.WriteLine();
             }
         }

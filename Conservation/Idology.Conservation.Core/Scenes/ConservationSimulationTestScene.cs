@@ -61,17 +61,17 @@ public sealed class ConservationSimulationTestScene : ConservationScene<Conserva
                 _tiles.Add(new Vector2(x, y), tileType);
             }
         }
-        const int Other = 8;
+        const int Other = 11;
 
         _kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(Other, Other)));
         _kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(Width - Other, Other)));
         _kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(Other, Height - Other)));
         _kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(Width - Other, Height - Other)));
 
-        _kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(12, 12)));
-        _kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(13, 12)));
-        _kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(12, 13)));
-        _kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(13, 13)));
+        //_kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(12, 12)));
+        //_kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(13, 12)));
+        //_kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(12, 13)));
+        //_kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(13, 13)));
     }
 
     public override void Update(float delta)
