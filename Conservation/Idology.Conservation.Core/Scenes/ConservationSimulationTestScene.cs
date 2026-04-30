@@ -46,6 +46,10 @@ public sealed class ConservationSimulationTestScene : ConservationScene<Conserva
 
     public override void Init(IScenePayload<ConservationSimulationTestScene>? payload)
     {
+        iterations = 0;
+        _kakapo.Clear();
+        _validCells.Clear();
+        _tiles.Clear();
         for (int y = 0; y < Height; ++y)
         {
             if (y != 0 && y != Height - 1)
@@ -79,10 +83,15 @@ public sealed class ConservationSimulationTestScene : ConservationScene<Conserva
         if (_inputManager.HandleActionIfInvoked(Constants.Action_Shortcut_Kakapo))
         {
             iterations = 20;
+            iterationElapsed = 0;
+        }
+        else if (_inputManager.HandleActionIfInvoked(Constants.Action_Shortcut_Staff))
+        {
+            Init(null);
         }
         else if (_inputManager.HandleActionIfInvoked(Constants.Action_PlayPause))
         {
-            IslandRelaxation.Relax(_kakapo, _validCells, 1, Random.Shared, Width, Height);
+            KakapoDistribution.SpreadOut(_kakapo, _validCells, 1, Random.Shared, Width, Height, 6);
         }
 
         if (iterations > 0)
@@ -93,7 +102,7 @@ public sealed class ConservationSimulationTestScene : ConservationScene<Conserva
             {
                 iterations--;
                 iterationElapsed -= iterDelta;
-                if (!IslandRelaxation.Relax(_kakapo, _validCells, 1, Random.Shared, Width, Height))
+                if (!KakapoDistribution.SpreadOut(_kakapo, _validCells, 1, Random.Shared, Width, Height, 6))
                 {
                     iterations = 0;
                 }

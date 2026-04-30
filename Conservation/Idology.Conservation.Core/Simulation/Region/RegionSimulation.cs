@@ -15,12 +15,26 @@ public sealed class RegionSimulation : ISimulationBase
 
     public void Simulate(TimeSpan timespan)
     {
-        // TODO: Add id to region
-        Console.WriteLine("Simulating Kakapo in region: {0}", _gameData.Regions.First(_ => _.Id == RegionId).Name);
-        foreach (var simulatedKakapo in _gameData.SimulatedKakapo.Where(_ => _.RegionId == RegionId))
+        HashSet<Vector2> _validCells = [];
+
+        var region = _gameData.Regions.First(_ => _.Id == RegionId);
+
+        for (int y = 0; y < region.Height; ++y)
         {
-            var kakapo = _gameData.KakapoData.First(_ => _.Id == simulatedKakapo.KakapoId);
-            Console.WriteLine(" - {0}", kakapo.Name);
+            for (int x = 0; x < region.Width; ++x)
+            {
+                var tile = region.Tiles[y * region.Width + x];
+
+                // TODO: Helper fxn for whether a tile is valid for a kakapo to be on???
+                if (tile.TileType is TileType.Water or TileType.Beach or TileType.Unset)
+                {
+                    _validCells.Add(new Vector2(x, y));
+                }
+            }
         }
+
+        var kakapoToSimulate = _gameData.SimulatedKakapo.Where(_ => _.RegionId == RegionId).ToList();
+
+        KakapoDistribution.SpreadOut(kakapoToSimulate, _validCells, 1, Random.Shared, region.Width, region.Height, 10);
     }
 }

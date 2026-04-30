@@ -1,18 +1,17 @@
 ﻿namespace Idology.Conservation.Core.Simulation.Region;
 
-static class IslandRelaxation
+static class KakapoDistribution
 {
-    public static bool Relax(
+    public static bool SpreadOut(
         List<KakapoSimulationData> entities,
         HashSet<Vector2> validCells,
         int iterations,
         Random rng,
         int width,
         int height,
+        int max,
         bool debug = false)
     {
-        const int MAX = 6;
-
         // TODO: Can this handle multiple kakapo on one tile?
         for (int it = 0; it < iterations; it++)
         {
@@ -21,7 +20,7 @@ static class IslandRelaxation
             foreach (var startKakapo in entities)
             {
                 var distanceMap = new Dictionary<Vector2, int> { { startKakapo.CurrentLocation, 0 } };
-                var queueForDistance = new Queue<Vector2>(new[] { startKakapo.CurrentLocation });
+                var queueForDistance = new Queue<Vector2>([startKakapo.CurrentLocation]);
 
                 while (queueForDistance.Count > 0)
                 {
@@ -44,7 +43,7 @@ static class IslandRelaxation
                     var location = kvp.Key;
                     var distance = kvp.Value;
 
-                    var score = Math.Max(0, MAX - distance);
+                    var score = Math.Max(0, max - distance);
 
                     if (occupationScore.ContainsKey(location))
                     {
@@ -73,13 +72,13 @@ static class IslandRelaxation
                     continue;
                 }
 
-                if (occupancy <= MAX)
+                if (occupancy <= max)
                 {
                     continue;
                 }
 
                 var neighbours = Neighbours(k.CurrentLocation, rng)
-                    .Select(_ => (_, occupationScore.ContainsKey(_) ? occupationScore[_] : -1))
+                    .Select(_ => (_, occupationScore.TryGetValue(_, out int value) ? value : -1))
                     .Where(_ => _.Item2 >= 0)
                     .OrderBy(_ => _.Item2)
                     .ToList();
@@ -158,7 +157,7 @@ static class IslandRelaxation
         return n;
     }
 
-    static void Shuffle<T>(IList<T> list, Random rng)
+    static void Shuffle<T>(List<T> list, Random rng)
     {
         for (int i = list.Count - 1; i > 0; i--)
         {

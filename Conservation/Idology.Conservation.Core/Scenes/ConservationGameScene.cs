@@ -117,22 +117,50 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
 
             List<string> regions = ["region-1", "region-2", "region-3", "region-4"];
 
+            var kakapoLocationsByRegionId = new Dictionary<int, HashSet<Vector2>>();
+
             foreach (var r in regions)
             {
                 var regionData = RegionModel.Create(r);
 
                 _gameData.Regions.Add(regionData.ToRegionData());
                 _gameData.RegionSimulations.Add(new RegionSimulation(regionData.RegionModelData.Id, _gameData));
+                kakapoLocationsByRegionId.Add(regionData.RegionModelData.Id, []);
             }
 
             foreach (var k in _gameData.KakapoData)
             {
                 if (k.RegionId is not null)
                 {
-                    _gameData.SimulatedKakapo.Add(new KakapoSimulationData(
-                        k.Id,
-                        k.RegionId.Value,
-                        new Vector2()));
+                    var invalidLocations = kakapoLocationsByRegionId[k.RegionId.Value];
+                    var region = _gameData.Regions.First(_ => _.Id == k.RegionId.Value);
+
+                    while (true)
+                    {
+                        var attemptedLocation = new Vector2(Random.Shared.Next(0, region.Width), Random.Shared.Next(0, region.Height));
+
+                        if (invalidLocations.Contains(attemptedLocation))
+                        {
+                            continue;
+                        }
+
+                        var tile = region.Tiles[(int)(attemptedLocation.Y * region.Width + attemptedLocation.X)];
+
+                        // TODO: Add an exclusion zone???
+                        invalidLocations.Add(attemptedLocation);
+
+                        if (tile.TileType is TileType.Unset or TileType.Water)
+                        {
+                            continue;
+                        }
+
+                        _gameData.SimulatedKakapo.Add(new KakapoSimulationData(
+                            k.Id,
+                            k.RegionId.Value,
+                            attemptedLocation));
+
+                        break;
+                    }
                 }
             }
 
@@ -277,6 +305,17 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                             tile.Color);
                     }
                 }
+
+                foreach (var k in _gameData.SimulatedKakapo.Where(_ => _.RegionId == activeRegion.Id))
+                {
+                    Raylib.DrawRectangle(
+                        (int)k.CurrentLocation.X * TileSize,
+                        (int)k.CurrentLocation.Y * TileSize,
+                        TileSize,
+                        TileSize,
+                        Color.DarkGreen);
+                }
+
                 Raylib.EndMode2D();
             }
         }
