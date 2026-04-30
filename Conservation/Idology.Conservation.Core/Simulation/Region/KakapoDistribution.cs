@@ -6,17 +6,88 @@ static class IslandRelaxation
         List<KakapoSimulationData> entities,
         HashSet<Vector2> validCells,
         int iterations,
-        Random rng)
+        Random rng,
+        int width,
+        int height)
     {
+        const int MAX = 4;
 
         for (int it = 0; it < iterations; it++)
         {
-            var occupied = new HashSet<Vector2>();
             var occupationScore = new Dictionary<Vector2, int>();
+            var occupied = new HashSet<Vector2>();
 
             foreach (var e in entities)
             {
+                occupationScore[e.CurrentLocation] = MAX;
                 occupied.Add(e.CurrentLocation);
+            }
+
+            var queue = new Queue<Vector2>();
+            foreach (var e in entities)
+            {
+                queue.Enqueue(e.CurrentLocation);
+            }
+
+            var distanceMap = new Dictionary<Vector2, int>();
+            var queueForDistance = new Queue<Vector2>();
+
+            foreach (var e in entities)
+            {
+                distanceMap[e.CurrentLocation] = 0;
+                queueForDistance.Enqueue(e.CurrentLocation);
+            }
+
+            while (queueForDistance.Count > 0)
+            {
+                var current = queueForDistance.Dequeue();
+                var currentDistance = distanceMap[current];
+
+                var neighbors = Neighbours(current, rng);
+                foreach (var neighbor in neighbors)
+                {
+                    if (validCells.Contains(neighbor) && !distanceMap.ContainsKey(neighbor))
+                    {
+                        distanceMap[neighbor] = currentDistance + 1;
+                        queueForDistance.Enqueue(neighbor);
+                    }
+                    else if (validCells.Contains(neighbor) && distanceMap.ContainsKey(neighbor) && currentDistance + 1 < distanceMap[neighbor])
+                    {
+                        distanceMap[neighbor] = currentDistance + 1;
+                        queueForDistance.Enqueue(neighbor);
+                    }
+                }
+            }
+
+            foreach (var kvp in distanceMap)
+            {
+                var location = kvp.Key;
+                var distance = kvp.Value;
+                var score = Math.Max(0, MAX - distance);
+                occupationScore[location] = score;
+            }
+
+            for (int y = 0; y < height; ++y)
+            {
+                for (int x = 0; x < width; ++x)
+                {
+                    if (occupationScore.TryGetValue(new Vector2(x, y), out var score))
+                    {
+                        if (score == 0)
+                        {
+                            Console.Write(" . ");
+                        }
+                        else
+                        {
+                            Console.Write(" {0} ", score);
+                        }
+                    }
+                    else
+                    {
+                        Console.Write(" . ");
+                    }
+                }
+                Console.WriteLine();
             }
         }
     }

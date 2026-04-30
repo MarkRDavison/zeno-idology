@@ -80,7 +80,7 @@ public sealed class ConservationSimulationTestScene : ConservationScene<Conserva
         {
             Console.WriteLine("ITERATE");
 
-            IslandRelaxation.Relax(_kakapo, _validCells, 1, Random.Shared);
+            IslandRelaxation.Relax(_kakapo, _validCells, 1, Random.Shared, Width, Height);
         }
 
         _inputManager.Update();
