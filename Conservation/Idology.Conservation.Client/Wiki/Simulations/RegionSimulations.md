@@ -87,3 +87,10 @@ This is mostly just the mast trees, i.e. the ones that trigger breeding
 ## Plants
 
 This is everything else that the Kakapo eat.
+
+### Misc thoughts
+
+When Kakapo are simulated and they move around, they may find a situation where they cannot all be distributed in such a way that they all have as much space as they need.
+Different Kakapo might want more range, be more adventurous, be more fearful/fearless.
+If they cannot get all the space they need, and they are fearful, and their neighbours are fearless, they may not have enough food.
+Alternatively for the opposite they might bully other Kakapo.

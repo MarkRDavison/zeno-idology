@@ -2,16 +2,18 @@
 
 static class IslandRelaxation
 {
-    public static void Relax(
+    public static bool Relax(
         List<KakapoSimulationData> entities,
         HashSet<Vector2> validCells,
         int iterations,
         Random rng,
         int width,
-        int height)
+        int height,
+        bool debug = false)
     {
-        const int MAX = 5;
+        const int MAX = 6;
 
+        // TODO: Can this handle multiple kakapo on one tile?
         for (int it = 0; it < iterations; it++)
         {
             var occupationScore = new Dictionary<Vector2, int>();
@@ -55,33 +57,85 @@ static class IslandRelaxation
                 }
             }
 
-            for (int y = 0; y < height; ++y)
+            if (debug)
             {
-                for (int x = 0; x < width; ++x)
+                DumpOccupationScore(width, height, occupationScore);
+            }
+
+            var kakapoMoved = false;
+
+            for (int i = 0; i < entities.Count; ++i)
+            {
+                var k = entities[i];
+
+                if (!occupationScore.TryGetValue(k.CurrentLocation, out var occupancy))
                 {
-                    if (occupationScore.TryGetValue(new Vector2(x, y), out var score))
-                    {
-                        if (score == 0)
-                        {
-                            Console.Write("  . ");
-                        }
-                        else if (score < 10)
-                        {
-                            Console.Write("  {0} ", score);
-                        }
-                        else
-                        {
-                            Console.Write(" {0} ", score);
-                        }
-                    }
-                    else
+                    continue;
+                }
+
+                if (occupancy <= MAX)
+                {
+                    continue;
+                }
+
+                var neighbours = Neighbours(k.CurrentLocation, rng)
+                    .Select(_ => (_, occupationScore.ContainsKey(_) ? occupationScore[_] : -1))
+                    .Where(_ => _.Item2 >= 0)
+                    .OrderBy(_ => _.Item2)
+                    .ToList();
+
+                if (!neighbours.Any())
+                {
+                    continue;
+                }
+
+                // TODO: Move to the one farthest from the worst...
+
+                var lowestTargets = neighbours.Where(_ => _.Item2 == neighbours.First().Item2).ToList();
+
+                var movingTo = lowestTargets[Random.Shared.Next(lowestTargets.Count)];
+
+                entities[i] = k with { CurrentLocation = movingTo._ };
+                kakapoMoved = true;
+            }
+
+            if (!kakapoMoved)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static void DumpOccupationScore(int width, int height, Dictionary<Vector2, int> occupationScore)
+    {
+        for (int y = 0; y < height; ++y)
+        {
+            for (int x = 0; x < width; ++x)
+            {
+                if (occupationScore.TryGetValue(new Vector2(x, y), out var score))
+                {
+                    if (score == 0)
                     {
                         Console.Write("  . ");
                     }
+                    else if (score < 10)
+                    {
+                        Console.Write("  {0} ", score);
+                    }
+                    else
+                    {
+                        Console.Write(" {0} ", score);
+                    }
                 }
-
-                Console.WriteLine();
+                else
+                {
+                    Console.Write("  . ");
+                }
             }
+
+            Console.WriteLine();
         }
     }
 

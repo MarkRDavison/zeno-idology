@@ -14,8 +14,12 @@ internal enum TileTypeEnum
 
 public sealed class ConservationSimulationTestScene : ConservationScene<ConservationSimulationTestScene>
 {
-    private const int Height = 24;
-    private const int Width = 24;
+
+    int iterations = 0;
+
+    float iterationElapsed = 0.0f;
+    private const int Height = 30;
+    private const int Width = 48;
 
     private const int TileSize = 64;
 
@@ -34,7 +38,7 @@ public sealed class ConservationSimulationTestScene : ConservationScene<Conserva
         _camera = new ConservationGameCamera(_inputManager)
         {
             // TODO: Better way of applying defaults...
-            Target = new Vector2(1280, 800),
+            Target = new Vector2(1400, 900),
             Offset = new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2),
             Zoom = 0.4f
         };
@@ -44,6 +48,11 @@ public sealed class ConservationSimulationTestScene : ConservationScene<Conserva
     {
         for (int y = 0; y < Height; ++y)
         {
+            if (y != 0 && y != Height - 1)
+            {
+                _kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(Width / 2 + Random.Shared.Next(-5, 5), y)));
+            }
+
             for (int x = 0; x < Width; ++x)
             {
                 var tileType = TileTypeEnum.Forest;
@@ -61,27 +70,36 @@ public sealed class ConservationSimulationTestScene : ConservationScene<Conserva
                 _tiles.Add(new Vector2(x, y), tileType);
             }
         }
-        const int Other = 11;
 
-        _kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(Other, Other)));
-        _kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(Width - Other, Other)));
-        _kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(Other, Height - Other)));
-        _kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(Width - Other, Height - Other)));
-
-        //_kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(12, 12)));
-        //_kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(13, 12)));
-        //_kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(12, 13)));
-        //_kakapo.Add(new KakapoSimulationData(1, 1, new Vector2(13, 13)));
     }
 
     public override void Update(float delta)
     {
-        if (_inputManager.HandleActionIfInvoked(Constants.Action_PlayPause))
+        const float iterDelta = 0.125f;
+        if (_inputManager.HandleActionIfInvoked(Constants.Action_Shortcut_Kakapo))
         {
-            Console.WriteLine("ITERATE");
-
+            iterations = 20;
+        }
+        else if (_inputManager.HandleActionIfInvoked(Constants.Action_PlayPause))
+        {
             IslandRelaxation.Relax(_kakapo, _validCells, 1, Random.Shared, Width, Height);
         }
+
+        if (iterations > 0)
+        {
+            iterationElapsed += delta;
+
+            if (iterationElapsed > iterDelta)
+            {
+                iterations--;
+                iterationElapsed -= iterDelta;
+                if (!IslandRelaxation.Relax(_kakapo, _validCells, 1, Random.Shared, Width, Height))
+                {
+                    iterations = 0;
+                }
+            }
+        }
+
 
         _inputManager.Update();
     }
