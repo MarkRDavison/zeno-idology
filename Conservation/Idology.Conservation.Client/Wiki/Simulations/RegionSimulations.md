@@ -54,7 +54,9 @@ The territory that each bird can *control* will be influenced by many things
 
 No one is nesting so they all just wander around.
 Similar territory negotiations, when they stabilise rangers might have to move feed stations etc.
-But generally this should settle down and only
+But generally this should settle down and only have slight chances of drastically changing if a bird dies or is transfered
+
+Based on when the next breeding season is expected, the birds will start getting into condition etc, and at the annual health checks the mothers might get fancy backpacks.
 
 ## Humans
 
@@ -63,6 +65,8 @@ Initially its just per person, but that might go unwieldy, so they assign roles 
 Will have different schedules in off season and breeding season.
 Different funding levels will allow more staff, which will allow more intensive nest management etc.
 Volunteers are cheap but not as good as proper rangers.
+
+As the non-breeding years pass the rangers can detect when they expect the next breeding season to occur.
 
 ## Predators
 

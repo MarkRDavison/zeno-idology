@@ -122,8 +122,21 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                 var regionData = RegionModel.Create(r);
 
                 _gameData.Regions.Add(regionData.ToRegionData());
-                _gameData.RegionSimulations.Add(new RegionSimulation(regionData.RegionModelData.Name));
+                _gameData.RegionSimulations.Add(new RegionSimulation(regionData.RegionModelData.Id, _gameData));
             }
+
+            foreach (var k in _gameData.KakapoData)
+            {
+                if (k.RegionId is not null)
+                {
+                    _gameData.SimulatedKakapo.Add(new KakapoSimulationData(
+                        k.Id,
+                        k.RegionId.Value,
+                        new Vector2()));
+                }
+            }
+
+            // TODO: Shuffle kakapo over the island when starting new game, need to persist so it can be loaded later.
 
             if (payload is ConservationGameScenePayload cgsp)
             {

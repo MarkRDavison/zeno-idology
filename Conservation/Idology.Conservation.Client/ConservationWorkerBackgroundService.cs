@@ -13,14 +13,14 @@ internal sealed class ConservationWorkerBackgroundService : IdologyWorkerBackgro
 
     protected override void BeforeStartInitialize(IServiceProvider serviceProvider)
     {
-        /*
         serviceProvider
             .GetRequiredService<ISceneService>()
             .SetScene<ConservationTitleScene>(null);
-        */
+        /*
         serviceProvider
             .GetRequiredService<ISceneService>()
             .SetScene<ConservationGameScene>(null);
+        */
     }
 
     protected override void RegisterActions(IInputManager inputManager)

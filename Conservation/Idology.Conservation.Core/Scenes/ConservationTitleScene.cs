@@ -26,6 +26,7 @@ public sealed class ConservationTitleScene : Scene<ConservationTitleScene>
 
         _buttons = [
             _translationService["TITLE_SCREEN_START"],
+            _translationService["TITLE_SCREEN_SIMULATE"],
             _translationService["TITLE_SCREEN_LOAD"],
             _translationService["TITLE_SCREEN_LOAD_DEV"],
             _translationService["TITLE_SCREEN_QUIT"],
@@ -44,7 +45,7 @@ public sealed class ConservationTitleScene : Scene<ConservationTitleScene>
         var font = _fontManager.GetFont("CALIBRIB");
         var w = Raylib.GetScreenWidth();
         var h = Raylib.GetScreenHeight();
-        var y = h - 300;
+        var y = h - 400;
         var mouse = _inputManager.GetMousePosition();
 
         for (int i = 0; i < _buttons.Length; i++)
@@ -65,12 +66,15 @@ public sealed class ConservationTitleScene : Scene<ConservationTitleScene>
                             _sceneService.SetScene(new ConservationGameScenePayload { Load = false, Dev = false });
                             break;
                         case 1:
-                            _sceneService.SetScene(new ConservationGameScenePayload { Load = true, Dev = false });
+                            _sceneService.SetScene(new ConservationSimulationTestScenePayload { });
                             break;
                         case 2:
-                            _sceneService.SetScene(new ConservationGameScenePayload { Load = true, Dev = true });
+                            _sceneService.SetScene(new ConservationGameScenePayload { Load = true, Dev = false });
                             break;
                         case 3:
+                            _sceneService.SetScene(new ConservationGameScenePayload { Load = true, Dev = true });
+                            break;
+                        case 4:
                             _application.Stop();
                             break;
                     }
@@ -96,7 +100,7 @@ public sealed class ConservationTitleScene : Scene<ConservationTitleScene>
 
         Raylib.DrawTextEx(font, title, new System.Numerics.Vector2(offset, 128), 96, 0.0f, Color.DarkGreen);
 
-        var y = h - 300;
+        var y = h - 400;
         for (int i = 0; i < _buttons.Length; i++)
         {
             var text = _buttons[i];

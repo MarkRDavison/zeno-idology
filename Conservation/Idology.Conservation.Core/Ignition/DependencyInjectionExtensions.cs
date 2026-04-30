@@ -10,6 +10,7 @@ public static class DependencyInjectionExtensions
             { "WINDOW_TITLE", "Kakapo Conservation - 0.0.1 Alpha" },
             { "TITLE_SCREEN_TITLE", "Kakapo Conservation" },
             { "TITLE_SCREEN_START", "Start" },
+            { "TITLE_SCREEN_SIMULATE", "Simulate" },
             { "TITLE_SCREEN_LOAD", "Load" },
             { "TITLE_SCREEN_LOAD_DEV", "Load Dev" },
             { "TITLE_SCREEN_QUIT", "Quit" },
@@ -29,7 +30,8 @@ public static class DependencyInjectionExtensions
         // Scenes
         services
             .RegisterScene<ConservationTitleScene>()
-            .RegisterScene<ConservationGameScene>();
+            .RegisterScene<ConservationGameScene>()
+            .RegisterScene<ConservationSimulationTestScene>();
 
         // Services
         services

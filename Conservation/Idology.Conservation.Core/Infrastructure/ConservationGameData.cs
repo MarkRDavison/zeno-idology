@@ -10,4 +10,5 @@ public sealed class ConservationGameData
     public List<StaffData> StaffData { get; } = [];
 
     public List<RegionSimulation> RegionSimulations { get; } = [];
+    public List<KakapoSimulationData> SimulatedKakapo { get; } = [];
 }

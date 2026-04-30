@@ -36,6 +36,7 @@ public sealed class RegionModel
     {
         var data = new RegionData
         {
+            Id = RegionModelData.Id,
             Name = RegionModelData.Name,
             Width = RegionImage.Width,
             Height = RegionImage.Height,
