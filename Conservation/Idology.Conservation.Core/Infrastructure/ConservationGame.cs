@@ -18,7 +18,6 @@ public sealed class ConservationGame : IDisposable
 
     private void OnTimeIncremented(object? sender, TimeSpan e)
     {
-        Console.WriteLine("Running simulation tick for duration {0}", e);
         foreach (var rs in _gameData.RegionSimulations)
         {
             rs.Simulate(e);

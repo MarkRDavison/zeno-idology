@@ -3,6 +3,7 @@
 public sealed class RegionSimulation : ISimulationBase
 {
     public int RegionId { get; }
+    private const int Separation = 18;
     private readonly ConservationGameData _gameData;
 
     public RegionSimulation(
@@ -15,6 +16,7 @@ public sealed class RegionSimulation : ISimulationBase
 
     public void Simulate(TimeSpan timespan)
     {
+        // TODO: Cache these and have some busting mechanism.
         HashSet<Vector2> _validCells = [];
 
         var region = _gameData.Regions.First(_ => _.Id == RegionId);
@@ -37,7 +39,7 @@ public sealed class RegionSimulation : ISimulationBase
 
         var kakapoToSimulate = _gameData.SimulatedKakapo.Where(_ => _.RegionId == RegionId).ToList();
 
-        if (kakapoToSimulate.Count > 0 && KakapoDistribution.SpreadOut(kakapoToSimulate, _validCells, 1, Random.Shared, region.Width, region.Height, 16))
+        if (kakapoToSimulate.Count > 0 && KakapoDistribution.SpreadOut(kakapoToSimulate, _validCells, 1, Random.Shared, region.Width, region.Height, Separation))
         {
             foreach (var k in kakapoToSimulate)
             {
