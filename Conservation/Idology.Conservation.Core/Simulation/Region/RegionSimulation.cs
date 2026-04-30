@@ -28,13 +28,26 @@ public sealed class RegionSimulation : ISimulationBase
                 // TODO: Helper fxn for whether a tile is valid for a kakapo to be on???
                 if (tile.TileType is TileType.Water or TileType.Beach or TileType.Unset)
                 {
-                    _validCells.Add(new Vector2(x, y));
+                    continue;
                 }
+
+                _validCells.Add(new Vector2(x, y));
             }
         }
 
         var kakapoToSimulate = _gameData.SimulatedKakapo.Where(_ => _.RegionId == RegionId).ToList();
 
-        KakapoDistribution.SpreadOut(kakapoToSimulate, _validCells, 1, Random.Shared, region.Width, region.Height, 10);
+        if (kakapoToSimulate.Count > 0 && KakapoDistribution.SpreadOut(kakapoToSimulate, _validCells, 1, Random.Shared, region.Width, region.Height, 16))
+        {
+            foreach (var k in kakapoToSimulate)
+            {
+                var index = _gameData.SimulatedKakapo.FindIndex(_ => _.KakapoId == k.KakapoId);
+
+                if (index >= 0)
+                {
+                    _gameData.SimulatedKakapo[index] = k;
+                }
+            }
+        }
     }
 }
