@@ -91,7 +91,7 @@ public sealed class ConservationSimulationTestScene : ConservationScene<Conserva
         }
         else if (_inputManager.HandleActionIfInvoked(Constants.Action_PlayPause))
         {
-            KakapoDistribution.SpreadOut(_kakapo, _validCells, 1, Random.Shared, Width, Height, 6);
+            KakapoDistribution.SpreadOut(_kakapo, _validCells, 1, Random.Shared, Width, Height, 6, 0.1f);
         }
 
         if (iterations > 0)
@@ -102,7 +102,7 @@ public sealed class ConservationSimulationTestScene : ConservationScene<Conserva
             {
                 iterations--;
                 iterationElapsed -= iterDelta;
-                if (!KakapoDistribution.SpreadOut(_kakapo, _validCells, 1, Random.Shared, Width, Height, 6))
+                if (!KakapoDistribution.SpreadOut(_kakapo, _validCells, 1, Random.Shared, Width, Height, 6, 0.1f))
                 {
                     iterations = 0;
                 }

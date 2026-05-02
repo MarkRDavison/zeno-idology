@@ -10,6 +10,7 @@ static class KakapoDistribution
         int width,
         int height,
         int max,
+        float wanderChance,
         bool debug = false)
     {
         // TODO: Can this handle multiple kakapo on one tile?
@@ -72,11 +73,6 @@ static class KakapoDistribution
                     continue;
                 }
 
-                if (occupancy <= max)
-                {
-                    continue;
-                }
-
                 var neighbours = Neighbours(k.CurrentLocation, rng)
                     .Select(_ => (_, occupationScore.TryGetValue(_, out int value) ? value : -1))
                     .Where(_ => _.Item2 >= 0)
@@ -88,14 +84,27 @@ static class KakapoDistribution
                     continue;
                 }
 
-                // TODO: Move to the one farthest from the worst...
+                if (occupancy > max)
+                {
+                    // TODO: Move to the one farthest from the worst...
 
-                var lowestTargets = neighbours.Where(_ => _.Item2 == neighbours.First().Item2).ToList();
+                    var lowestTargets = neighbours.Where(_ => _.Item2 == neighbours.First().Item2).ToList();
 
-                var movingTo = lowestTargets[Random.Shared.Next(lowestTargets.Count)];
+                    var movingTo = lowestTargets[Random.Shared.Next(lowestTargets.Count)];
 
-                entities[i] = k with { CurrentLocation = movingTo._ };
-                kakapoMoved = true;
+                    entities[i] = k with { CurrentLocation = movingTo._ };
+                    kakapoMoved = true;
+                }
+                else if ((float)(Random.Shared.Next(0, 100) / 100.0f) < wanderChance)
+                {
+                    const int WanderVariance = 3;
+                    var lowestTargets = neighbours.Where(_ => _.Item2 <= neighbours.First().Item2 + WanderVariance).ToList();
+
+                    var movingTo = lowestTargets[Random.Shared.Next(lowestTargets.Count)];
+
+                    entities[i] = k with { CurrentLocation = movingTo._ };
+                    kakapoMoved = true;
+                }
             }
 
             if (!kakapoMoved)

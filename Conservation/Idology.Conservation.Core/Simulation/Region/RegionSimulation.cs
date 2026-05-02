@@ -3,7 +3,7 @@
 public sealed class RegionSimulation : ISimulationBase
 {
     public int RegionId { get; }
-    private const int Separation = 18;
+    private const int Separation = 16;
     private readonly ConservationGameData _gameData;
 
     public RegionSimulation(
@@ -39,7 +39,7 @@ public sealed class RegionSimulation : ISimulationBase
 
         var kakapoToSimulate = _gameData.SimulatedKakapo.Where(_ => _.RegionId == RegionId).ToList();
 
-        if (kakapoToSimulate.Count > 0 && KakapoDistribution.SpreadOut(kakapoToSimulate, _validCells, 1, Random.Shared, region.Width, region.Height, Separation))
+        if (kakapoToSimulate.Count > 0 && KakapoDistribution.SpreadOut(kakapoToSimulate, _validCells, 1, Random.Shared, region.Width, region.Height, Separation, 0.25f))
         {
             foreach (var k in kakapoToSimulate)
             {
