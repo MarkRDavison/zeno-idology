@@ -5,9 +5,14 @@ internal sealed class RegionInfoContextSubWidget : BaseWidget
     private int _regionId;
     private readonly ConservationGameData _gameData;
 
-    public RegionInfoContextSubWidget(ConservationGameData gameData)
+    public RegionInfoContextSubWidget(
+        ConservationGameData gameData,
+        IInputManager inputManager,
+        IUserInterfaceRoot userInterfaceRoot)
     {
         _gameData = gameData;
+        InputManager = inputManager;
+        UserInterfaceRoot = userInterfaceRoot;
     }
 
     public void SetRegionId(int regionId)

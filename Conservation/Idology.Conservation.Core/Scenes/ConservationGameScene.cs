@@ -29,6 +29,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
     public ConservationGameScene(
         ConservationGameData gameData,
         ConservationGame game,
+        ConservationGameCamera camera,
         IInputManager inputManager,
         IConservationGameInteractionService conservationGameInteractionService,
         IGameDateTimeProvider gameDateTimeProvider,
@@ -45,13 +46,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         _serviceProvider = serviceProvider;
         _eventRoutingService = eventRoutingService;
 
-        _camera = new ConservationGameCamera(inputManager)
-        {
-            // TODO: Better way of applying defaults...
-            Target = new Vector2(4500, 4000),
-            Offset = new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2),
-            Zoom = 0.10f
-        };
+        _camera = camera;
     }
 
     public override void Init(IScenePayload<ConservationGameScene>? payload)
@@ -251,8 +246,6 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
             _userInterfaceRoot.SetBounds(new LayoutVector(Raylib.GetScreenWidth(), Raylib.GetScreenHeight()));
         }
 
-        _conservationGameInteractionService.Update(delta);
-
         _game.Update(delta);
 
         _userInterfaceRoot.Update(delta);
@@ -261,6 +254,8 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         {
             _camera.Update(delta);
         }
+
+        _conservationGameInteractionService.Update(delta);
 
         _inputManager.Update();
     }
@@ -279,7 +274,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
 
     private void DrawRootScene(Camera2D camera)
     {
-        const int TileSize = 64;
+        int TileSize = (int)Constants.TileSize;
 
         if (_gameData.InteractionData.ScreenState is ScreenState.Region)
         {

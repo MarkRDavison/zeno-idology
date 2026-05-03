@@ -51,6 +51,14 @@ internal sealed class ConservationWorkerBackgroundService : IdologyWorkerBackgro
 
         inputManager.RegisterAction(new()
         {
+            Name = Constants.Action_Click_Double,
+            Type = InputActionType.MOUSE,
+            State = InputActionState.RELEASE | InputActionState.DOUBLE,
+            Button = MouseButton.Left
+        });
+
+        inputManager.RegisterAction(new()
+        {
             Name = Constants.Action_Click_Context,
             Type = InputActionType.MOUSE,
             State = InputActionState.RELEASE,

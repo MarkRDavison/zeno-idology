@@ -37,6 +37,13 @@ public static class DependencyInjectionExtensions
         services
             .AddScoped<ConservationGame>()
             .AddScoped<ConservationGameData>()
+            .AddScoped(_ => new ConservationGameCamera(_.GetRequiredService<IInputManager>())
+            {
+                // TODO: Better way of applying defaults...
+                Target = new Vector2(4500, 4000),
+                Offset = new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2),
+                Zoom = 0.10f
+            })
             .AddScoped<IConservationGameInteractionService, ConservationGameInteractionService>()
             .AddScoped<IGameDateTimeProvider, GameDateTimeProvider>()
             .AddScoped<IGameCommandService, GameCommandService>()

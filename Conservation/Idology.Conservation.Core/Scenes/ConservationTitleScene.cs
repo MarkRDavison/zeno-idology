@@ -58,8 +58,10 @@ public sealed class ConservationTitleScene : Scene<ConservationTitleScene>
             if (Raylib.CheckCollisionPointRec(mouse, rect))
             {
                 _hoveredIndex = i;
+                // TODO: DO INPUT MANAGER CHECKS
                 if (Raylib.IsMouseButtonPressed(MouseButton.Left))
                 {
+                    _inputManager.MarkActionAsHandled(Constants.Action_Click);
                     switch (i)
                     {
                         case 0:

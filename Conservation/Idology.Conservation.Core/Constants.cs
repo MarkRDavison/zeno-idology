@@ -2,8 +2,11 @@
 
 public static class Constants
 {
+    public const float TileSize = 64.0f;
+
     public const string Action_Click_Start = UserInterfaceConstants.PRIMARY_CLICK_START;
     public const string Action_Click = UserInterfaceConstants.PRIMARY_CLICK_END;
+    public const string Action_Click_Double = UserInterfaceConstants.PRIMARY_CLICK_DOUBLE;
     public const string Action_Pan = "ACTION_CLICK_HOLD";
     public const string Action_Click_Context = "ACTION_CLICK_RELEASE_CONTEXT";
     public const string Action_Escape = "ACTION_KEY_ESCAPE";
