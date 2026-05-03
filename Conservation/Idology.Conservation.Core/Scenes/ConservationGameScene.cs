@@ -147,7 +147,8 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                         // TODO: Add an exclusion zone???
                         invalidLocations.Add(attemptedLocation);
 
-                        if (tile.TileType is TileType.Unset or TileType.Water)
+                        // TODO: Extension method for is valid location or something...
+                        if (tile.TileType is TileType.Unset or TileType.Water or TileType.Cliff or TileType.Beach)
                         {
                             continue;
                         }
@@ -286,6 +287,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
             if (_gameData.ActiveRegion is { } activeRegion)
             {
                 Raylib.BeginMode2D(camera);
+
                 for (int y = 0; y < activeRegion.Height; ++y)
                 {
                     for (int x = 0; x < activeRegion.Width; ++x)
@@ -313,7 +315,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                         (int)k.CurrentLocation.Y * TileSize,
                         TileSize,
                         TileSize,
-                        Color.DarkGreen);
+                        Color.Magenta);
                 }
 
                 Raylib.EndMode2D();
@@ -322,7 +324,9 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         else
         {
             Raylib.BeginMode2D(camera);
+
             int regionIdx = 0;
+
             foreach (var region in _gameData.Regions)
             {
                 for (int y = 0; y < region.Height; ++y)
@@ -364,6 +368,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
 
                 regionIdx++;
             }
+
             Raylib.EndMode2D();
         }
     }

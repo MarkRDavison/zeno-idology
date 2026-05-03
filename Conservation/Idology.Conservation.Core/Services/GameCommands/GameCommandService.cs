@@ -24,11 +24,7 @@ internal sealed class GameCommandService : IGameCommandService
 
         if (handler.CanHandleCommand(command))
         {
-            _commands.Add(() =>
-            {
-
-                handler.HandleCommand(command);
-            });
+            _commands.Add(() => handler.HandleCommand(command));
 
             return true;
         }
@@ -38,10 +34,7 @@ internal sealed class GameCommandService : IGameCommandService
 
     public void HandleEnqueuedCommands()
     {
-        foreach (var c in _commands)
-        {
-            c();
-        }
+        _commands.ForEach(c => c.Invoke());
         _commands.Clear();
     }
 }

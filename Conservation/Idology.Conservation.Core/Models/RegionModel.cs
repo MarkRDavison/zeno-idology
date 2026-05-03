@@ -59,6 +59,10 @@ public sealed class RegionModel
                 {
                     tt = TileType.Water;
                 }
+                else if (imageColor.Equals(new Color(0, 128, 0)))
+                {
+                    tt = TileType.Bush;
+                }
                 else if (imageColor.Equals(new Color(255, 255, 0)))
                 {
                     tt = TileType.Beach;

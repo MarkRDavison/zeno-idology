@@ -56,7 +56,7 @@ internal sealed class RegionSummaryInfoContextSubWidget : BaseWidget
 
         titleRow.AddChild(new SpacerWidget(ContainFlags.Row));
 
-        var openRegionButton = titleRow.AddChild(new IconButtonWidget
+        titleRow.AddChild(new IconButtonWidget
         {
             Foreground = Color.White,
             IconTextureName = "icon-arrow-24", // TODO: Constant...
@@ -67,9 +67,7 @@ internal sealed class RegionSummaryInfoContextSubWidget : BaseWidget
                 Contain = ContainFlags.Row,
                 Behave = BehaveFlags.Top | BehaveFlags.Right
             }
-        });
-
-        openRegionButton.OnClick += (s, e) =>
+        }).OnClick += (s, e) =>
         {
             // TODO: Push and pop camera/transform matrices or position/zoom levels???
             _gameData.InteractionData.ScreenState = ScreenState.Region;
@@ -86,7 +84,7 @@ internal sealed class RegionSummaryInfoContextSubWidget : BaseWidget
             });
         };
 
-        var closePanelButton = titleRow.AddChild(new IconButtonWidget
+        titleRow.AddChild(new IconButtonWidget
         {
             Foreground = Color.White,
             IconTextureName = "icon-x-24", // TODO: Constant...
@@ -97,9 +95,7 @@ internal sealed class RegionSummaryInfoContextSubWidget : BaseWidget
                 Contain = ContainFlags.Row,
                 Behave = BehaveFlags.Top | BehaveFlags.Right
             }
-        });
-
-        closePanelButton.OnClick += (s, e) =>
+        }).OnClick += (s, e) =>
         {
             _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
             {

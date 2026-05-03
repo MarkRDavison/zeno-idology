@@ -25,6 +25,10 @@ public sealed record Tile(TileType TileType)
             {
                 return Color.Green;
             }
+            else if (TileType == TileType.Bush)
+            {
+                return Color.DarkGreen;
+            }
             else if (TileType == TileType.Beach)
             {
                 return Color.Yellow;
