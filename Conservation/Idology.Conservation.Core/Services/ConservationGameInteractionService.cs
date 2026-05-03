@@ -135,17 +135,14 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
                 {
                     _inputManager.MarkActionAsHandled(Constants.Action_Click);
 
-                    if (_gameData.InteractionData.DefaultScreenData.SelectedRegion != idx)
-                    {
-                        _gameData.InteractionData.DefaultScreenData.SelectedRegion = idx;
+                    _gameData.InteractionData.DefaultScreenData.SelectedRegion = idx;
 
-                        _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
-                        {
-                            Open = true,
-                            State = InfoState.RegionSummary,
-                            Context = new RegionInfoScreenPayload(idx, true)
-                        });
-                    }
+                    _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
+                    {
+                        Open = true,
+                        State = InfoState.RegionSummary,
+                        Context = new RegionInfoScreenPayload(idx, true)
+                    });
 
                     break;
                 }
