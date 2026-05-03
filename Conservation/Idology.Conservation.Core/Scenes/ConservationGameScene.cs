@@ -16,6 +16,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
     private readonly IUserInterfaceRoot _userInterfaceRoot;
     private readonly IServiceProvider _serviceProvider;
     private readonly IEventRoutingService _eventRoutingService;
+    private readonly IGameCommandService _gameCommandService;
     private readonly ConservationGameCamera _camera;
 
     private IWidget? _kakapoDetailsSubSceneWidget;
@@ -35,7 +36,8 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         IGameDateTimeProvider gameDateTimeProvider,
         IUserInterfaceRoot userInterfaceRoot,
         IServiceProvider serviceProvider,
-        IEventRoutingService eventRoutingService)
+        IEventRoutingService eventRoutingService,
+        IGameCommandService gameCommandService)
     {
         _gameData = gameData;
         _game = game;
@@ -45,6 +47,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         _userInterfaceRoot = userInterfaceRoot;
         _serviceProvider = serviceProvider;
         _eventRoutingService = eventRoutingService;
+        _gameCommandService = gameCommandService;
 
         _camera = camera;
     }
@@ -256,6 +259,8 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         }
 
         _conservationGameInteractionService.Update(delta);
+
+        _gameCommandService.HandleEnqueuedCommands();
 
         _inputManager.Update();
     }

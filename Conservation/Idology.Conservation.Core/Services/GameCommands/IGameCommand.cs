@@ -3,3 +3,7 @@
 public interface IGameCommand
 {
 }
+
+public interface IDeferredGameCommand
+{
+}

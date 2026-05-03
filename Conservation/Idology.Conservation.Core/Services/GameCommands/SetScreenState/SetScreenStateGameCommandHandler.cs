@@ -1,32 +1,32 @@
 ﻿namespace Idology.Conservation.Core.Services.GameCommands.SetScreenState;
 
-internal sealed class SetScreenStateGameCommandHandler : IGameCommandHandler<SetScreenStateGameCommand>
+internal sealed class SetScreenStateGameCommandHandler : IDeferredGameCommandHandler<SetScreenStateGameCommand>
 {
     private readonly ConservationGameData _gameData;
     private readonly IEventRoutingService _eventRoutingService;
-    private readonly IGameCommandService _gameCommandService;
 
     public SetScreenStateGameCommandHandler(
         ConservationGameData gameData,
-        IEventRoutingService eventRoutingService,
-        IGameCommandService gameCommandService)
+        IEventRoutingService eventRoutingService)
     {
         _gameData = gameData;
         _eventRoutingService = eventRoutingService;
-        _gameCommandService = gameCommandService;
     }
 
-    public bool HandleCommand(SetScreenStateGameCommand command)
+    public bool CanHandleCommand(SetScreenStateGameCommand command)
     {
         if (_gameData.InteractionData.ScreenState != command.ScreenState)
         {
-            _gameData.InteractionData.ScreenState = command.ScreenState;
-
-            _eventRoutingService.InvokeSetScreenState(command);
-
             return true;
         }
 
         return false;
+    }
+
+    void IDeferredGameCommandHandler<SetScreenStateGameCommand>.HandleCommand(SetScreenStateGameCommand command)
+    {
+        _gameData.InteractionData.ScreenState = command.ScreenState;
+
+        _eventRoutingService.InvokeSetScreenState(command);
     }
 }

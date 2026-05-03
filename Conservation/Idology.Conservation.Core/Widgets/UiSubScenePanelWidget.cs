@@ -67,7 +67,7 @@ public abstract class UiSubScenePanelWidget : PanelWidget
             }
         });
 
-        closePanelButton.OnClick += (s, e) => GameCommandService.HandleCommand(new SetScreenStateGameCommand { ScreenState = ScreenState.Default });
+        closePanelButton.OnClick += (s, e) => GameCommandService.EnqueueCommand(new SetScreenStateGameCommand { ScreenState = ScreenState.Default });
 
         return AddChild(new ScrollablePanelWidget
         {

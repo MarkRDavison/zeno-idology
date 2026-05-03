@@ -1,6 +1,6 @@
 ﻿namespace Idology.Conservation.Core.Services.GameCommands.InfoScreen;
 
-internal sealed class SetInfoScreenGameCommandHandler : IGameCommandHandler<SetInfoScreenGameCommand>
+internal sealed class SetInfoScreenGameCommandHandler : IDeferredGameCommandHandler<SetInfoScreenGameCommand>
 {
     private readonly IEventRoutingService _eventRoutingService;
     private readonly ConservationGameData _gameData;
@@ -13,17 +13,20 @@ internal sealed class SetInfoScreenGameCommandHandler : IGameCommandHandler<SetI
         _gameData = gameData;
     }
 
-    public bool HandleCommand(SetInfoScreenGameCommand command)
+    public bool CanHandleCommand(SetInfoScreenGameCommand command)
     {
         if (!command.Open && _gameData.InteractionData.InfoState is InfoState.Hidden)
         {
             return false;
         }
 
+        return true;
+    }
+
+    void IDeferredGameCommandHandler<SetInfoScreenGameCommand>.HandleCommand(SetInfoScreenGameCommand command)
+    {
         _gameData.InteractionData.InfoState = command.State;
 
         _eventRoutingService.InvokeSetInfoState(command);
-
-        return true;
     }
 }

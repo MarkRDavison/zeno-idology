@@ -46,7 +46,7 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
         {
             if (_inputManager.HandleActionIfInvoked(shortcut))
             {
-                if (_gameCommandService.HandleCommand(new SetScreenStateGameCommand { ScreenState = state }))
+                if (_gameCommandService.EnqueueCommand(new SetScreenStateGameCommand { ScreenState = state }))
                 {
                     _inputManager.HandleActionIfInvoked(shortcut);
                 }
@@ -73,7 +73,7 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
         {
             _gameData.InteractionData.DefaultScreenData.SelectedRegion = null;
 
-            _gameCommandService.HandleCommand(new SetInfoScreenGameCommand
+            _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
             {
                 Open = false,
                 State = InfoState.Hidden,
@@ -97,7 +97,7 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
 
             if (_gameData.InteractionData.DefaultScreenData.SelectedRegion is not null)
             {
-                _gameCommandService.HandleCommand(new SetInfoScreenGameCommand
+                _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
                 {
                     Open = true,
                     State = InfoState.RegionSummary,
@@ -112,7 +112,7 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
             _gameData.InteractionData.ScreenState = ScreenState.Region;
             _gameData.ActiveRegion = _gameData.Regions[_gameData.InteractionData.DefaultScreenData.SelectedRegion.Value];
 
-            _gameCommandService.HandleCommand(new SetInfoScreenGameCommand
+            _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
             {
                 Open = true,
                 State = InfoState.Region,
@@ -139,7 +139,7 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
                     {
                         _gameData.InteractionData.DefaultScreenData.SelectedRegion = idx;
 
-                        _gameCommandService.HandleCommand(new SetInfoScreenGameCommand
+                        _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
                         {
                             Open = true,
                             State = InfoState.RegionSummary,
@@ -163,7 +163,7 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
             _gameData.InteractionData.DefaultScreenData.SelectedRegion = null;
             _gameData.ActiveRegion = null;
 
-            _gameCommandService.HandleCommand(new SetInfoScreenGameCommand
+            _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
             {
                 Open = false,
                 State = InfoState.Hidden,
@@ -178,7 +178,7 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
         {
             // TODO: BUG: Restore previously opened info panel?
             // Or should I allow the main sub scenes to be over the top of the info panel???
-            if (_gameCommandService.HandleCommand(new SetScreenStateGameCommand { ScreenState = ScreenState.Default }))
+            if (_gameCommandService.EnqueueCommand(new SetScreenStateGameCommand { ScreenState = ScreenState.Default }))
             {
                 _inputManager.HandleActionIfInvoked(Constants.Action_Escape);
             }

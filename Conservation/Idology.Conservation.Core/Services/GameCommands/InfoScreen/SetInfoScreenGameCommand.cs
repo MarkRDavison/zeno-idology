@@ -2,7 +2,7 @@
 
 public sealed record RegionInfoScreenPayload(int RegionId, bool IsSummary);
 
-public sealed class SetInfoScreenGameCommand : IGameCommand
+public sealed class SetInfoScreenGameCommand : IDeferredGameCommand
 {
     public required bool Open { get; init; }
     public required InfoState State { get; init; }

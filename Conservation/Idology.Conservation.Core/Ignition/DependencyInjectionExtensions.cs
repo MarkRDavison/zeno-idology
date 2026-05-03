@@ -51,8 +51,8 @@ public static class DependencyInjectionExtensions
 
         // Commands
         services
-            .AddTransient<IGameCommandHandler<SetScreenStateGameCommand>, SetScreenStateGameCommandHandler>()
-            .AddTransient<IGameCommandHandler<SetInfoScreenGameCommand>, SetInfoScreenGameCommandHandler>();
+            .AddTransient<IDeferredGameCommandHandler<SetScreenStateGameCommand>, SetScreenStateGameCommandHandler>()
+            .AddTransient<IDeferredGameCommandHandler<SetInfoScreenGameCommand>, SetInfoScreenGameCommandHandler>();
 
         // Widgets
         services

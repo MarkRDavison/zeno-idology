@@ -76,9 +76,9 @@ internal sealed class RegionSummaryInfoContextSubWidget : BaseWidget
             _gameData.ActiveRegion = _gameData.Regions[_regionId];
             _gameData.InteractionData.DefaultScreenData.SelectedRegion = null;
 
-            _gameCommandService.HandleCommand(new SetScreenStateGameCommand { ScreenState = ScreenState.Region, });
+            _gameCommandService.EnqueueCommand(new SetScreenStateGameCommand { ScreenState = ScreenState.Region, });
 
-            _gameCommandService.HandleCommand(new SetInfoScreenGameCommand
+            _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
             {
                 Open = true,
                 State = InfoState.Region,
@@ -101,7 +101,7 @@ internal sealed class RegionSummaryInfoContextSubWidget : BaseWidget
 
         closePanelButton.OnClick += (s, e) =>
         {
-            _gameCommandService.HandleCommand(new SetInfoScreenGameCommand
+            _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
             {
                 Open = false,
                 State = InfoState.Hidden,
