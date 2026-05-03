@@ -28,7 +28,8 @@ public sealed class RegionSimulation : ISimulationBase
                 var tile = region.Tiles[y * region.Width + x];
 
                 // TODO: Helper fxn for whether a tile is valid for a kakapo to be on???
-                if (tile.TileType is TileType.Water or TileType.Beach or TileType.Unset)
+                // Maybe exclude coast tiles? Or just set them as cliff/beach
+                if (tile.TileType is TileType.Water or TileType.Beach or TileType.Unset or TileType.Cliff)
                 {
                     continue;
                 }
