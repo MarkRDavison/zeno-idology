@@ -23,7 +23,7 @@ internal sealed class SetScreenStateGameCommandHandler : IDeferredGameCommandHan
         return false;
     }
 
-    void IDeferredGameCommandHandler<SetScreenStateGameCommand>.HandleCommand(SetScreenStateGameCommand command)
+    public void HandleCommand(SetScreenStateGameCommand command)
     {
         _gameData.InteractionData.ScreenState = command.ScreenState;
 

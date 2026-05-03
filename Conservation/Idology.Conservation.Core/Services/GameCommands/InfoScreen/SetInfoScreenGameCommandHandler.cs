@@ -23,7 +23,7 @@ internal sealed class SetInfoScreenGameCommandHandler : IDeferredGameCommandHand
         return true;
     }
 
-    void IDeferredGameCommandHandler<SetInfoScreenGameCommand>.HandleCommand(SetInfoScreenGameCommand command)
+    public void HandleCommand(SetInfoScreenGameCommand command)
     {
         _gameData.InteractionData.InfoState = command.State;
 

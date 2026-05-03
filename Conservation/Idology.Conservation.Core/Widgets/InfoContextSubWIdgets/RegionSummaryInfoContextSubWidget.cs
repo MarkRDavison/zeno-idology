@@ -90,7 +90,7 @@ internal sealed class RegionSummaryInfoContextSubWidget : BaseWidget
             _gameData.ActiveRegion = _gameData.Regions[_regionId];
             _gameData.InteractionData.DefaultScreenData.SelectedRegion = null;
 
-            _gameCommandService.EnqueueCommand(new SetScreenStateGameCommand { ScreenState = ScreenState.Region, });
+            _gameCommandService.EnqueueCommand(new SetScreenStateGameCommand { ScreenState = ScreenState.Region });
 
             _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
             {
@@ -98,6 +98,7 @@ internal sealed class RegionSummaryInfoContextSubWidget : BaseWidget
                 State = InfoState.Region,
                 Context = new RegionInfoScreenPayload(_regionId, false)
             });
+            _gameCommandService.HandleCommand(new FocusRegionGameCommand { RegionId = _regionId });
         };
 
         titleRow.AddChild(new IconButtonWidget

@@ -39,7 +39,7 @@ public static class DependencyInjectionExtensions
             .AddScoped<ConservationGameData>()
             .AddScoped(_ => new ConservationGameCamera(_.GetRequiredService<IInputManager>())
             {
-                Offset = new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2 + TopBarWidget.Height),
+                Offset = new Vector2(0, TopBarWidget.Height),
                 Zoom = 0.10f
             })
             .AddScoped<IConservationGameInteractionService, ConservationGameInteractionService>()

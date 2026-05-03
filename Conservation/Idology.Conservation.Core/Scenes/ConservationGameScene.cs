@@ -300,8 +300,8 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                         }
 
                         Raylib.DrawRectangle(
-                            x * TileSize,
-                            y * TileSize,
+                            x * TileSize + (int)activeRegion.RegionOffset.X * TileSize,
+                            y * TileSize + (int)activeRegion.RegionOffset.Y * TileSize,
                             TileSize,
                             TileSize,
                             tile.Color);
@@ -311,8 +311,8 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                 foreach (var k in _gameData.SimulatedKakapo.Where(_ => _.RegionId == activeRegion.Id))
                 {
                     Raylib.DrawRectangle(
-                        (int)k.CurrentLocation.X * TileSize,
-                        (int)k.CurrentLocation.Y * TileSize,
+                        (int)k.CurrentLocation.X * TileSize + (int)activeRegion.RegionOffset.X * TileSize,
+                        (int)k.CurrentLocation.Y * TileSize + (int)activeRegion.RegionOffset.Y * TileSize,
                         TileSize,
                         TileSize,
                         Color.Magenta);
