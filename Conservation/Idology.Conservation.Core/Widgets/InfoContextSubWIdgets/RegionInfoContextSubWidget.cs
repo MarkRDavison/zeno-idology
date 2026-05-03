@@ -4,13 +4,16 @@ internal sealed class RegionInfoContextSubWidget : BaseWidget
 {
     private int _regionId;
     private readonly ConservationGameData _gameData;
+    private readonly IGameCommandService _gameCommandService;
 
     public RegionInfoContextSubWidget(
         ConservationGameData gameData,
+        IGameCommandService gameCommandService,
         IInputManager inputManager,
         IUserInterfaceRoot userInterfaceRoot)
     {
         _gameData = gameData;
+        _gameCommandService = gameCommandService;
         InputManager = inputManager;
         UserInterfaceRoot = userInterfaceRoot;
     }
@@ -28,17 +31,45 @@ internal sealed class RegionInfoContextSubWidget : BaseWidget
         Layout.Contain = ContainFlags.Column;
         Layout.Align = AlignFlags.Start;
 
-        AddChild(new LabelWidget
+        var titleRow = AddChild(new PanelWidget
+        {
+            Layout =
+            {
+                Gap = 4.0f,
+                Behave = BehaveFlags.Left | BehaveFlags.HFill | BehaveFlags.Top,
+                Contain = ContainFlags.Row,
+            }
+        });
+
+        titleRow.AddChild(new LabelWidget
         {
             TextContent = Region.Name,
             Foreground = Color.White,
+            FontSize = 32,
             Layout =
             {
-                RequestedMargin = new LayoutEdges(4.0f, 0.0f, 0.0f, 0.0f),
                 Behave = BehaveFlags.Left | BehaveFlags.Top,
                 Align = AlignFlags.Start,
-                RequestedSize = new LayoutVector(0, 36)
+                RequestedSize = new LayoutVector(300, 32)
             }
+        });
+
+        titleRow.AddChild(new SpacerWidget(ContainFlags.Row));
+
+        titleRow.AddChild(new IconButtonWidget
+        {
+            Foreground = Color.White,
+            IconTextureName = "icon-magnifier-24", // TODO: Constant...
+            Layout = new LayoutItem
+            {
+                RequestedPadding = new LayoutEdges(2.0f),
+                RequestedSize = new LayoutVector(32, 32),
+                Contain = ContainFlags.Row,
+                Behave = BehaveFlags.Top | BehaveFlags.Right
+            }
+        }).OnClick += (s, e) => _gameCommandService.HandleCommand(new FocusRegionGameCommand
+        {
+            RegionId = _regionId
         });
     }
 }
