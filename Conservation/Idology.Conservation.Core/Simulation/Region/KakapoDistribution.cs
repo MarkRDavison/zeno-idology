@@ -16,46 +16,7 @@ static class KakapoDistribution
         // TODO: Can this handle multiple kakapo on one tile?
         for (int it = 0; it < iterations; it++)
         {
-            var occupationScore = new Dictionary<Vector2, int>();
-
-            foreach (var startKakapo in entities)
-            {
-                var distanceMap = new Dictionary<Vector2, int> { { startKakapo.CurrentLocation, 0 } };
-                var queueForDistance = new Queue<Vector2>([startKakapo.CurrentLocation]);
-
-                while (queueForDistance.Count > 0)
-                {
-                    var current = queueForDistance.Dequeue();
-                    var currentDistance = distanceMap[current];
-
-                    var neighbors = Neighbours(current, rng);
-                    foreach (var neighbor in neighbors)
-                    {
-                        if (validCells.Contains(neighbor) && (!distanceMap.ContainsKey(neighbor) || currentDistance + 1 < distanceMap[neighbor]))
-                        {
-                            distanceMap[neighbor] = currentDistance + 1;
-                            queueForDistance.Enqueue(neighbor);
-                        }
-                    }
-                }
-
-                foreach (var kvp in distanceMap)
-                {
-                    var location = kvp.Key;
-                    var distance = kvp.Value;
-
-                    var score = Math.Max(0, max - distance);
-
-                    if (occupationScore.ContainsKey(location))
-                    {
-                        occupationScore[location] += score;
-                    }
-                    else
-                    {
-                        occupationScore[location] = score;
-                    }
-                }
-            }
+            var occupationScore = GenerateRegionOccupationScoreMap(entities, validCells, rng, max);
 
             if (debug)
             {
@@ -86,16 +47,15 @@ static class KakapoDistribution
 
                 if (occupancy > max)
                 {
-                    // TODO: Move to the one farthest from the worst...
-
                     var lowestTargets = neighbours.Where(_ => _.Item2 == neighbours.First().Item2).ToList();
 
+                    // TODO: Move to the one farthest from the worst...
                     var movingTo = lowestTargets[Random.Shared.Next(lowestTargets.Count)];
 
                     entities[i] = k with { CurrentLocation = movingTo._ };
                     kakapoMoved = true;
                 }
-                else if ((float)(Random.Shared.Next(0, 100) / 100.0f) < wanderChance)
+                else if (ShouldKakapoWander(wanderChance))
                 {
                     const int WanderVariance = 3;
                     var lowestTargets = neighbours.Where(_ => _.Item2 <= neighbours.First().Item2 + WanderVariance).ToList();
@@ -114,6 +74,64 @@ static class KakapoDistribution
         }
 
         return true;
+    }
+
+    private static bool ShouldKakapoWander(float wanderChance)
+    {
+        return (float)(Random.Shared.Next(0, 100) / 100.0f) < wanderChance;
+    }
+
+    private static Dictionary<Vector2, int> GenerateRegionOccupationScoreMap(List<KakapoSimulationData> entities, HashSet<Vector2> validCells, Random rng, int max)
+    {
+        var occupationScore = new Dictionary<Vector2, int>();
+
+        foreach (var startKakapo in entities)
+        {
+            Dictionary<Vector2, int> distanceMap = GenerateOccupationScoreMapForSingleKakapo(validCells, rng, startKakapo);
+
+            foreach (var kvp in distanceMap)
+            {
+                var location = kvp.Key;
+                var distance = kvp.Value;
+
+                var score = Math.Max(0, max - distance);
+
+                if (occupationScore.ContainsKey(location))
+                {
+                    occupationScore[location] += score;
+                }
+                else
+                {
+                    occupationScore[location] = score;
+                }
+            }
+        }
+
+        return occupationScore;
+    }
+
+    private static Dictionary<Vector2, int> GenerateOccupationScoreMapForSingleKakapo(HashSet<Vector2> validCells, Random rng, KakapoSimulationData kakapo)
+    {
+        var distanceMap = new Dictionary<Vector2, int> { { kakapo.CurrentLocation, 0 } };
+        var queueForDistance = new Queue<Vector2>([kakapo.CurrentLocation]);
+
+        while (queueForDistance.Count > 0)
+        {
+            var current = queueForDistance.Dequeue();
+            var currentDistance = distanceMap[current];
+
+            var neighbors = Neighbours(current, rng);
+            foreach (var neighbor in neighbors)
+            {
+                if (validCells.Contains(neighbor) && (!distanceMap.ContainsKey(neighbor) || currentDistance + 1 < distanceMap[neighbor]))
+                {
+                    distanceMap[neighbor] = currentDistance + 1;
+                    queueForDistance.Enqueue(neighbor);
+                }
+            }
+        }
+
+        return distanceMap;
     }
 
     private static void DumpOccupationScore(int width, int height, Dictionary<Vector2, int> occupationScore)
