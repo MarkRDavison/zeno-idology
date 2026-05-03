@@ -110,6 +110,7 @@ internal sealed class InputManager : IInputManager
     public float GetWheelDelta() => Raylib.GetMouseWheelMove();
     public Vector2 GetMousePosition() => Raylib.GetMousePosition();
     public Vector2 GetMousePosition(Camera2D camera) => Raylib.GetScreenToWorld2D(Raylib.GetMousePosition(), camera);
+    public Vector2 GetScreenSize() => new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
 
     private bool HandlePotentialDoubleActivation(InputAction action, ActionState state)
     {

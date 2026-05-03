@@ -3,6 +3,8 @@
 internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
 {
     private bool _disposedValue;
+    internal const int Width = 512;
+    internal const int Padding = 8;
 
     private readonly IEventRoutingService _eventRoutingService;
     private readonly IServiceProvider _serviceProvider;
@@ -21,8 +23,8 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
         Border = Color.DarkGray;
         BorderThickness = 2.0f;
         Layout.Visibility = Visibility.Collapsed;
-        Layout.RequestedSize = new LayoutVector(512.0f, 0.0f); // TODO: Constant
-        Layout.RequestedPadding = new LayoutEdges(8.0f);
+        Layout.RequestedSize = new LayoutVector(Width, 0.0f); // TODO: Constant
+        Layout.RequestedPadding = new LayoutEdges(Padding);
         Layout.RequestedMargin = new LayoutEdges(8.0f);
         Layout.Behave = BehaveFlags.VFill | BehaveFlags.Right;
         Layout.Contain = ContainFlags.Flex;

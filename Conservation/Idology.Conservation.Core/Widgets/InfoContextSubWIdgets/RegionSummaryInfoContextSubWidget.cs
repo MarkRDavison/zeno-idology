@@ -59,6 +59,22 @@ internal sealed class RegionSummaryInfoContextSubWidget : BaseWidget
         titleRow.AddChild(new IconButtonWidget
         {
             Foreground = Color.White,
+            IconTextureName = "icon-magnifier-24", // TODO: Constant...
+            Layout = new LayoutItem
+            {
+                RequestedPadding = new LayoutEdges(2.0f),
+                RequestedSize = new LayoutVector(32, 32),
+                Contain = ContainFlags.Row,
+                Behave = BehaveFlags.Top | BehaveFlags.Right
+            }
+        }).OnClick += (s, e) => _gameCommandService.HandleCommand(new FocusRegionGameCommand
+        {
+            RegionId = _regionId
+        });
+
+        titleRow.AddChild(new IconButtonWidget
+        {
+            Foreground = Color.White,
             IconTextureName = "icon-arrow-24", // TODO: Constant...
             Layout = new LayoutItem
             {

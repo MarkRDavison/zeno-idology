@@ -12,4 +12,5 @@ public interface IInputManager
     float GetWheelDelta();
     Vector2 GetMousePosition();
     Vector2 GetMousePosition(Camera2D camera);
+    Vector2 GetScreenSize();
 }

@@ -39,9 +39,7 @@ public static class DependencyInjectionExtensions
             .AddScoped<ConservationGameData>()
             .AddScoped(_ => new ConservationGameCamera(_.GetRequiredService<IInputManager>())
             {
-                // TODO: Better way of applying defaults...
-                Target = new Vector2(4500, 4000),
-                Offset = new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2),
+                Offset = new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2 + TopBarWidget.Height),
                 Zoom = 0.10f
             })
             .AddScoped<IConservationGameInteractionService, ConservationGameInteractionService>()
@@ -52,7 +50,8 @@ public static class DependencyInjectionExtensions
         // Commands
         services
             .AddTransient<IDeferredGameCommandHandler<SetScreenStateGameCommand>, SetScreenStateGameCommandHandler>()
-            .AddTransient<IDeferredGameCommandHandler<SetInfoScreenGameCommand>, SetInfoScreenGameCommandHandler>();
+            .AddTransient<IDeferredGameCommandHandler<SetInfoScreenGameCommand>, SetInfoScreenGameCommandHandler>()
+            .AddTransient<IGameCommandHandler<FocusRegionGameCommand>, FocusRegionGameCommandHandler>();
 
         // Widgets
         services
