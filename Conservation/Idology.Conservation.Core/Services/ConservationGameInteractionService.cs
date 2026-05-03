@@ -156,6 +156,9 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
     {
         if (_inputManager.HandleActionIfInvoked(Constants.Action_Escape))
         {
+            // TODO: Maybe we want to check if the info panel is open before closing?
+            // Fall back from the kakapo summary to the region info panel?
+
             _gameData.InteractionData.ScreenState = ScreenState.Default;
             _gameData.InteractionData.DefaultScreenData.SelectedRegion = null;
             _gameData.ActiveRegion = null;
@@ -166,6 +169,34 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
                 State = InfoState.Hidden,
                 Context = null
             });
+        }
+        else if (_inputManager.IsActionInvoked(Constants.Action_Click) && _gameData.ActiveRegion is { } activeRegion)
+        {
+            var mousePosition = _inputManager.GetMousePosition(_conservationGameCamera.Camera) / 64.0f;
+
+            int? selectedKakapoId = null;
+
+            // TODO: Maybe there are multiple, so gotta go through all of them to find the best match????
+            foreach (var k in _gameData.SimulatedKakapo.Where(_ => _.RegionId == activeRegion.Id))
+            {
+                if (Vector2.DistanceSquared(mousePosition, k.CurrentLocation + activeRegion.RegionOffset) < 3.0f)
+                {
+                    selectedKakapoId = k.KakapoId;
+                    break;
+                }
+            }
+
+            if (selectedKakapoId is { } id)
+            {
+                _inputManager.MarkActionAsHandled(Constants.Action_Click);
+
+                _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
+                {
+                    Open = true,
+                    State = InfoState.KakapoSummary,
+                    Context = new KakapoInfoScreenPayload(selectedKakapoId.Value)
+                });
+            }
         }
     }
 

@@ -66,7 +66,8 @@ public static class DependencyInjectionExtensions
         // Info panel sub widgets
         services
             .AddTransient<RegionSummaryInfoContextSubWidget>()
-            .AddTransient<RegionInfoContextSubWidget>();
+            .AddTransient<RegionInfoContextSubWidget>()
+            .AddTransient<KakapoSummaryInfoContextSubWidget>();
 
         return services;
     }

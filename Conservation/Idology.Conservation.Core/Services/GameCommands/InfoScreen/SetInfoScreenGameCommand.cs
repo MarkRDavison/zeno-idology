@@ -1,6 +1,7 @@
 ﻿namespace Idology.Conservation.Core.Services.GameCommands.InfoScreen;
 
 public sealed record RegionInfoScreenPayload(int RegionId, bool IsSummary);
+public sealed record KakapoInfoScreenPayload(int KakapoId);
 
 public sealed class SetInfoScreenGameCommand : IDeferredGameCommand
 {
