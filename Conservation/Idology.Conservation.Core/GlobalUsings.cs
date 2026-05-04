@@ -18,6 +18,7 @@ global using Idology.Conservation.Core.Services.GameCommands.SetScreenState;
 global using Idology.Conservation.Core.Services.Kakapo;
 global using Idology.Conservation.Core.Services.Region;
 global using Idology.Conservation.Core.Services.Routing;
+global using Idology.Conservation.Core.Services.Screen;
 global using Idology.Conservation.Core.Simulation.Region;
 global using Idology.Conservation.Core.Simulation.SimulationData;
 global using Idology.Conservation.Core.State;

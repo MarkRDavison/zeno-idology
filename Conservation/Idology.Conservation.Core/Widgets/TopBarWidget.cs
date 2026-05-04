@@ -46,7 +46,7 @@ internal sealed class TopBarWidget : PanelWidget
                 }
             });
 
-            button.OnClick += (s, e) => _gameCommandService.EnqueueCommand(new SetScreenStateGameCommand(screenState));
+            button.OnClick += (s, e) => _gameCommandService.HandleCommand(new SetScreenStateGameCommand(screenState));
         }
 
         AddSubWidgetButton("TOP_BAR_KAKAPO_DETAILS", ScreenState.Kakapo);

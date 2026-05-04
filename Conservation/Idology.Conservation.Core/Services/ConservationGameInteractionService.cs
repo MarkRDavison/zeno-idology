@@ -46,7 +46,7 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
         {
             if (_inputManager.HandleActionIfInvoked(shortcut))
             {
-                if (_gameCommandService.EnqueueCommand(new SetScreenStateGameCommand(state)))
+                if (_gameCommandService.HandleCommand(new SetScreenStateGameCommand(state)))
                 {
                     _inputManager.HandleActionIfInvoked(shortcut);
                 }

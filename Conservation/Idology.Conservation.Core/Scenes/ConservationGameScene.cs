@@ -204,7 +204,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         _lastActiveSubSceneWidget?.Layout.Visibility = Visibility.Collapsed;
 
         // TODO: Exhaustive static analysis?
-        _lastActiveSubSceneWidget = e.State switch
+        _lastActiveSubSceneWidget = _gameState.State.InteractionData.ScreenState switch
         {
             ScreenState.Kakapo => _kakapoDetailsSubSceneWidget,
             ScreenState.Staff => _staffDetialsSubSceneWidget,

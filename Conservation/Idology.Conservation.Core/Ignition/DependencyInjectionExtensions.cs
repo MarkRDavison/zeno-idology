@@ -45,18 +45,22 @@ public static class DependencyInjectionExtensions
             .AddScoped<IConservationGameInteractionService, ConservationGameInteractionService>()
             .AddScoped<IGameDateTimeProvider, GameDateTimeProvider>()
             .AddScoped<IGameCommandService, GameCommandService>()
-            .AddScoped<IEventRoutingService, EventRoutingService>();
+            .AddScoped<IEventRoutingService, EventRoutingService>()
+            .AddTransient<IKakapoStateService, KakapoStateService>()
+            .AddTransient<IRegionStateService, RegionStateService>()
+            .AddTransient<IScreenStateService, ScreenStateService>();
 
         // Commands
         services
-            .AddTransient<IDeferredGameCommandHandler<SetScreenStateGameCommand>, SetScreenStateGameCommandHandler>()
             .AddTransient<IDeferredGameCommandHandler<SelectRegionGameCommand>, SelectRegionGameCommandHandler>()
             .AddTransient<IDeferredGameCommandHandler<SelectKakapoWithinRegionGameCommand>, SelectKakapoWithinRegionGameCommandHandler>()
             .AddTransient<IDeferredGameCommandHandler<DeselectRegionGameCommand>, DeselectRegionGameCommandHandler>()
             .AddTransient<IDeferredGameCommandHandler<CloseRegionScreenGameCommand>, CloseRegionScreenGameCommandHandler>()
             .AddTransient<IDeferredGameCommandHandler<PopInfoPanelGameCommand>, PopInfoPanelGameCommandHandler>()
             .AddTransient<IDeferredGameCommandHandler<PushInfoPanelGameCommand>, PushInfoPanelGameCommandHandler>()
-            .AddTransient<IGameCommandHandler<OpenRegionGameCommand>, OpenRegionGameCommandHandler>();
+            .AddTransient<IGameCommandHandler<OpenRegionGameCommand>, OpenRegionGameCommandHandler>()
+            .AddTransient<IGameCommandHandler<CloseScreenStateGameCommand>, CloseScreenStateGameCommandHandler>()
+            .AddTransient<IGameCommandHandler<SetScreenStateGameCommand>, SetScreenStateGameCommandHandler>();
 
         // Widgets
         services

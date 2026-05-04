@@ -2,29 +2,29 @@
 
 public sealed record SetScreenStateGameCommand(
     ScreenState State
-) : IDeferredGameCommand;
+) : IGameCommand;
 
-internal sealed class SetScreenStateGameCommandHandler : IDeferredGameCommandHandler<SetScreenStateGameCommand>
+internal sealed class SetScreenStateGameCommandHandler : IGameCommandHandler<SetScreenStateGameCommand>
 {
-    private readonly IKakapoStateService _kakapoStateService;
+    private readonly IScreenStateService _screenStateService;
+    private readonly IEventRoutingService _eventRoutingService;
 
-    public SetScreenStateGameCommandHandler(IKakapoStateService kakapoStateService)
+    public SetScreenStateGameCommandHandler(
+        IScreenStateService screenStateService,
+        IEventRoutingService eventRoutingService)
     {
-        _kakapoStateService = kakapoStateService;
+        _screenStateService = screenStateService;
+        _eventRoutingService = eventRoutingService;
     }
 
-    public bool CanHandleCommand(SetScreenStateGameCommand command) => true;
-
-    public void HandleCommand(SetScreenStateGameCommand command)
+    public bool HandleCommand(SetScreenStateGameCommand command)
     {
-        switch (command.State)
+        if (_screenStateService.OpenScreenState(command.State))
         {
-            case ScreenState.Kakapo:
-                _kakapoStateService.OpenKakapoScreenState();
-                break;
-            default:
-                Console.Error.WriteLine("UNHANDLED SET SCREEN STATE COMMAND");
-                break;
+            _eventRoutingService.InvokeSetScreenState(command);
+            return true;
         }
+
+        return false;
     }
 }
