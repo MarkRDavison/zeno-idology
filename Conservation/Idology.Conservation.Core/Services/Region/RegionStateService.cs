@@ -3,10 +3,14 @@
 internal sealed class RegionStateService : IRegionStateService
 {
     private readonly IConservationStateService _conservationStateService;
+    private readonly IInfoPanelStateService _infoPanelStateService;
 
-    public RegionStateService(IConservationStateService conservationStateService)
+    public RegionStateService(
+        IConservationStateService conservationStateService,
+        IInfoPanelStateService infoPanelStateService)
     {
         _conservationStateService = conservationStateService;
+        _infoPanelStateService = infoPanelStateService;
     }
 
     public void ActivateRegionScreen()
@@ -16,12 +20,15 @@ internal sealed class RegionStateService : IRegionStateService
 
     public void ClearActiveRegion()
     {
-        throw new NotImplementedException();
+        _conservationStateService.SetState(_ => _.WithCloseRegionSummary());
+        _infoPanelStateService.PopInfoPanel(InfoState.RegionSummary);
     }
 
-    public bool IsRegionCurrentlyActive()
+    public bool IsRegionSummaryCurrentlyActive()
     {
-        throw new NotImplementedException();
+        return
+            _conservationStateService.State.InteractionData.ScreenState is ScreenState.Default &&
+            _conservationStateService.State.InteractionData.InfoState is InfoState.RegionSummary;
     }
 
     public bool IsRegionScreenOpen()

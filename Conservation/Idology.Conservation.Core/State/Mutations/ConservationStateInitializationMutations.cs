@@ -113,26 +113,20 @@ public static class ConservationStateInitializationMutations
         };
     }
 
-    public static ConservationGameData WithResetInfoScreenStateOnHidden(
-        this ConservationGameData state,
-        InfoState infoState)
+    public static ConservationGameData WithCloseRegionSummary(
+        this ConservationGameData state)
     {
-        if (infoState is InfoState.Hidden)
+        return state with
         {
-            return state with
+            InteractionData = state.InteractionData with
             {
-                InteractionData = state.InteractionData with
+                InfoState = InfoState.Hidden,
+                DefaultScreenData = state.InteractionData.DefaultScreenData with
                 {
-                    RegionScreenData = state.InteractionData.RegionScreenData with
-                    {
-                        RegionId = -1,
-                        SelectedKakapoId = null
-                    }
+                    SelectedRegion = null
                 }
-            };
-        }
-
-        return state;
+            }
+        };
     }
 
     public static ConservationGameData WithSetSelectedRegion(

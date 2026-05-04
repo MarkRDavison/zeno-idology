@@ -23,7 +23,7 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
         Border = Color.DarkGray;
         BorderThickness = 2.0f;
         Layout.Visibility = Visibility.Collapsed;
-        Layout.RequestedSize = new LayoutVector(Width, 0.0f); // TODO: Constant
+        Layout.RequestedSize = new LayoutVector(Width, 0.0f);
         Layout.RequestedPadding = new LayoutEdges(Padding);
         Layout.RequestedMargin = new LayoutEdges(8.0f);
         Layout.Behave = BehaveFlags.VFill | BehaveFlags.Right;
@@ -34,13 +34,13 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
         _eventRoutingService.PopInfoState += OnPopInfoState;
     }
 
-    // TODO: Cannot be game command
-    private void OnPopInfoState(object? sender, PopInfoPanelGameCommand e)
+    private void OnPopInfoState(object? sender, PopInfoPanelPayload e)
     {
+        ClearChildren();
 
+        Layout.Visibility = Visibility.Collapsed;
     }
 
-    // TODO: Cannot be game command
     private void OnPushInfoState(object? sender, PushInfoPanelPayload e)
     {
         ClearChildren();

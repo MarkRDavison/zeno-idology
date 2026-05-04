@@ -4,9 +4,9 @@ public interface IEventRoutingService
 {
     event EventHandler<SetScreenStateGameCommand> SetScreenState;
     event EventHandler<PushInfoPanelPayload> PushInfoState;
-    event EventHandler<PopInfoPanelGameCommand> PopInfoState;
+    event EventHandler<PopInfoPanelPayload> PopInfoState;
 
     void InvokeSetScreenState(SetScreenStateGameCommand command);
     void InvokePushInfoState(PushInfoPanelPayload command);
-    void InvokePopInfoState(PopInfoPanelGameCommand command);
+    void InvokePopInfoState(PopInfoPanelPayload command);
 }

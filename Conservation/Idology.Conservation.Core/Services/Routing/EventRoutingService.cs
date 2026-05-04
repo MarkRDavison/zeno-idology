@@ -4,7 +4,7 @@ internal sealed class EventRoutingService : IEventRoutingService
 {
     public event EventHandler<SetScreenStateGameCommand> SetScreenState = default!;
     public event EventHandler<PushInfoPanelPayload> PushInfoState = default!;
-    public event EventHandler<PopInfoPanelGameCommand> PopInfoState = default!;
+    public event EventHandler<PopInfoPanelPayload> PopInfoState = default!;
 
     public void InvokeSetScreenState(SetScreenStateGameCommand command)
     {
@@ -16,7 +16,7 @@ internal sealed class EventRoutingService : IEventRoutingService
         PushInfoState?.Invoke(this, command);
     }
 
-    public void InvokePopInfoState(PopInfoPanelGameCommand command)
+    public void InvokePopInfoState(PopInfoPanelPayload command)
     {
         PopInfoState?.Invoke(this, command);
     }
