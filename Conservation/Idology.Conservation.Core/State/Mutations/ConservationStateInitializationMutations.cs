@@ -113,6 +113,27 @@ public static class ConservationStateInitializationMutations
         };
     }
 
+    public static ConservationGameData WithResetRegionState(
+        this ConservationGameData state)
+    {
+        return state with
+        {
+            ActiveRegion = null,
+            InteractionData = state.InteractionData with
+            {
+                DefaultScreenData = state.InteractionData.DefaultScreenData with
+                {
+                    SelectedRegion = null
+                },
+                RegionScreenData = state.InteractionData.RegionScreenData with
+                {
+                    RegionId = null,
+                    SelectedKakapoId = null
+                }
+            }
+        };
+    }
+
     public static ConservationGameData WithCloseRegionSummary(
         this ConservationGameData state)
     {

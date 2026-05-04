@@ -4,9 +4,10 @@ public interface IRegionStateService
 {
     void SetSelectedRegion(int regionId);
     void SetActiveRegion(int regionId);
-    void ClearActiveRegion();
+    void ClearSelectedRegion();
     void ActivateRegionScreen();
     void SetInfoPanelToRegion();
     bool IsRegionSummaryCurrentlyActive();
     bool IsRegionScreenOpen();
+    void CloseRegionScreenState();
 }
