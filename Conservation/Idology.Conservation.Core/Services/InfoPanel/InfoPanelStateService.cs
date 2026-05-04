@@ -13,6 +13,11 @@ internal sealed class InfoPanelStateService : IInfoPanelStateService
         _eventRoutingService = eventRoutingService;
     }
 
+    public void PopInfoPanel(InfoState infoState)
+    {
+        _eventRoutingService.InvokePopInfoState(new PopInfoPanelPayload(infoState));
+    }
+
     public void PushInfoPanel(InfoState infoState, object? payload)
     {
         _conservationStateService

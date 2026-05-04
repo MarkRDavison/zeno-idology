@@ -14,7 +14,7 @@ internal sealed class DeselectRegionGameCommandHandler : IDeferredGameCommandHan
 
     public bool CanHandleCommand(DeselectRegionGameCommand command)
     {
-        return _regionStateService.IsRegionCurrentlyActive();
+        return _regionStateService.IsRegionSummaryCurrentlyActive();
     }
 
     public void HandleCommand(DeselectRegionGameCommand command)

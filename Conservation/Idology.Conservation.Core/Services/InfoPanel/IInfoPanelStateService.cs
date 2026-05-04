@@ -2,5 +2,6 @@
 
 public interface IInfoPanelStateService
 {
+    void PopInfoPanel(InfoState infoState);
     void PushInfoPanel(InfoState infoState, object? payload);
 }
