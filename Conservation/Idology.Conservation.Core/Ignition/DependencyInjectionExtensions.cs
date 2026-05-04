@@ -49,7 +49,8 @@ public static class DependencyInjectionExtensions
             .AddTransient<IKakapoStateService, KakapoStateService>()
             .AddTransient<IRegionStateService, RegionStateService>()
             .AddTransient<IScreenStateService, ScreenStateService>()
-            .AddTransient<IInfoPanelStateService, InfoPanelStateService>();
+            .AddTransient<IInfoPanelStateService, InfoPanelStateService>()
+            .AddTransient<ICameraService, CameraService>();
 
         // Commands
         services
@@ -59,7 +60,7 @@ public static class DependencyInjectionExtensions
             .AddTransient<IDeferredGameCommandHandler<CloseRegionScreenGameCommand>, CloseRegionScreenGameCommandHandler>()
             .AddTransient<IDeferredGameCommandHandler<PopInfoPanelGameCommand>, PopInfoPanelGameCommandHandler>()
             .AddTransient<IDeferredGameCommandHandler<PushInfoPanelGameCommand>, PushInfoPanelGameCommandHandler>()
-            .AddTransient<IGameCommandHandler<OpenRegionGameCommand>, OpenRegionGameCommandHandler>()
+            .AddTransient<IDeferredGameCommandHandler<OpenRegionGameCommand>, OpenRegionGameCommandHandler>()
             .AddTransient<IGameCommandHandler<CloseScreenStateGameCommand>, CloseScreenStateGameCommandHandler>()
             .AddTransient<IGameCommandHandler<SetScreenStateGameCommand>, SetScreenStateGameCommandHandler>()
             .AddTransient<IGameCommandHandler<FocusRegionGameCommand>, FocusRegionGameCommandHandler>();

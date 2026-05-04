@@ -38,12 +38,16 @@ internal sealed class RegionStateService : IRegionStateService
 
     public void SetActiveRegion(int regionId)
     {
-        throw new NotImplementedException();
+        _conservationStateService
+            .SetState(_ => _
+                .WithActiveRegion(regionId));
     }
 
     public void SetInfoPanelToRegion()
     {
-        throw new NotImplementedException();
+        _conservationStateService
+            .SetState(_ => _
+                .WithInfoScreenState(InfoState.Region));
     }
 
     public void SetSelectedRegion(int regionId)

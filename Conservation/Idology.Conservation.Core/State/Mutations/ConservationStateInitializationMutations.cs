@@ -129,6 +129,21 @@ public static class ConservationStateInitializationMutations
         };
     }
 
+    public static ConservationGameData WithActiveRegion(
+        this ConservationGameData state,
+        int regionId)
+    {
+        return state with
+        {
+            ActiveRegion = state.Regions.First(_ => _.Id == regionId),
+            InteractionData = state.InteractionData with
+            {
+                ScreenState = ScreenState.Region,
+                RegionScreenData = new RegionScreenData(regionId, null)
+            }
+        };
+    }
+
     public static ConservationGameData WithSetSelectedRegion(
         this ConservationGameData state,
         int regionId)

@@ -2,22 +2,31 @@
 
 public sealed record OpenRegionGameCommand(
     int RegionId
-) : IGameCommand;
+) : IDeferredGameCommand;
 
-internal sealed class OpenRegionGameCommandHandler : IGameCommandHandler<OpenRegionGameCommand>
+internal sealed class OpenRegionGameCommandHandler : IDeferredGameCommandHandler<OpenRegionGameCommand>
 {
     private readonly IRegionStateService _regionStateService;
+    private readonly IInfoPanelStateService _infoPanelStateService;
+    private readonly ICameraService _cameraService;
 
-    public OpenRegionGameCommandHandler(IRegionStateService regionStateService)
+    public OpenRegionGameCommandHandler(
+        IRegionStateService regionStateService,
+        IInfoPanelStateService infoPanelStateService,
+        ICameraService cameraService)
     {
         _regionStateService = regionStateService;
+        _infoPanelStateService = infoPanelStateService;
+        _cameraService = cameraService;
     }
 
-    public bool HandleCommand(OpenRegionGameCommand command)
+    public bool CanHandleCommand(OpenRegionGameCommand command) => true;
+
+    public void HandleCommand(OpenRegionGameCommand command)
     {
         _regionStateService.SetActiveRegion(command.RegionId);
         _regionStateService.SetInfoPanelToRegion();
-
-        return true;
+        _cameraService.FocusOnRegion(command.RegionId);
+        _infoPanelStateService.PushInfoPanel(InfoState.Region, new RegionInfoPanelPayload(command.RegionId));
     }
 }

@@ -96,7 +96,7 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
         else if (_gameState.State.InteractionData.DefaultScreenData.SelectedRegion is { } regionId &&
             _inputManager.HandleActionIfInvoked(Constants.Action_Enter))
         {
-            _gameCommandService.HandleCommand(new OpenRegionGameCommand(regionId));
+            _gameCommandService.EnqueueCommand(new OpenRegionGameCommand(regionId));
         }
         else if (_inputManager.IsActionInvoked(Constants.Action_Click))
         {
