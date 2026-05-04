@@ -15,6 +15,7 @@ global using Idology.Conservation.Core.Services.GameCommands.PushInfoPanel;
 global using Idology.Conservation.Core.Services.GameCommands.SelectKakapoWithinRegion;
 global using Idology.Conservation.Core.Services.GameCommands.SelectRegion;
 global using Idology.Conservation.Core.Services.GameCommands.SetScreenState;
+global using Idology.Conservation.Core.Services.InfoPanel;
 global using Idology.Conservation.Core.Services.Kakapo;
 global using Idology.Conservation.Core.Services.Region;
 global using Idology.Conservation.Core.Services.Routing;

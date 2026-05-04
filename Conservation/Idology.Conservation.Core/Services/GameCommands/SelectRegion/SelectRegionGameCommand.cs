@@ -7,10 +7,14 @@ public sealed record SelectRegionGameCommand(
 internal sealed class SelectRegionGameCommandHandler : IDeferredGameCommandHandler<SelectRegionGameCommand>
 {
     private readonly IRegionStateService _regionStateService;
+    private readonly IInfoPanelStateService _infoPanelStateService;
 
-    public SelectRegionGameCommandHandler(IRegionStateService regionStateService)
+    public SelectRegionGameCommandHandler(
+        IRegionStateService regionStateService,
+        IInfoPanelStateService infoPanelStateService)
     {
         _regionStateService = regionStateService;
+        _infoPanelStateService = infoPanelStateService;
     }
 
     public bool CanHandleCommand(SelectRegionGameCommand command) => true;
@@ -18,5 +22,6 @@ internal sealed class SelectRegionGameCommandHandler : IDeferredGameCommandHandl
     public void HandleCommand(SelectRegionGameCommand command)
     {
         _regionStateService.SetSelectedRegion(command.RegionId);
+        _infoPanelStateService.PushInfoPanel(InfoState.RegionSummary, new RegionInfoPanelPayload(command.RegionId));
     }
 }

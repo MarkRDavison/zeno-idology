@@ -134,4 +134,20 @@ public static class ConservationStateInitializationMutations
 
         return state;
     }
+
+    public static ConservationGameData WithSetSelectedRegion(
+        this ConservationGameData state,
+        int regionId)
+    {
+        return state with
+        {
+            InteractionData = state.InteractionData with
+            {
+                DefaultScreenData = state.InteractionData.DefaultScreenData with
+                {
+                    SelectedRegion = regionId
+                }
+            }
+        };
+    }
 }
