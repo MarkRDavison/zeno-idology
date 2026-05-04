@@ -18,7 +18,7 @@ internal sealed class RegionStateService : IRegionStateService
         throw new NotImplementedException();
     }
 
-    public void ClearActiveRegion()
+    public void ClearSelectedRegion()
     {
         _conservationStateService.SetState(_ => _.WithCloseRegionSummary());
         _infoPanelStateService.PopInfoPanel(InfoState.RegionSummary);
@@ -33,7 +33,7 @@ internal sealed class RegionStateService : IRegionStateService
 
     public bool IsRegionScreenOpen()
     {
-        throw new NotImplementedException();
+        return _conservationStateService.State.InteractionData.ScreenState is ScreenState.Region;
     }
 
     public void SetActiveRegion(int regionId)
@@ -53,5 +53,14 @@ internal sealed class RegionStateService : IRegionStateService
     public void SetSelectedRegion(int regionId)
     {
         _conservationStateService.SetState(_ => _.WithSetSelectedRegion(regionId));
+    }
+
+    public void CloseRegionScreenState()
+    {
+        _conservationStateService
+            .SetState(_ => _
+                .WithInteractionScreenState(ScreenState.Default)
+                .WithInfoScreenState(InfoState.Hidden)
+                .WithResetRegionState());
     }
 }

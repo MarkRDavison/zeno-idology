@@ -6,10 +6,14 @@ public sealed record CloseRegionScreenGameCommand(
 internal sealed class CloseRegionScreenGameCommandHandler : IDeferredGameCommandHandler<CloseRegionScreenGameCommand>
 {
     private readonly IRegionStateService _regionStateService;
+    private readonly IInfoPanelStateService _infoPanelStateService;
 
-    public CloseRegionScreenGameCommandHandler(IRegionStateService regionStateService)
+    public CloseRegionScreenGameCommandHandler(
+        IRegionStateService regionStateService,
+        IInfoPanelStateService infoPanelStateService)
     {
         _regionStateService = regionStateService;
+        _infoPanelStateService = infoPanelStateService;
     }
 
     public bool CanHandleCommand(CloseRegionScreenGameCommand command)
@@ -19,6 +23,7 @@ internal sealed class CloseRegionScreenGameCommandHandler : IDeferredGameCommand
 
     public void HandleCommand(CloseRegionScreenGameCommand command)
     {
-        throw new NotImplementedException();
+        _regionStateService.CloseRegionScreenState();
+        _infoPanelStateService.PopInfoPanel(InfoState.Region); // TODO: Might be kakapo summary or region
     }
 }

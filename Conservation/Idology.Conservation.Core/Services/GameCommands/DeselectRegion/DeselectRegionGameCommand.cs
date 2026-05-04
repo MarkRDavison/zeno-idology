@@ -19,6 +19,6 @@ internal sealed class DeselectRegionGameCommandHandler : IDeferredGameCommandHan
 
     public void HandleCommand(DeselectRegionGameCommand command)
     {
-        _regionStateService.ClearActiveRegion();
+        _regionStateService.ClearSelectedRegion();
     }
 }
