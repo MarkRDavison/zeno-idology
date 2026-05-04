@@ -82,7 +82,7 @@ internal sealed class RegionSummaryInfoContextSubWidget : BaseWidget
             }
         }).OnClick += (s, e) =>
         {
-            _gameCommandService.HandleCommand(new OpenRegionGameCommand(_regionId));
+            _gameCommandService.EnqueueCommand(new OpenRegionGameCommand(_regionId));
         };
 
         titleRow.AddChild(new IconButtonWidget

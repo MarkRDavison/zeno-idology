@@ -60,6 +60,18 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
                     }
                     return widget;
                 }
+            },
+            {
+                InfoState.Region,
+                _ =>
+                {
+                    var widget = _.GetRequiredService<RegionInfoContextSubWidget>();
+                    if (e.Payload is RegionInfoPanelPayload p)
+                    {
+                        widget.SetRegionId(p.RegionId);
+                    }
+                    return widget;
+                }
             }
         };
 

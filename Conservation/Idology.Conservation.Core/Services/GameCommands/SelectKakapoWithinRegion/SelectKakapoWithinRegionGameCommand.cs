@@ -7,14 +7,11 @@ public sealed record SelectKakapoWithinRegionGameCommand(
 
 internal sealed class SelectKakapoWithinRegionGameCommandHandler : IDeferredGameCommandHandler<SelectKakapoWithinRegionGameCommand>
 {
-    private readonly IRegionStateService _regionStateService;
     private readonly IKakapoStateService _kakapoStateService;
 
     public SelectKakapoWithinRegionGameCommandHandler(
-        IRegionStateService regionStateService,
         IKakapoStateService kakapoStateService)
     {
-        _regionStateService = regionStateService;
         _kakapoStateService = kakapoStateService;
     }
 
@@ -22,8 +19,6 @@ internal sealed class SelectKakapoWithinRegionGameCommandHandler : IDeferredGame
 
     public void HandleCommand(SelectKakapoWithinRegionGameCommand command)
     {
-        _regionStateService.SetActiveRegion(command.RegionId);
-        _regionStateService.ActivateRegionScreen();
         _kakapoStateService.SetActiveKakapoId(command.KakapoId);
         _kakapoStateService.SetInfoPanelToKakapo();
     }

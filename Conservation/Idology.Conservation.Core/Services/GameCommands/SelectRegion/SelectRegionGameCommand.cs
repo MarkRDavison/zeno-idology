@@ -23,5 +23,6 @@ internal sealed class SelectRegionGameCommandHandler : IDeferredGameCommandHandl
     {
         _regionStateService.SetSelectedRegion(command.RegionId);
         _infoPanelStateService.PushInfoPanel(InfoState.RegionSummary, new RegionInfoPanelPayload(command.RegionId));
+
     }
 }
