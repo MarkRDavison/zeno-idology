@@ -30,65 +30,18 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
         Layout.Contain = ContainFlags.Flex;
         Layout.Align = AlignFlags.Start;
 
-        _eventRoutingService.SetInfoState += OnSetInfoState;
+        _eventRoutingService.PushInfoState += OnPushInfoState;
+        _eventRoutingService.PopInfoState += OnPopInfoState;
     }
 
-    private void OnSetInfoState(object? sender, SetInfoScreenGameCommand e)
+    private void OnPopInfoState(object? sender, PopInfoPanelGameCommand e)
     {
-        ClearChildren();
 
-        if (!e.Open)
-        {
-            Layout.Visibility = Visibility.Collapsed;
-            return;
-        }
+    }
 
-        Layout.Visibility = Visibility.Visible;
+    private void OnPushInfoState(object? sender, PushInfoPanelGameCommand e)
+    {
 
-        var initializeSubWidgetFactory = new Dictionary<InfoState, Func<IServiceProvider, BaseWidget>>
-        {
-            {
-                InfoState.RegionSummary,
-                _ =>
-                {
-                    var widget = _.GetRequiredService<RegionSummaryInfoContextSubWidget>();
-                    if (e.Context is RegionInfoScreenPayload p)
-                    {
-                        widget.SetRegionId(p.RegionId);
-                    }
-                    return widget;
-                }
-            },
-            {
-                InfoState.Region,
-                _ =>
-                {
-                    var widget = _.GetRequiredService<RegionInfoContextSubWidget>();
-                    if (e.Context is RegionInfoScreenPayload p)
-                    {
-                        widget.SetRegionId(p.RegionId);
-                    }
-                    return widget;
-                }
-            },
-            {
-                InfoState.KakapoSummary,
-                _ =>
-                {
-                    var widget = _.GetRequiredService<KakapoSummaryInfoContextSubWidget>();
-                    if (e.Context is KakapoInfoScreenPayload p)
-                    {
-                        widget.SetKakapoId(p.KakapoId);
-                    }
-                    return widget;
-                }
-            }
-        };
-
-        if (initializeSubWidgetFactory.TryGetValue(e.State, out var newSubWidget))
-        {
-            AddGenericChild(newSubWidget(_serviceProvider));
-        }
     }
 
     private void Dispose(bool disposing)
@@ -97,7 +50,8 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
         {
             if (disposing)
             {
-                _eventRoutingService.SetInfoState -= OnSetInfoState;
+                _eventRoutingService.PopInfoState -= OnPopInfoState;
+                _eventRoutingService.PushInfoState -= OnPushInfoState;
             }
 
             _disposedValue = true;

@@ -2,26 +2,27 @@
 
 public sealed class StaffDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
 {
-    private readonly ConservationGameData _gameData;
+    private readonly IConservationStateService _gameState;
 
     public StaffDetailsUiSubScenePanelWidget(
-        ConservationGameData gameData,
+        IConservationStateService gameState,
         ITranslationService translationService,
         IGameCommandService gameCommandService
     ) : base(
         translationService,
         gameCommandService)
     {
-        _gameData = gameData;
+        _gameState = gameState;
     }
 
     public override string TitleTranslationKey => "STAFF_DETAILS_TITLE";
+    public override ScreenState ScreenState => ScreenState.Staff;
 
     public override void PostConstructInit()
     {
         var scrollableWidget = AddCommonWidgets();
 
-        foreach (var s in _gameData.StaffData)
+        foreach (var s in _gameState.State.StaffData)
         {
             var currentPanel = scrollableWidget.AddChild(new PanelWidget
             {

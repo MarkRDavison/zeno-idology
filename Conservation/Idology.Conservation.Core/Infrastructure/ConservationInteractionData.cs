@@ -19,27 +19,15 @@ public enum InfoState
     KakapoSummary = 3,
 }
 
-public sealed class DefaultScreenData
-{
-    public int? SelectedRegion { get; set; }
-}
+public sealed record DefaultScreenData(
+    int? SelectedRegion);
 
-public sealed class RegionScreenData
-{
-    public int RegionId { get; set; }
-    public int? SelectedKakapoId { get; set; }
-}
+public sealed record RegionScreenData(
+    int? RegionId,
+    int? SelectedKakapoId);
 
-public sealed class ConservationInteractionData
-{
-    public ConservationInteractionData()
-    {
-
-        Console.Error.WriteLine("TODO: IMPLEMENT THE RegionScreenData");
-    }
-
-    public InfoState InfoState { get; set; } = InfoState.Hidden;
-    public ScreenState ScreenState { get; set; } = ScreenState.Default;
-    public DefaultScreenData DefaultScreenData { get; } = new();
-    public RegionScreenData RegionScreenData { get; } = new(); // TODO: We need to populate and use this so that the selected Kakapo can be highlighted
-}
+public sealed record ConservationInteractionData(
+    InfoState InfoState,
+    ScreenState ScreenState,
+    DefaultScreenData DefaultScreenData,
+    RegionScreenData RegionScreenData);

@@ -1,6 +1,30 @@
 ﻿namespace Idology.Conservation.Core.Services.GameCommands.SetScreenState;
 
-public sealed class SetScreenStateGameCommand : IDeferredGameCommand
+public sealed record SetScreenStateGameCommand(
+    ScreenState State
+) : IDeferredGameCommand;
+
+internal sealed class SetScreenStateGameCommandHandler : IDeferredGameCommandHandler<SetScreenStateGameCommand>
 {
-    public required ScreenState ScreenState { get; init; }
+    private readonly IKakapoStateService _kakapoStateService;
+
+    public SetScreenStateGameCommandHandler(IKakapoStateService kakapoStateService)
+    {
+        _kakapoStateService = kakapoStateService;
+    }
+
+    public bool CanHandleCommand(SetScreenStateGameCommand command) => true;
+
+    public void HandleCommand(SetScreenStateGameCommand command)
+    {
+        switch (command.State)
+        {
+            case ScreenState.Kakapo:
+                _kakapoStateService.OpenKakapoScreenState();
+                break;
+            default:
+                Console.Error.WriteLine("UNHANDLED SET SCREEN STATE COMMAND");
+                break;
+        }
+    }
 }

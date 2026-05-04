@@ -1,14 +1,10 @@
 ﻿namespace Idology.Conservation.Core.Infrastructure;
 
-public sealed class ConservationGameData
-{
-    public RegionData? ActiveRegion { get; set; }
-    public List<RegionData> Regions { get; } = [];
-    public ConservationInteractionData InteractionData { get; set; } = new();
-
-    public List<KakapoModel> KakapoData { get; } = [];
-    public List<StaffData> StaffData { get; } = [];
-
-    public List<RegionSimulation> RegionSimulations { get; } = [];
-    public List<KakapoSimulationData> SimulatedKakapo { get; } = [];
-}
+public record ConservationGameData(
+    ConservationInteractionData InteractionData,
+    RegionData? ActiveRegion, // TODO: Should this just be a getter? Based on active region?
+    IReadOnlyList<RegionData> Regions,
+    IReadOnlyList<KakapoModel> KakapoData,
+    IReadOnlyList<StaffData> StaffData,
+    IReadOnlyList<RegionSimulation> RegionSimulations,
+    IReadOnlyList<KakapoSimulationData> SimulatedKakapo);

@@ -36,7 +36,7 @@ public static class DependencyInjectionExtensions
         // Services
         services
             .AddScoped<ConservationGame>()
-            .AddScoped<ConservationGameData>()
+            .AddScoped<IConservationStateService, ConservationStateService>()
             .AddScoped(_ => new ConservationGameCamera(_.GetRequiredService<IInputManager>())
             {
                 Offset = new Vector2(0, TopBarWidget.Height),
@@ -50,8 +50,13 @@ public static class DependencyInjectionExtensions
         // Commands
         services
             .AddTransient<IDeferredGameCommandHandler<SetScreenStateGameCommand>, SetScreenStateGameCommandHandler>()
-            .AddTransient<IDeferredGameCommandHandler<SetInfoScreenGameCommand>, SetInfoScreenGameCommandHandler>()
-            .AddTransient<IGameCommandHandler<FocusRegionGameCommand>, FocusRegionGameCommandHandler>();
+            .AddTransient<IDeferredGameCommandHandler<SelectRegionGameCommand>, SelectRegionGameCommandHandler>()
+            .AddTransient<IDeferredGameCommandHandler<SelectKakapoWithinRegionGameCommand>, SelectKakapoWithinRegionGameCommandHandler>()
+            .AddTransient<IDeferredGameCommandHandler<DeselectRegionGameCommand>, DeselectRegionGameCommandHandler>()
+            .AddTransient<IDeferredGameCommandHandler<CloseRegionScreenGameCommand>, CloseRegionScreenGameCommandHandler>()
+            .AddTransient<IDeferredGameCommandHandler<PopInfoPanelGameCommand>, PopInfoPanelGameCommandHandler>()
+            .AddTransient<IDeferredGameCommandHandler<PushInfoPanelGameCommand>, PushInfoPanelGameCommandHandler>()
+            .AddTransient<IGameCommandHandler<OpenRegionGameCommand>, OpenRegionGameCommandHandler>();
 
         // Widgets
         services

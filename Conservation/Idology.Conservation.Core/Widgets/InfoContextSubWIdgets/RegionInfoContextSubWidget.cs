@@ -3,16 +3,16 @@
 internal sealed class RegionInfoContextSubWidget : BaseWidget
 {
     private int _regionId;
-    private readonly ConservationGameData _gameData;
+    private readonly IConservationStateService _gameState;
     private readonly IGameCommandService _gameCommandService;
 
     public RegionInfoContextSubWidget(
-        ConservationGameData gameData,
+        IConservationStateService gameState,
         IGameCommandService gameCommandService,
         IInputManager inputManager,
         IUserInterfaceRoot userInterfaceRoot)
     {
-        _gameData = gameData;
+        _gameState = gameState;
         _gameCommandService = gameCommandService;
         InputManager = inputManager;
         UserInterfaceRoot = userInterfaceRoot;
@@ -23,7 +23,7 @@ internal sealed class RegionInfoContextSubWidget : BaseWidget
         _regionId = regionId;
     }
 
-    private RegionData Region => _gameData.Regions.ElementAt(_regionId);
+    private RegionData Region => _gameState.State.Regions.ElementAt(_regionId);
 
     public override void PostConstructInit()
     {
@@ -67,9 +67,6 @@ internal sealed class RegionInfoContextSubWidget : BaseWidget
                 Contain = ContainFlags.Row,
                 Behave = BehaveFlags.Top | BehaveFlags.Right
             }
-        }).OnClick += (s, e) => _gameCommandService.HandleCommand(new FocusRegionGameCommand
-        {
-            RegionId = _regionId
-        });
+        }).OnClick += (s, e) => _gameCommandService.HandleCommand(new FocusRegionGameCommand(_regionId));
     }
 }

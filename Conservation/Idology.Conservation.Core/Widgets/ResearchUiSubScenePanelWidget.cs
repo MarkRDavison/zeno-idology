@@ -12,6 +12,7 @@ public sealed class ResearchUiSubScenePanelWidget : UiSubScenePanelWidget
     }
 
     public override string TitleTranslationKey => "RESEARCH_DETAILS_TITLE";
+    public override ScreenState ScreenState => ScreenState.Research;
 
     public override void PostConstructInit()
     {

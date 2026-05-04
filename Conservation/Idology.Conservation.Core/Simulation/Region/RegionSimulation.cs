@@ -4,14 +4,14 @@ public sealed class RegionSimulation : ISimulationBase
 {
     public int RegionId { get; }
     private const int Separation = 16;
-    private readonly ConservationGameData _gameData;
+    private readonly IConservationStateService _gameState;
 
     public RegionSimulation(
         int regionId,
-        ConservationGameData gameData)
+        IConservationStateService gameState)
     {
         RegionId = regionId;
-        _gameData = gameData;
+        _gameState = gameState;
     }
 
     public void Simulate(TimeSpan timespan)
@@ -19,7 +19,7 @@ public sealed class RegionSimulation : ISimulationBase
         // TODO: Cache these and have some busting mechanism.
         HashSet<Vector2> _validCells = [];
 
-        var region = _gameData.Regions.First(_ => _.Id == RegionId);
+        var region = _gameState.State.Regions.First(_ => _.Id == RegionId);
 
         for (int y = 0; y < region.Height; ++y)
         {
@@ -38,19 +38,11 @@ public sealed class RegionSimulation : ISimulationBase
             }
         }
 
-        var kakapoToSimulate = _gameData.SimulatedKakapo.Where(_ => _.RegionId == RegionId).ToList();
+        var kakapoToSimulate = _gameState.State.SimulatedKakapo.Where(_ => _.RegionId == RegionId).ToList();
 
         if (kakapoToSimulate.Count > 0 && KakapoDistribution.SpreadOut(kakapoToSimulate, _validCells, 1, Random.Shared, region.Width, region.Height, Separation, 0.25f))
         {
-            foreach (var k in kakapoToSimulate)
-            {
-                var index = _gameData.SimulatedKakapo.FindIndex(_ => _.KakapoId == k.KakapoId);
-
-                if (index >= 0)
-                {
-                    _gameData.SimulatedKakapo[index] = k;
-                }
-            }
+            _gameState.SetState(_ => _.WithUpdatedKakapoSimulations(kakapoToSimulate));
         }
     }
 }
