@@ -3,16 +3,16 @@
 internal sealed class RegionSummaryInfoContextSubWidget : BaseWidget
 {
     private int _regionId;
-    private readonly ConservationGameData _gameData;
+    private readonly IConservationStateService _gameState;
     private readonly IGameCommandService _gameCommandService;
 
     public RegionSummaryInfoContextSubWidget(
-        ConservationGameData gameData,
+        IConservationStateService gameState,
         IInputManager inputManager,
         IUserInterfaceRoot userInterfaceRoot,
         IGameCommandService gameCommandService)
     {
-        _gameData = gameData;
+        _gameState = gameState;
         InputManager = inputManager;
         UserInterfaceRoot = userInterfaceRoot;
         _gameCommandService = gameCommandService;
@@ -23,7 +23,7 @@ internal sealed class RegionSummaryInfoContextSubWidget : BaseWidget
         _regionId = regionId;
     }
 
-    private RegionData Region => _gameData.Regions.ElementAt(_regionId);
+    private RegionData Region => _gameState.State.Regions.ElementAt(_regionId);
 
     public override void PostConstructInit()
     {
@@ -67,10 +67,7 @@ internal sealed class RegionSummaryInfoContextSubWidget : BaseWidget
                 Contain = ContainFlags.Row,
                 Behave = BehaveFlags.Top | BehaveFlags.Right
             }
-        }).OnClick += (s, e) => _gameCommandService.HandleCommand(new FocusRegionGameCommand
-        {
-            RegionId = _regionId
-        });
+        }).OnClick += (s, e) => _gameCommandService.HandleCommand(new FocusRegionGameCommand(_regionId));
 
         titleRow.AddChild(new IconButtonWidget
         {
@@ -85,20 +82,7 @@ internal sealed class RegionSummaryInfoContextSubWidget : BaseWidget
             }
         }).OnClick += (s, e) =>
         {
-            // TODO: Push and pop camera/transform matrices or position/zoom levels???
-            _gameData.InteractionData.ScreenState = ScreenState.Region;
-            _gameData.ActiveRegion = _gameData.Regions[_regionId];
-            _gameData.InteractionData.DefaultScreenData.SelectedRegion = null;
-
-            _gameCommandService.EnqueueCommand(new SetScreenStateGameCommand { ScreenState = ScreenState.Region });
-
-            _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
-            {
-                Open = true,
-                State = InfoState.Region,
-                Context = new RegionInfoScreenPayload(_regionId, false)
-            });
-            _gameCommandService.HandleCommand(new FocusRegionGameCommand { RegionId = _regionId });
+            _gameCommandService.HandleCommand(new OpenRegionGameCommand(_regionId));
         };
 
         titleRow.AddChild(new IconButtonWidget
@@ -114,12 +98,7 @@ internal sealed class RegionSummaryInfoContextSubWidget : BaseWidget
             }
         }).OnClick += (s, e) =>
         {
-            _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
-            {
-                Open = false,
-                State = InfoState.Hidden,
-                Context = null
-            });
+            _gameCommandService.EnqueueCommand(new DeselectRegionGameCommand());
         };
     }
 }

@@ -20,6 +20,7 @@ public abstract class UiSubScenePanelWidget : PanelWidget
     }
 
     public abstract string TitleTranslationKey { get; }
+    public abstract ScreenState ScreenState { get; }
     public ITranslationService TranslationService { get; }
     public IGameCommandService GameCommandService { get; }
 
@@ -67,7 +68,7 @@ public abstract class UiSubScenePanelWidget : PanelWidget
             }
         });
 
-        closePanelButton.OnClick += (s, e) => GameCommandService.EnqueueCommand(new SetScreenStateGameCommand { ScreenState = ScreenState.Default });
+        closePanelButton.OnClick += (s, e) => GameCommandService.HandleCommand(new CloseScreenStateGameCommand(ScreenState));
 
         return AddChild(new ScrollablePanelWidget
         {

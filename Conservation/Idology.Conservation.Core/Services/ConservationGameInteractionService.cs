@@ -2,20 +2,20 @@
 
 internal class ConservationGameInteractionService : IConservationGameInteractionService
 {
-    private readonly ConservationGameData _gameData;
+    private readonly IConservationStateService _gameState;
     private readonly IInputManager _inputManager;
     private readonly IGameDateTimeProvider _gameDateTimeProvider;
     private readonly IGameCommandService _gameCommandService;
     private readonly ConservationGameCamera _conservationGameCamera;
 
     public ConservationGameInteractionService(
-        ConservationGameData gameData,
+        IConservationStateService gameState,
         IInputManager inputManager,
         IGameDateTimeProvider gameDateTimeProvider,
         IGameCommandService gameCommandService,
         ConservationGameCamera conservationGameCamera)
     {
-        _gameData = gameData;
+        _gameState = gameState;
         _inputManager = inputManager;
         _gameDateTimeProvider = gameDateTimeProvider;
         _gameCommandService = gameCommandService;
@@ -46,24 +46,24 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
         {
             if (_inputManager.HandleActionIfInvoked(shortcut))
             {
-                if (_gameCommandService.EnqueueCommand(new SetScreenStateGameCommand { ScreenState = state }))
+                if (_gameCommandService.EnqueueCommand(new SetScreenStateGameCommand(state)))
                 {
                     _inputManager.HandleActionIfInvoked(shortcut);
                 }
             }
         }
 
-        if (_gameData.InteractionData.ScreenState is ScreenState.Default)
+        if (_gameState.State.InteractionData.ScreenState is ScreenState.Default)
         {
             HandleDefaultInteraction();
         }
-        else if (_gameData.InteractionData.ScreenState is ScreenState.Region)
+        else if (_gameState.State.InteractionData.ScreenState is ScreenState.Region)
         {
             HandleRegionInteraction();
         }
-        else if (subSceneStates.Contains(_gameData.InteractionData.ScreenState))
+        else if (subSceneStates.Contains(_gameState.State.InteractionData.ScreenState))
         {
-            HandleSubStateInteraction();
+            HandleSubStateInteraction(_gameState.State.InteractionData.ScreenState);
         }
     }
 
@@ -71,53 +71,32 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
     {
         if (_inputManager.HandleActionIfInvoked(Constants.Action_Escape))
         {
-            _gameData.InteractionData.DefaultScreenData.SelectedRegion = null;
-
-            _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
-            {
-                Open = false,
-                State = InfoState.Hidden,
-                Context = null
-            });
+            _gameCommandService.EnqueueCommand(new DeselectRegionGameCommand());
         }
         else if (_inputManager.HandleActionIfInvoked(Constants.Action_PlayPause))
         {
+            // TODO: To game command...
             _gameDateTimeProvider.SetPauseState(!_gameDateTimeProvider.IsPaused);
         }
         else if (_inputManager.HandleActionIfInvoked(Constants.Action_CycleRegion))
         {
-            if (_gameData.InteractionData.DefaultScreenData.SelectedRegion is null)
+            int newRegionId;
+
+            if (_gameState.State.InteractionData.DefaultScreenData.SelectedRegion is { } regionId)
             {
-                _gameData.InteractionData.DefaultScreenData.SelectedRegion = 0;
+                newRegionId = (regionId + 1) % _gameState.State.Regions.Count;
             }
             else
             {
-                _gameData.InteractionData.DefaultScreenData.SelectedRegion = (_gameData.InteractionData.DefaultScreenData.SelectedRegion + 1) % _gameData.Regions.Count;
+                newRegionId = 0;
             }
 
-            if (_gameData.InteractionData.DefaultScreenData.SelectedRegion is not null)
-            {
-                _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
-                {
-                    Open = true,
-                    State = InfoState.RegionSummary,
-                    Context = new RegionInfoScreenPayload(_gameData.InteractionData.DefaultScreenData.SelectedRegion.Value, true)
-                });
-            }
+            _gameCommandService.EnqueueCommand(new SelectRegionGameCommand(newRegionId));
         }
-        else if (_gameData.InteractionData.DefaultScreenData.SelectedRegion is not null &&
+        else if (_gameState.State.InteractionData.DefaultScreenData.SelectedRegion is { } regionId &&
             _inputManager.HandleActionIfInvoked(Constants.Action_Enter))
         {
-            // TODO: Push and pop camera/transform matrices or position/zoom levels???
-            _gameData.InteractionData.ScreenState = ScreenState.Region;
-            _gameData.ActiveRegion = _gameData.Regions[_gameData.InteractionData.DefaultScreenData.SelectedRegion.Value];
-
-            _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
-            {
-                Open = true,
-                State = InfoState.Region,
-                Context = new RegionInfoScreenPayload(_gameData.InteractionData.DefaultScreenData.SelectedRegion.Value, false)
-            });
+            _gameCommandService.HandleCommand(new OpenRegionGameCommand(regionId));
         }
         else if (_inputManager.IsActionInvoked(Constants.Action_Click))
         {
@@ -128,21 +107,14 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
 
             var idx = 0;
 
-            foreach (var r in _gameData.Regions)
+            foreach (var r in _gameState.State.Regions)
             {
                 if (r.RegionOffset.X <= tileX && tileX <= r.RegionOffset.X + r.Width &&
                     r.RegionOffset.Y <= tileY && tileY <= r.RegionOffset.Y + r.Height)
                 {
                     _inputManager.MarkActionAsHandled(Constants.Action_Click);
 
-                    _gameData.InteractionData.DefaultScreenData.SelectedRegion = idx;
-
-                    _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
-                    {
-                        Open = true,
-                        State = InfoState.RegionSummary,
-                        Context = new RegionInfoScreenPayload(idx, true)
-                    });
+                    _gameCommandService.EnqueueCommand(new SelectRegionGameCommand(idx));
 
                     break;
                 }
@@ -158,26 +130,16 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
         {
             // TODO: Maybe we want to check if the info panel is open before closing?
             // Fall back from the kakapo summary to the region info panel?
-
-            _gameData.InteractionData.ScreenState = ScreenState.Default;
-            _gameData.InteractionData.DefaultScreenData.SelectedRegion = null;
-            _gameData.ActiveRegion = null;
-
-            _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
-            {
-                Open = false,
-                State = InfoState.Hidden,
-                Context = null
-            });
+            _gameCommandService.EnqueueCommand(new CloseRegionScreenGameCommand());
         }
-        else if (_inputManager.IsActionInvoked(Constants.Action_Click) && _gameData.ActiveRegion is { } activeRegion)
+        else if (_inputManager.IsActionInvoked(Constants.Action_Click) && _gameState.State.ActiveRegion is { } activeRegion)
         {
             var mousePosition = _inputManager.GetMousePosition(_conservationGameCamera.Camera) / 64.0f;
 
             int? selectedKakapoId = null;
 
             // TODO: Maybe there are multiple, so gotta go through all of them to find the best match????
-            foreach (var k in _gameData.SimulatedKakapo.Where(_ => _.RegionId == activeRegion.Id))
+            foreach (var k in _gameState.State.SimulatedKakapo.Where(_ => _.RegionId == activeRegion.Id))
             {
                 if (Vector2.DistanceSquared(mousePosition, k.CurrentLocation + activeRegion.RegionOffset) < 3.0f)
                 {
@@ -190,24 +152,25 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
             {
                 _inputManager.MarkActionAsHandled(Constants.Action_Click);
 
-                _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
-                {
-                    Open = true,
-                    State = InfoState.KakapoSummary,
-                    Context = new KakapoInfoScreenPayload(selectedKakapoId.Value)
-                });
+                _gameCommandService.EnqueueCommand(new SelectKakapoWithinRegionGameCommand(activeRegion.Id, id));
             }
         }
     }
 
-    private void HandleSubStateInteraction()
+    private void HandleSubStateInteraction(ScreenState screenState)
     {
         if (_inputManager.IsActionInvoked(Constants.Action_Escape))
         {
-            if (_gameCommandService.EnqueueCommand(new SetScreenStateGameCommand { ScreenState = ScreenState.Default }))
+            switch (screenState)
             {
-                _inputManager.HandleActionIfInvoked(Constants.Action_Escape);
+                default:
+                    Console.Error.WriteLine("UNHANDLED escape sub screen action");
+                    break;
             }
+            //if (_gameCommandService.EnqueueCommand(new ScreenStateGameCommand { ScreenState = ScreenState.Default }))
+            //{
+            //    _inputManager.HandleActionIfInvoked(Constants.Action_Escape);
+            //}
         }
     }
 }

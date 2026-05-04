@@ -3,14 +3,14 @@
 public sealed class ConservationGame : IDisposable
 {
     private bool _disposedValue;
-    private readonly ConservationGameData _gameData;
+    private readonly IConservationStateService _gameState;
     private readonly IGameDateTimeProvider _gameDateTimeProvider;
 
     public ConservationGame(
-        ConservationGameData gameData,
+        IConservationStateService gameState,
         IGameDateTimeProvider gameDateTimeProvider)
     {
-        _gameData = gameData;
+        _gameState = gameState;
         _gameDateTimeProvider = gameDateTimeProvider;
 
         _gameDateTimeProvider.TimeIncremented += OnTimeIncremented;
@@ -18,7 +18,7 @@ public sealed class ConservationGame : IDisposable
 
     private void OnTimeIncremented(object? sender, TimeSpan e)
     {
-        foreach (var rs in _gameData.RegionSimulations)
+        foreach (var rs in _gameState.State.RegionSimulations)
         {
             rs.Simulate(e);
         }

@@ -2,30 +2,31 @@
 
 public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
 {
-    private readonly ConservationGameData _gameData;
+    private readonly IConservationStateService _gameState;
     private readonly IGameDateTimeProvider _gameDateTimeProvider;
 
     public KakapoDetailsUiSubScenePanelWidget(
         ITranslationService translationService,
-        ConservationGameData gameData,
+        IConservationStateService gameState,
         IGameDateTimeProvider gameDateTimeProvider,
         IGameCommandService gameCommandService
     ) : base(
         translationService,
         gameCommandService)
     {
-        _gameData = gameData;
+        _gameState = gameState;
         _gameDateTimeProvider = gameDateTimeProvider;
     }
 
     public override string TitleTranslationKey => "KAKAPO_DETAILS_TITLE";
+    public override ScreenState ScreenState => ScreenState.Kakapo;
 
     // TODO: localization...
     public override void PostConstructInit()
     {
         var scrollableWidget = AddCommonWidgets();
 
-        foreach (var kd in _gameData.KakapoData)
+        foreach (var kd in _gameState.State.KakapoData.OrderBy(_ => _.Id))
         {
             var rootRowPanel = scrollableWidget.AddChild(new PanelWidget
             {
@@ -121,7 +122,7 @@ public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
                 {
                     var parentageInfo = string.Empty;
 
-                    if (kd.MotherId is not null && _gameData.KakapoData.FirstOrDefault(_ => _.Id == kd.MotherId) is { } mother)
+                    if (kd.MotherId is not null && _gameState.State.KakapoData.FirstOrDefault(_ => _.Id == kd.MotherId) is { } mother)
                     {
                         parentageInfo += "Mother " + mother.Name;
                     }
@@ -132,7 +133,7 @@ public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
 
                     parentageInfo += ", ";
 
-                    if (kd.FatherId is not null && _gameData.KakapoData.FirstOrDefault(_ => _.Id == kd.FatherId) is { } father)
+                    if (kd.FatherId is not null && _gameState.State.KakapoData.FirstOrDefault(_ => _.Id == kd.FatherId) is { } father)
                     {
                         parentageInfo += "father " + father.Name;
                     }

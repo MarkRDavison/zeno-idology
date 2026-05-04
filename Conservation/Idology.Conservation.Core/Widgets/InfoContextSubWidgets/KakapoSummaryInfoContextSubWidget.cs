@@ -3,16 +3,16 @@
 internal sealed class KakapoSummaryInfoContextSubWidget : BaseWidget
 {
     private int _kakapoId;
-    private readonly ConservationGameData _gameData;
+    private readonly IConservationStateService _gameState;
     private readonly IGameCommandService _gameCommandService;
 
     public KakapoSummaryInfoContextSubWidget(
-        ConservationGameData gameData,
+        IConservationStateService gameState,
         IInputManager inputManager,
         IUserInterfaceRoot userInterfaceRoot,
         IGameCommandService gameCommandService)
     {
-        _gameData = gameData;
+        _gameState = gameState;
         InputManager = inputManager;
         UserInterfaceRoot = userInterfaceRoot;
         _gameCommandService = gameCommandService;
@@ -23,8 +23,8 @@ internal sealed class KakapoSummaryInfoContextSubWidget : BaseWidget
         _kakapoId = kakapoId;
     }
 
-    public KakapoModel Kakapo => _gameData.KakapoData.First(_ => _.Id == _kakapoId);
-
+    public KakapoModel Kakapo => _gameState.State.KakapoData.First(_ => _.Id == _kakapoId);
+    public KakapoSimulationData SimulatedKakapo => _gameState.State.SimulatedKakapo.First(_ => _.KakapoId == _kakapoId);
 
     public override void PostConstructInit()
     {
@@ -70,13 +70,7 @@ internal sealed class KakapoSummaryInfoContextSubWidget : BaseWidget
             }
         }).OnClick += (s, e) =>
         {
-            // TODO: Open previous, maybe have a stack of these panels....
-            _gameCommandService.EnqueueCommand(new SetInfoScreenGameCommand
-            {
-                Open = false,
-                State = InfoState.Hidden,
-                Context = null
-            });
+            _gameCommandService.EnqueueCommand(new PopInfoPanelGameCommand(InfoState.KakapoSummary));
         };
     }
 }
