@@ -34,14 +34,39 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
         _eventRoutingService.PopInfoState += OnPopInfoState;
     }
 
+    // TODO: Cannot be game command
     private void OnPopInfoState(object? sender, PopInfoPanelGameCommand e)
     {
 
     }
 
-    private void OnPushInfoState(object? sender, PushInfoPanelGameCommand e)
+    // TODO: Cannot be game command
+    private void OnPushInfoState(object? sender, PushInfoPanelPayload e)
     {
+        ClearChildren();
 
+        Layout.Visibility = Visibility.Visible;
+
+        var initializeSubWidgetFactory = new Dictionary<InfoState, Func<IServiceProvider, BaseWidget>>
+        {
+            {
+                InfoState.RegionSummary,
+                _ =>
+                {
+                    var widget = _.GetRequiredService<RegionSummaryInfoContextSubWidget>();
+                    if (e.Payload is RegionInfoPanelPayload p)
+                    {
+                        widget.SetRegionId(p.RegionId);
+                    }
+                    return widget;
+                }
+            }
+        };
+
+        if (initializeSubWidgetFactory.TryGetValue(e.InfoState, out var newSubWidget))
+        {
+            AddGenericChild(newSubWidget(_serviceProvider));
+        }
     }
 
     private void Dispose(bool disposing)

@@ -6,16 +6,16 @@ public sealed record FocusRegionGameCommand(
 
 internal sealed class FocusRegionGameCommandHandler : IGameCommandHandler<FocusRegionGameCommand>
 {
-    private readonly ConservationGameData _gameData;
+    private readonly IConservationStateService _gameState;
     private readonly ConservationGameCamera _camera;
     private readonly IInputManager _inputManager;
 
     public FocusRegionGameCommandHandler(
-        ConservationGameData gameData,
+        IConservationStateService gameState,
         ConservationGameCamera camera,
         IInputManager inputManager)
     {
-        _gameData = gameData;
+        _gameState = gameState;
         _camera = camera;
         _inputManager = inputManager;
     }
@@ -23,16 +23,16 @@ internal sealed class FocusRegionGameCommandHandler : IGameCommandHandler<FocusR
     public bool HandleCommand(FocusRegionGameCommand command)
     {
         Console.Error.WriteLine("Move this to a service, command handlers are orchestrators...");
-        var region = _gameData.Regions.First(_ => _.Id == command.RegionId);
+        var region = _gameState.State.Regions.First(_ => _.Id == command.RegionId);
 
         var baseZoomRegionOffset = region.RegionOffset * Constants.TileSize;
 
         // TODO: Does this need to be re-invoked when changing screen size???
         // More realistically we need to calculate a "zoom in/out" based on the center
         // of the non top bar and non info panel area to retain what the user is looking at...
-        if (_gameData.InteractionData.ScreenState is ScreenState.Default or ScreenState.Region)
+        if (_gameState.State.InteractionData.ScreenState is ScreenState.Default or ScreenState.Region)
         {
-            var infoPanelOpen = _gameData.InteractionData.InfoState is not InfoState.Hidden;
+            var infoPanelOpen = _gameState.State.InteractionData.InfoState is not InfoState.Hidden;
 
             var size = _inputManager.GetScreenSize();
 

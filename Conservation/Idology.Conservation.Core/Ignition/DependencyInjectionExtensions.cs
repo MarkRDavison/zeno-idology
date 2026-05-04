@@ -48,7 +48,8 @@ public static class DependencyInjectionExtensions
             .AddScoped<IEventRoutingService, EventRoutingService>()
             .AddTransient<IKakapoStateService, KakapoStateService>()
             .AddTransient<IRegionStateService, RegionStateService>()
-            .AddTransient<IScreenStateService, ScreenStateService>();
+            .AddTransient<IScreenStateService, ScreenStateService>()
+            .AddTransient<IInfoPanelStateService, InfoPanelStateService>();
 
         // Commands
         services
@@ -60,7 +61,8 @@ public static class DependencyInjectionExtensions
             .AddTransient<IDeferredGameCommandHandler<PushInfoPanelGameCommand>, PushInfoPanelGameCommandHandler>()
             .AddTransient<IGameCommandHandler<OpenRegionGameCommand>, OpenRegionGameCommandHandler>()
             .AddTransient<IGameCommandHandler<CloseScreenStateGameCommand>, CloseScreenStateGameCommandHandler>()
-            .AddTransient<IGameCommandHandler<SetScreenStateGameCommand>, SetScreenStateGameCommandHandler>();
+            .AddTransient<IGameCommandHandler<SetScreenStateGameCommand>, SetScreenStateGameCommandHandler>()
+            .AddTransient<IGameCommandHandler<FocusRegionGameCommand>, FocusRegionGameCommandHandler>();
 
         // Widgets
         services

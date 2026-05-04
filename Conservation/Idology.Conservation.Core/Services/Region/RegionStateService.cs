@@ -2,6 +2,13 @@
 
 internal sealed class RegionStateService : IRegionStateService
 {
+    private readonly IConservationStateService _conservationStateService;
+
+    public RegionStateService(IConservationStateService conservationStateService)
+    {
+        _conservationStateService = conservationStateService;
+    }
+
     public void ActivateRegionScreen()
     {
         throw new NotImplementedException();
@@ -34,6 +41,6 @@ internal sealed class RegionStateService : IRegionStateService
 
     public void SetSelectedRegion(int regionId)
     {
-        throw new NotImplementedException();
+        _conservationStateService.SetState(_ => _.WithSetSelectedRegion(regionId));
     }
 }
