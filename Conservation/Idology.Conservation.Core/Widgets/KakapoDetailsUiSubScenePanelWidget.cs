@@ -19,7 +19,7 @@ public sealed class KakapoDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
     }
 
     public override string TitleTranslationKey => "KAKAPO_DETAILS_TITLE";
-    public override ScreenState ScreenState => ScreenState.Kakapo;
+    public override ScreenPanelState ScreenPanelState => ScreenPanelState.Kakapo;
 
     // TODO: localization...
     public override void PostConstructInit()

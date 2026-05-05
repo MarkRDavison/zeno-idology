@@ -7,7 +7,8 @@ public static class ConservationStateInitializationMutations
         return new ConservationGameData(
             new ConservationInteractionData(
                 InfoState.Hidden,
-                ScreenState.Default,
+                MainScreenState.Default,
+                ScreenPanelState.None,
                 new DefaultScreenData(
                     null),
                 new RegionScreenData(
@@ -89,13 +90,13 @@ public static class ConservationStateInitializationMutations
 
     public static ConservationGameData WithInteractionScreenState(
         this ConservationGameData state,
-        ScreenState screenState)
+        MainScreenState screenState)
     {
         return state with
         {
             InteractionData = state.InteractionData with
             {
-                ScreenState = screenState
+                MainScreenState = screenState
             }
         };
     }
@@ -159,7 +160,7 @@ public static class ConservationStateInitializationMutations
             ActiveRegion = state.Regions.First(_ => _.Id == regionId),
             InteractionData = state.InteractionData with
             {
-                ScreenState = ScreenState.Region,
+                MainScreenState = MainScreenState.Region,
                 RegionScreenData = new RegionScreenData(regionId, null)
             }
         };
@@ -177,6 +178,19 @@ public static class ConservationStateInitializationMutations
                 {
                     SelectedRegion = regionId
                 }
+            }
+        };
+    }
+
+    public static ConservationGameData WithScreenPanelState(
+        this ConservationGameData state,
+        ScreenPanelState panelState)
+    {
+        return state with
+        {
+            InteractionData = state.InteractionData with
+            {
+                PanelState = panelState
             }
         };
     }

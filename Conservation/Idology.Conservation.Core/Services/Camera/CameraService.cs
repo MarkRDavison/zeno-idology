@@ -25,7 +25,7 @@ internal sealed class CameraService : ICameraService
         // TODO: Does this need to be re-invoked when changing screen size???
         // More realistically we need to calculate a "zoom in/out" based on the center
         // of the non top bar and non info panel area to retain what the user is looking at...
-        if (_gameState.State.InteractionData.ScreenState is ScreenState.Default or ScreenState.Region)
+        if (_gameState.State.InteractionData.PanelState is ScreenPanelState.None)
         {
             var infoPanelOpen = _gameState.State.InteractionData.InfoState is not InfoState.Hidden;
 

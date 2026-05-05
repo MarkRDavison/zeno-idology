@@ -1,4 +1,6 @@
-﻿namespace Idology.Conservation.Core.Services;
+﻿using Idology.Conservation.Core.Services.GameCommands.OpenPanelState;
+
+namespace Idology.Conservation.Core.Services;
 
 internal class ConservationGameInteractionService : IConservationGameInteractionService
 {
@@ -24,46 +26,46 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
 
     public void Update(float delta)
     {
-        var subSceneStates = new HashSet<ScreenState>
+        var panelStates = new HashSet<ScreenPanelState>
         {
-            ScreenState.Kakapo,
-            ScreenState.Staff,
-            ScreenState.Research,
-            ScreenState.Technology,
-            ScreenState.Funding
+            ScreenPanelState.Kakapo,
+            ScreenPanelState.Staff,
+            ScreenPanelState.Research,
+            ScreenPanelState.Technology,
+            ScreenPanelState.Funding
         };
 
-        var shortcutsToScreenStates = new Dictionary<string, ScreenState>
+        var shortcutsToScreenStates = new Dictionary<string, ScreenPanelState>
         {
-            { Constants.Action_Shortcut_Kakapo, ScreenState.Kakapo },
-            { Constants.Action_Shortcut_Staff, ScreenState.Staff },
-            { Constants.Action_Shortcut_Research, ScreenState.Research },
-            { Constants.Action_Shortcut_Technology, ScreenState.Technology },
-            { Constants.Action_Shortcut_Funding, ScreenState.Funding }
+            { Constants.Action_Shortcut_Kakapo, ScreenPanelState.Kakapo },
+            { Constants.Action_Shortcut_Staff, ScreenPanelState.Staff },
+            { Constants.Action_Shortcut_Research, ScreenPanelState.Research },
+            { Constants.Action_Shortcut_Technology, ScreenPanelState.Technology },
+            { Constants.Action_Shortcut_Funding, ScreenPanelState.Funding }
         };
 
         foreach (var (shortcut, state) in shortcutsToScreenStates)
         {
             if (_inputManager.HandleActionIfInvoked(shortcut))
             {
-                if (_gameCommandService.HandleCommand(new SetScreenStateGameCommand(state)))
+                if (_gameCommandService.HandleCommand(new OpenPanelStateGameCommand(state, null)))
                 {
                     _inputManager.HandleActionIfInvoked(shortcut);
                 }
             }
         }
 
-        if (_gameState.State.InteractionData.ScreenState is ScreenState.Default)
+        if (panelStates.Contains(_gameState.State.InteractionData.PanelState))
+        {
+            HandleSubStateInteraction(_gameState.State.InteractionData.PanelState);
+        }
+        else if (_gameState.State.InteractionData.MainScreenState is MainScreenState.Default)
         {
             HandleDefaultInteraction();
         }
-        else if (_gameState.State.InteractionData.ScreenState is ScreenState.Region)
+        else if (_gameState.State.InteractionData.MainScreenState is MainScreenState.Region)
         {
             HandleRegionInteraction();
-        }
-        else if (subSceneStates.Contains(_gameState.State.InteractionData.ScreenState))
-        {
-            HandleSubStateInteraction(_gameState.State.InteractionData.ScreenState);
         }
     }
 
@@ -157,20 +159,16 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
         }
     }
 
-    private void HandleSubStateInteraction(ScreenState screenState)
+    private void HandleSubStateInteraction(ScreenPanelState panelState)
     {
         if (_inputManager.IsActionInvoked(Constants.Action_Escape))
         {
-            switch (screenState)
+            switch (panelState)
             {
                 default:
-                    Console.Error.WriteLine("UNHANDLED escape sub screen action");
+                    Console.Error.WriteLine("UNHANDLED escape panel action");
                     break;
             }
-            //if (_gameCommandService.EnqueueCommand(new ScreenStateGameCommand { ScreenState = ScreenState.Default }))
-            //{
-            //    _inputManager.HandleActionIfInvoked(Constants.Action_Escape);
-            //}
         }
     }
 }

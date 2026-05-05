@@ -1,4 +1,8 @@
-﻿namespace Idology.Conservation.Core.Ignition;
+﻿using Idology.Conservation.Core.Services.GameCommands.ClosePanelState;
+using Idology.Conservation.Core.Services.GameCommands.OpenPanelState;
+using Idology.Conservation.Core.Services.GameCommands.SetMainScreenState;
+
+namespace Idology.Conservation.Core.Ignition;
 
 public static class DependencyInjectionExtensions
 {
@@ -48,7 +52,8 @@ public static class DependencyInjectionExtensions
             .AddScoped<IEventRoutingService, EventRoutingService>()
             .AddTransient<IKakapoStateService, KakapoStateService>()
             .AddTransient<IRegionStateService, RegionStateService>()
-            .AddTransient<IScreenStateService, ScreenStateService>()
+            .AddTransient<IMainScreenStateService, MainScreenStateService>()
+            .AddTransient<IScreenPanelService, ScreenPanelService>()
             .AddTransient<IInfoPanelStateService, InfoPanelStateService>()
             .AddTransient<ICameraService, CameraService>();
 
@@ -61,9 +66,10 @@ public static class DependencyInjectionExtensions
             .AddTransient<IDeferredGameCommandHandler<PopInfoPanelGameCommand>, PopInfoPanelGameCommandHandler>()
             .AddTransient<IDeferredGameCommandHandler<PushInfoPanelGameCommand>, PushInfoPanelGameCommandHandler>()
             .AddTransient<IDeferredGameCommandHandler<OpenRegionGameCommand>, OpenRegionGameCommandHandler>()
-            .AddTransient<IGameCommandHandler<CloseScreenStateGameCommand>, CloseScreenStateGameCommandHandler>()
-            .AddTransient<IGameCommandHandler<SetScreenStateGameCommand>, SetScreenStateGameCommandHandler>()
-            .AddTransient<IGameCommandHandler<FocusRegionGameCommand>, FocusRegionGameCommandHandler>();
+            .AddTransient<IGameCommandHandler<SetMainScreenStateGameCommand>, SetMainScreenStateGameCommandHandler>()
+            .AddTransient<IGameCommandHandler<FocusRegionGameCommand>, FocusRegionGameCommandHandler>()
+            .AddTransient<IGameCommandHandler<OpenPanelStateGameCommand>, OpenPanelStateGameCommandHandler>()
+            .AddTransient<IGameCommandHandler<ClosePanelStateGameCommand>, ClosePanelStateGameCommandHandler>();
 
         // Widgets
         services

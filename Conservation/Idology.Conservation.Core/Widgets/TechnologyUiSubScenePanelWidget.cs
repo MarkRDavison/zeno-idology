@@ -12,7 +12,7 @@ public sealed class TechnologyUiSubScenePanelWidget : UiSubScenePanelWidget
     }
 
     public override string TitleTranslationKey => "TECHNOLOGY_DETAILS_TITLE";
-    public override ScreenState ScreenState => ScreenState.Technology;
+    public override ScreenPanelState ScreenPanelState => ScreenPanelState.Technology;
 
     public override void PostConstructInit()
     {

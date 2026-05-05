@@ -12,7 +12,7 @@ public sealed class FundingUiSubScenePanelWidget : UiSubScenePanelWidget
     }
 
     public override string TitleTranslationKey => "FUNDING_DETAILS_TITLE";
-    public override ScreenState ScreenState => ScreenState.Funding;
+    public override ScreenPanelState ScreenPanelState => ScreenPanelState.Funding;
 
     public override void PostConstructInit()
     {

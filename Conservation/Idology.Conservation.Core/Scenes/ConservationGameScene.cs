@@ -55,7 +55,8 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
     public override void Init(IScenePayload<ConservationGameScene>? payload)
     {
         // TODO: Dispose.
-        _eventRoutingService.SetScreenState += OnSetScreenState;
+        _eventRoutingService.OpenScreenPanel += OnOpenScreenPanel;
+        _eventRoutingService.CloseScreenPanel += OnCloseScreenPanel;
 
         _userInterfaceRoot.SetBounds(new LayoutVector(Raylib.GetScreenWidth(), Raylib.GetScreenHeight()));
 
@@ -199,18 +200,23 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         InitUserInterface();
     }
 
-    private void OnSetScreenState(object? sender, SetScreenStateGameCommand e)
+    private void OnCloseScreenPanel(object? sender, CloseScreenPanelPayload e)
+    {
+        _lastActiveSubSceneWidget?.Layout.Visibility = Visibility.Collapsed;
+    }
+
+    private void OnOpenScreenPanel(object? sender, OpenScreenPanelPayload e)
     {
         _lastActiveSubSceneWidget?.Layout.Visibility = Visibility.Collapsed;
 
         // TODO: Exhaustive static analysis?
-        _lastActiveSubSceneWidget = _gameState.State.InteractionData.ScreenState switch
+        _lastActiveSubSceneWidget = _gameState.State.InteractionData.PanelState switch
         {
-            ScreenState.Kakapo => _kakapoDetailsSubSceneWidget,
-            ScreenState.Staff => _staffDetialsSubSceneWidget,
-            ScreenState.Research => _researchSubSceneWidget,
-            ScreenState.Technology => _technologySubSceneWidget,
-            ScreenState.Funding => _fundingSubSceneWidget,
+            ScreenPanelState.Kakapo => _kakapoDetailsSubSceneWidget,
+            ScreenPanelState.Staff => _staffDetialsSubSceneWidget,
+            ScreenPanelState.Research => _researchSubSceneWidget,
+            ScreenPanelState.Technology => _technologySubSceneWidget,
+            ScreenPanelState.Funding => _fundingSubSceneWidget,
             _ => null
         };
 
@@ -270,7 +276,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
 
         _userInterfaceRoot.Update(delta);
 
-        if (_gameState.State.InteractionData.ScreenState is ScreenState.Default or ScreenState.Region)
+        if (_gameState.State.InteractionData.PanelState is ScreenPanelState.None)
         {
             _camera.Update(delta);
         }
@@ -298,7 +304,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
     {
         int TileSize = (int)Constants.TileSize;
 
-        if (_gameState.State.InteractionData.ScreenState is ScreenState.Region)
+        if (_gameState.State.InteractionData.MainScreenState is MainScreenState.Region)
         {
             if (_gameState.State.ActiveRegion is { } activeRegion)
             {
@@ -337,7 +343,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                 Raylib.EndMode2D();
             }
         }
-        else
+        else if (_gameState.State.InteractionData.MainScreenState is MainScreenState.Default)
         {
             Raylib.BeginMode2D(camera);
 
@@ -386,6 +392,10 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
             }
 
             Raylib.EndMode2D();
+        }
+        else
+        {
+            Console.Error.WriteLine("INVALID MAIN SCENE RENDERING");
         }
     }
 }
