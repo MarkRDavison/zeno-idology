@@ -104,6 +104,11 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
 
     private void OnPushInfoState(object? sender, PushInfoPanelPayload e)
     {
+        if (_panelPayloadStack.Count > 0 && _panelPayloadStack.Peek().InfoState == e.InfoState)
+        {
+            _panelPayloadStack.Pop();
+        }
+
         _panelPayloadStack.Push(e);
 
         ClearChildren();

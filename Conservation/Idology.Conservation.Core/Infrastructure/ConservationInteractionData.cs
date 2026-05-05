@@ -31,7 +31,7 @@ public sealed record RegionScreenData(
     int? SelectedKakapoId);
 
 public sealed record ConservationInteractionData(
-    List<InfoState> InfoState,
+    IReadOnlyList<InfoState> InfoState,
     MainScreenState MainScreenState,
     ScreenPanelState PanelState,
     DefaultScreenData DefaultScreenData,

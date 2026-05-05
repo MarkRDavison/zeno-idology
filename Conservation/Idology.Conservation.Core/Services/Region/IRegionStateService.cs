@@ -9,4 +9,5 @@ public interface IRegionStateService
     bool IsRegionSummaryCurrentlyActive();
     bool IsRegionScreenOpen();
     void CloseRegionScreenState();
+    int? GetSelectedRegion();
 }

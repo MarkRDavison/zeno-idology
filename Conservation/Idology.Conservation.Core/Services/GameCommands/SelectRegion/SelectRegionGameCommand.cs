@@ -17,7 +17,20 @@ internal sealed class SelectRegionGameCommandHandler : IDeferredGameCommandHandl
         _infoPanelStateService = infoPanelStateService;
     }
 
-    public bool CanHandleCommand(SelectRegionGameCommand command) => true;
+    public bool CanHandleCommand(SelectRegionGameCommand command)
+    {
+        if (!_regionStateService.IsRegionSummaryCurrentlyActive())
+        {
+            return true;
+        }
+
+        if (_regionStateService.GetSelectedRegion() != command.RegionId)
+        {
+            return true;
+        }
+
+        return false;
+    }
 
     public void HandleCommand(SelectRegionGameCommand command)
     {

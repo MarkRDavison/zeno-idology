@@ -23,9 +23,13 @@ internal sealed class InfoPanelStateService : IInfoPanelStateService
 
     public void PushInfoPanel(InfoState infoState, object? payload)
     {
-        _conservationStateService
-            .SetState(_ => _
-                .WithPushInfoScreenState(infoState));
+        if (_conservationStateService.State.InteractionData.InfoState.Count == 0 ||
+            _conservationStateService.State.InteractionData.InfoState.Last() != infoState)
+        {
+            _conservationStateService
+                .SetState(_ => _
+                    .WithPushInfoScreenState(infoState));
+        }
 
         _eventRoutingService.InvokePushInfoState(new PushInfoPanelPayload(infoState, payload));
     }

@@ -27,6 +27,7 @@ internal sealed class RegionStateService : IRegionStateService
     {
         return
             _conservationStateService.State.InteractionData.MainScreenState is MainScreenState.Default &&
+            _conservationStateService.State.InteractionData.InfoState.Count > 0 &&
             _conservationStateService.State.InteractionData.InfoState.Last() is InfoState.RegionSummary;
     }
 
@@ -55,5 +56,10 @@ internal sealed class RegionStateService : IRegionStateService
             .SetState(_ => _
                 .WithInteractionScreenState(MainScreenState.Default)
                 .WithResetRegionState());
+    }
+
+    public int? GetSelectedRegion()
+    {
+        return _conservationStateService.State.InteractionData.DefaultScreenData.SelectedRegion;
     }
 }

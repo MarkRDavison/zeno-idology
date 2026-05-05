@@ -128,7 +128,7 @@ public static class ConservationStateInitializationMutations
         {
             InteractionData = state.InteractionData with
             {
-                InfoState = [.. state.InteractionData.InfoState[..^1]]
+                InfoState = [.. state.InteractionData.InfoState.Take(state.InteractionData.InfoState.Count - 1)]
             }
         };
     }
