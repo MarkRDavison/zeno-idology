@@ -8,11 +8,14 @@ public sealed record SelectKakapoWithinRegionGameCommand(
 internal sealed class SelectKakapoWithinRegionGameCommandHandler : IDeferredGameCommandHandler<SelectKakapoWithinRegionGameCommand>
 {
     private readonly IKakapoStateService _kakapoStateService;
+    private readonly IEventRoutingService _eventRoutingService;
 
     public SelectKakapoWithinRegionGameCommandHandler(
-        IKakapoStateService kakapoStateService)
+        IKakapoStateService kakapoStateService,
+        IEventRoutingService eventRoutingService)
     {
         _kakapoStateService = kakapoStateService;
+        _eventRoutingService = eventRoutingService;
     }
 
     public bool CanHandleCommand(SelectKakapoWithinRegionGameCommand command) => true;
@@ -21,5 +24,6 @@ internal sealed class SelectKakapoWithinRegionGameCommandHandler : IDeferredGame
     {
         _kakapoStateService.SetActiveKakapoId(command.KakapoId);
         _kakapoStateService.SetInfoPanelToKakapo();
+        _eventRoutingService.InvokePushInfoState(new PushInfoPanelPayload(InfoState.KakapoSummary, new KakapoSummaryInfoPanelPayload(command.KakapoId)));
     }
 }

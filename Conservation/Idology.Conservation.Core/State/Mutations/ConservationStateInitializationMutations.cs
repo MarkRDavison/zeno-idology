@@ -194,4 +194,20 @@ public static class ConservationStateInitializationMutations
             }
         };
     }
+
+    public static ConservationGameData WithActiveKakapo(
+        this ConservationGameData state,
+        int kakapoId)
+    {
+        return state with
+        {
+            InteractionData = state.InteractionData with
+            {
+                RegionScreenData = state.InteractionData.RegionScreenData with
+                {
+                    SelectedKakapoId = kakapoId
+                }
+            }
+        };
+    }
 }

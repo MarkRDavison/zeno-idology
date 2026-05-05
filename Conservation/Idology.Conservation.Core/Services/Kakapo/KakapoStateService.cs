@@ -12,11 +12,15 @@ internal sealed class KakapoStateService : IKakapoStateService
 
     public void SetActiveKakapoId(int kakapoId)
     {
-        throw new NotImplementedException();
+        _conservationStateService
+            .SetState(_ => _
+                .WithActiveKakapo(kakapoId));
     }
 
     public void SetInfoPanelToKakapo()
     {
-        throw new NotImplementedException();
+        _conservationStateService
+            .SetState(_ => _
+                .WithInfoScreenState(InfoState.KakapoSummary));
     }
 }

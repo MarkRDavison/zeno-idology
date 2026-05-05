@@ -72,6 +72,18 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
                     }
                     return widget;
                 }
+            },
+            {
+                InfoState.KakapoSummary,
+                _ =>
+                {
+                    var widget = _.GetRequiredService<KakapoSummaryInfoContextSubWidget>();
+                    if (e.Payload is KakapoSummaryInfoPanelPayload p)
+                    {
+                        widget.SetKakapoId(p.KakapoId);
+                    }
+                    return widget;
+                }
             }
         };
 
