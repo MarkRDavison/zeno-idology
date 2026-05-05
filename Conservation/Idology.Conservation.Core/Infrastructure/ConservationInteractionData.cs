@@ -1,14 +1,19 @@
 ﻿namespace Idology.Conservation.Core.Infrastructure;
 
-public enum ScreenState
+public enum MainScreenState
 {
     Default = 0,
-    Region = 1,
-    Kakapo = 2,
-    Staff = 3,
-    Research = 4,
-    Technology = 5,
-    Funding = 6
+    Region = 1
+}
+
+public enum ScreenPanelState
+{
+    None = 0,
+    Kakapo = 1,
+    Staff = 2,
+    Research = 3,
+    Technology = 4,
+    Funding = 5
 };
 
 public enum InfoState
@@ -28,6 +33,7 @@ public sealed record RegionScreenData(
 
 public sealed record ConservationInteractionData(
     InfoState InfoState,
-    ScreenState ScreenState,
+    MainScreenState MainScreenState,
+    ScreenPanelState PanelState,
     DefaultScreenData DefaultScreenData,
     RegionScreenData RegionScreenData);

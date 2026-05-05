@@ -27,13 +27,15 @@ internal sealed class RegionStateService : IRegionStateService
     public bool IsRegionSummaryCurrentlyActive()
     {
         return
-            _conservationStateService.State.InteractionData.ScreenState is ScreenState.Default &&
+            _conservationStateService.State.InteractionData.MainScreenState is MainScreenState.Default &&
             _conservationStateService.State.InteractionData.InfoState is InfoState.RegionSummary;
     }
 
     public bool IsRegionScreenOpen()
     {
-        return _conservationStateService.State.InteractionData.ScreenState is ScreenState.Region;
+        return
+            _conservationStateService.State.InteractionData.MainScreenState is MainScreenState.Region &&
+            _conservationStateService.State.InteractionData.PanelState is ScreenPanelState.None;
     }
 
     public void SetActiveRegion(int regionId)
@@ -59,7 +61,7 @@ internal sealed class RegionStateService : IRegionStateService
     {
         _conservationStateService
             .SetState(_ => _
-                .WithInteractionScreenState(ScreenState.Default)
+                .WithInteractionScreenState(MainScreenState.Default)
                 .WithInfoScreenState(InfoState.Hidden)
                 .WithResetRegionState());
     }

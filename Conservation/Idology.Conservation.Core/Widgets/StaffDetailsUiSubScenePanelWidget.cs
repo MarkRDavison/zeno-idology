@@ -16,7 +16,7 @@ public sealed class StaffDetailsUiSubScenePanelWidget : UiSubScenePanelWidget
     }
 
     public override string TitleTranslationKey => "STAFF_DETAILS_TITLE";
-    public override ScreenState ScreenState => ScreenState.Staff;
+    public override ScreenPanelState ScreenPanelState => ScreenPanelState.Staff;
 
     public override void PostConstructInit()
     {

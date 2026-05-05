@@ -1,4 +1,6 @@
-﻿namespace Idology.Conservation.Core.Widgets;
+﻿using Idology.Conservation.Core.Services.GameCommands.OpenPanelState;
+
+namespace Idology.Conservation.Core.Widgets;
 
 internal sealed class TopBarWidget : PanelWidget
 {
@@ -29,7 +31,7 @@ internal sealed class TopBarWidget : PanelWidget
 
     public override void PostConstructInit()
     {
-        void AddSubWidgetButton(string translationKey, ScreenState screenState)
+        void AddSubWidgetButton(string translationKey, ScreenPanelState screenState)
         {
             var button = AddChild(new TextButtonWidget
             {
@@ -46,14 +48,14 @@ internal sealed class TopBarWidget : PanelWidget
                 }
             });
 
-            button.OnClick += (s, e) => _gameCommandService.HandleCommand(new SetScreenStateGameCommand(screenState));
+            button.OnClick += (s, e) => _gameCommandService.HandleCommand(new OpenPanelStateGameCommand(screenState, null));
         }
 
-        AddSubWidgetButton("TOP_BAR_KAKAPO_DETAILS", ScreenState.Kakapo);
-        AddSubWidgetButton("TOP_BAR_STAFF_DETAILS", ScreenState.Staff);
-        AddSubWidgetButton("TOP_BAR_RESEARCH_DETAILS", ScreenState.Research);
-        AddSubWidgetButton("TOP_BAR_TECHNOLOGY_DETAILS", ScreenState.Technology);
-        AddSubWidgetButton("TOP_BAR_FUNDING_DETAILS", ScreenState.Funding);
+        AddSubWidgetButton("TOP_BAR_KAKAPO_DETAILS", ScreenPanelState.Kakapo);
+        AddSubWidgetButton("TOP_BAR_STAFF_DETAILS", ScreenPanelState.Staff);
+        AddSubWidgetButton("TOP_BAR_RESEARCH_DETAILS", ScreenPanelState.Research);
+        AddSubWidgetButton("TOP_BAR_TECHNOLOGY_DETAILS", ScreenPanelState.Technology);
+        AddSubWidgetButton("TOP_BAR_FUNDING_DETAILS", ScreenPanelState.Funding);
 
         // SPACER
         AddChild(new PanelWidget

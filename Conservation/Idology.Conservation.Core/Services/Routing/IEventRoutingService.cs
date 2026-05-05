@@ -2,11 +2,17 @@
 
 public interface IEventRoutingService
 {
-    event EventHandler<SetScreenStateGameCommand> SetScreenState;
+    event EventHandler<SetMainScreenPanelPayload> SetMainScreenState;
     event EventHandler<PushInfoPanelPayload> PushInfoState;
     event EventHandler<PopInfoPanelPayload> PopInfoState;
 
-    void InvokeSetScreenState(SetScreenStateGameCommand command);
-    void InvokePushInfoState(PushInfoPanelPayload command);
-    void InvokePopInfoState(PopInfoPanelPayload command);
+    event EventHandler<OpenScreenPanelPayload> OpenScreenPanel;
+    event EventHandler<CloseScreenPanelPayload> CloseScreenPanel;
+
+    void InvokeSetMainScreenState(SetMainScreenPanelPayload payload);
+    void InvokePushInfoState(PushInfoPanelPayload payload);
+    void InvokePopInfoState(PopInfoPanelPayload payload);
+
+    void InvokeOpenScreenPanel(OpenScreenPanelPayload payload);
+    void InvokeCloseScreenPanel(CloseScreenPanelPayload payload);
 }

@@ -1,4 +1,6 @@
-﻿namespace Idology.Conservation.Core.Widgets;
+﻿using Idology.Conservation.Core.Services.GameCommands.ClosePanelState;
+
+namespace Idology.Conservation.Core.Widgets;
 
 public abstract class UiSubScenePanelWidget : PanelWidget
 {
@@ -20,7 +22,7 @@ public abstract class UiSubScenePanelWidget : PanelWidget
     }
 
     public abstract string TitleTranslationKey { get; }
-    public abstract ScreenState ScreenState { get; }
+    public abstract ScreenPanelState ScreenPanelState { get; }
     public ITranslationService TranslationService { get; }
     public IGameCommandService GameCommandService { get; }
 
@@ -68,7 +70,7 @@ public abstract class UiSubScenePanelWidget : PanelWidget
             }
         });
 
-        closePanelButton.OnClick += (s, e) => GameCommandService.HandleCommand(new CloseScreenStateGameCommand(ScreenState));
+        closePanelButton.OnClick += (s, e) => GameCommandService.HandleCommand(new ClosePanelStateGameCommand(ScreenPanelState));
 
         return AddChild(new ScrollablePanelWidget
         {
