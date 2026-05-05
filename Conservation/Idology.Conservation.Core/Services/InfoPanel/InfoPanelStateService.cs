@@ -15,6 +15,9 @@ internal sealed class InfoPanelStateService : IInfoPanelStateService
 
     public void PopInfoPanel(InfoState infoState)
     {
+        _conservationStateService
+            .SetState(_ => _
+                .WithPopInfoScreenState(infoState));
         _eventRoutingService.InvokePopInfoState(new PopInfoPanelPayload(infoState));
     }
 
@@ -22,7 +25,7 @@ internal sealed class InfoPanelStateService : IInfoPanelStateService
     {
         _conservationStateService
             .SetState(_ => _
-                .WithInfoScreenState(infoState));
+                .WithPushInfoScreenState(infoState));
 
         _eventRoutingService.InvokePushInfoState(new PushInfoPanelPayload(infoState, payload));
     }

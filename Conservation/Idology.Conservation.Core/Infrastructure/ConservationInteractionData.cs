@@ -18,10 +18,9 @@ public enum ScreenPanelState
 
 public enum InfoState
 {
-    Hidden = 0,
-    RegionSummary = 1,
-    Region = 2,
-    KakapoSummary = 3,
+    RegionSummary = 0,
+    Region = 1,
+    KakapoSummary = 2,
 }
 
 public sealed record DefaultScreenData(
@@ -32,7 +31,7 @@ public sealed record RegionScreenData(
     int? SelectedKakapoId);
 
 public sealed record ConservationInteractionData(
-    InfoState InfoState,
+    List<InfoState> InfoState,
     MainScreenState MainScreenState,
     ScreenPanelState PanelState,
     DefaultScreenData DefaultScreenData,

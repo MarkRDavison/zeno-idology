@@ -2,6 +2,5 @@
 
 public interface IKakapoStateService
 {
-    void SetActiveKakapoId(int kakapoId);
-    void SetInfoPanelToKakapo();
+    void SetActiveKakapoIdAndInfoPanel(int kakapoId);
 }

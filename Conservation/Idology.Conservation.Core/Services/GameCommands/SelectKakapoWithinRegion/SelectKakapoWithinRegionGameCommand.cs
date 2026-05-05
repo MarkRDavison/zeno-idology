@@ -22,8 +22,7 @@ internal sealed class SelectKakapoWithinRegionGameCommandHandler : IDeferredGame
 
     public void HandleCommand(SelectKakapoWithinRegionGameCommand command)
     {
-        _kakapoStateService.SetActiveKakapoId(command.KakapoId);
-        _kakapoStateService.SetInfoPanelToKakapo();
+        _kakapoStateService.SetActiveKakapoIdAndInfoPanel(command.KakapoId);
         _eventRoutingService.InvokePushInfoState(new PushInfoPanelPayload(InfoState.KakapoSummary, new KakapoSummaryInfoPanelPayload(command.KakapoId)));
     }
 }

@@ -25,7 +25,6 @@ internal sealed class OpenRegionGameCommandHandler : IDeferredGameCommandHandler
     public void HandleCommand(OpenRegionGameCommand command)
     {
         _regionStateService.SetActiveRegion(command.RegionId);
-        _regionStateService.SetInfoPanelToRegion();
         _cameraService.FocusOnRegion(command.RegionId);
         _infoPanelStateService.PushInfoPanel(InfoState.Region, new RegionInfoPanelPayload(command.RegionId));
     }

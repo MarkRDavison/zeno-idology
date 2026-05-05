@@ -20,7 +20,6 @@ internal sealed class RegionStateService : IRegionStateService
 
     public void ClearSelectedRegion()
     {
-        _conservationStateService.SetState(_ => _.WithCloseRegionSummary());
         _infoPanelStateService.PopInfoPanel(InfoState.RegionSummary);
     }
 
@@ -28,7 +27,7 @@ internal sealed class RegionStateService : IRegionStateService
     {
         return
             _conservationStateService.State.InteractionData.MainScreenState is MainScreenState.Default &&
-            _conservationStateService.State.InteractionData.InfoState is InfoState.RegionSummary;
+            _conservationStateService.State.InteractionData.InfoState.Last() is InfoState.RegionSummary;
     }
 
     public bool IsRegionScreenOpen()
@@ -45,13 +44,6 @@ internal sealed class RegionStateService : IRegionStateService
                 .WithActiveRegion(regionId));
     }
 
-    public void SetInfoPanelToRegion()
-    {
-        _conservationStateService
-            .SetState(_ => _
-                .WithInfoScreenState(InfoState.Region));
-    }
-
     public void SetSelectedRegion(int regionId)
     {
         _conservationStateService.SetState(_ => _.WithSetSelectedRegion(regionId));
@@ -62,7 +54,6 @@ internal sealed class RegionStateService : IRegionStateService
         _conservationStateService
             .SetState(_ => _
                 .WithInteractionScreenState(MainScreenState.Default)
-                .WithInfoScreenState(InfoState.Hidden)
                 .WithResetRegionState());
     }
 }

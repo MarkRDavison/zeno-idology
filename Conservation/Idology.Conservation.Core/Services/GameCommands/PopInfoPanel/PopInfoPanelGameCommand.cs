@@ -6,13 +6,26 @@ public sealed record PopInfoPanelGameCommand(
 
 internal sealed class PopInfoPanelGameCommandHandler : IDeferredGameCommandHandler<PopInfoPanelGameCommand>
 {
+    private readonly IConservationStateService _conservationStateService;
+    private readonly IInfoPanelStateService _infoPanelStateService;
+
+    public PopInfoPanelGameCommandHandler(
+        IConservationStateService conservationStateService,
+        IInfoPanelStateService infoPanelStateService)
+    {
+        _conservationStateService = conservationStateService;
+        _infoPanelStateService = infoPanelStateService;
+    }
+
     public bool CanHandleCommand(PopInfoPanelGameCommand command)
     {
-        throw new NotImplementedException();
+        return
+            _conservationStateService.State.InteractionData.InfoState.Any() &&
+            _conservationStateService.State.InteractionData.InfoState.Last() == command.InfoState;
     }
 
     public void HandleCommand(PopInfoPanelGameCommand command)
     {
-        throw new NotImplementedException();
+        _infoPanelStateService.PopInfoPanel(command.InfoState);
     }
 }

@@ -27,7 +27,7 @@ internal sealed class CameraService : ICameraService
         // of the non top bar and non info panel area to retain what the user is looking at...
         if (_gameState.State.InteractionData.PanelState is ScreenPanelState.None)
         {
-            var infoPanelOpen = _gameState.State.InteractionData.InfoState is not InfoState.Hidden;
+            var infoPanelOpen = _gameState.State.InteractionData.InfoState.Any();
 
             var size = _inputManager.GetScreenSize();
 

@@ -24,6 +24,6 @@ internal sealed class CloseRegionScreenGameCommandHandler : IDeferredGameCommand
     public void HandleCommand(CloseRegionScreenGameCommand command)
     {
         _regionStateService.CloseRegionScreenState();
-        _infoPanelStateService.PopInfoPanel(InfoState.Hidden);
+        _infoPanelStateService.PopInfoPanel(InfoState.Region);
     }
 }

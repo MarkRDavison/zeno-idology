@@ -3,24 +3,22 @@
 internal sealed class KakapoStateService : IKakapoStateService
 {
     private readonly IConservationStateService _conservationStateService;
+    private readonly IInfoPanelStateService _infoPanelStateService;
 
     public KakapoStateService(
-        IConservationStateService conservationStateService)
+        IConservationStateService conservationStateService,
+        IInfoPanelStateService infoPanelStateService)
     {
         _conservationStateService = conservationStateService;
+        _infoPanelStateService = infoPanelStateService;
     }
 
-    public void SetActiveKakapoId(int kakapoId)
+    public void SetActiveKakapoIdAndInfoPanel(int kakapoId)
     {
         _conservationStateService
             .SetState(_ => _
                 .WithActiveKakapo(kakapoId));
-    }
 
-    public void SetInfoPanelToKakapo()
-    {
-        _conservationStateService
-            .SetState(_ => _
-                .WithInfoScreenState(InfoState.KakapoSummary));
+        _infoPanelStateService.PushInfoPanel(InfoState.KakapoSummary, new KakapoSummaryInfoPanelPayload(kakapoId));
     }
 }

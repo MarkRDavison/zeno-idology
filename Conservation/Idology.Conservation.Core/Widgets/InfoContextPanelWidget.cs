@@ -9,6 +9,8 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
     private readonly IEventRoutingService _eventRoutingService;
     private readonly IServiceProvider _serviceProvider;
 
+    private Stack<PushInfoPanelPayload> _panelPayloadStack = [];
+
     public InfoContextPanelWidget(
         IEventRoutingService eventRoutingService,
         IServiceProvider serviceProvider)
@@ -36,17 +38,24 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
 
     private void OnPopInfoState(object? sender, PopInfoPanelPayload e)
     {
+        _panelPayloadStack.Pop();
+
         ClearChildren();
 
-        Layout.Visibility = Visibility.Collapsed;
+        if (_panelPayloadStack.Count > 0)
+        {
+            var top = _panelPayloadStack.Peek();
+
+            PushInfoPanel(top);
+        }
+        else
+        {
+            Layout.Visibility = Visibility.Collapsed;
+        }
     }
 
-    private void OnPushInfoState(object? sender, PushInfoPanelPayload e)
+    private void PushInfoPanel(PushInfoPanelPayload payload)
     {
-        ClearChildren();
-
-        Layout.Visibility = Visibility.Visible;
-
         var initializeSubWidgetFactory = new Dictionary<InfoState, Func<IServiceProvider, BaseWidget>>
         {
             {
@@ -54,7 +63,7 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
                 _ =>
                 {
                     var widget = _.GetRequiredService<RegionSummaryInfoContextSubWidget>();
-                    if (e.Payload is RegionInfoPanelPayload p)
+                    if (payload.Payload is RegionInfoPanelPayload p)
                     {
                         widget.SetRegionId(p.RegionId);
                     }
@@ -66,7 +75,7 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
                 _ =>
                 {
                     var widget = _.GetRequiredService<RegionInfoContextSubWidget>();
-                    if (e.Payload is RegionInfoPanelPayload p)
+                    if (payload.Payload is RegionInfoPanelPayload p)
                     {
                         widget.SetRegionId(p.RegionId);
                     }
@@ -78,7 +87,7 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
                 _ =>
                 {
                     var widget = _.GetRequiredService<KakapoSummaryInfoContextSubWidget>();
-                    if (e.Payload is KakapoSummaryInfoPanelPayload p)
+                    if (payload.Payload is KakapoSummaryInfoPanelPayload p)
                     {
                         widget.SetKakapoId(p.KakapoId);
                     }
@@ -87,10 +96,21 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
             }
         };
 
-        if (initializeSubWidgetFactory.TryGetValue(e.InfoState, out var newSubWidget))
+        if (initializeSubWidgetFactory.TryGetValue(payload.InfoState, out var newSubWidget))
         {
             AddGenericChild(newSubWidget(_serviceProvider));
         }
+    }
+
+    private void OnPushInfoState(object? sender, PushInfoPanelPayload e)
+    {
+        _panelPayloadStack.Push(e);
+
+        ClearChildren();
+
+        Layout.Visibility = Visibility.Visible;
+
+        PushInfoPanel(e);
     }
 
     private void Dispose(bool disposing)

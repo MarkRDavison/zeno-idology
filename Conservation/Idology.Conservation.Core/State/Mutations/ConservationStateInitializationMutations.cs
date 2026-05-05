@@ -6,7 +6,7 @@ public static class ConservationStateInitializationMutations
     {
         return new ConservationGameData(
             new ConservationInteractionData(
-                InfoState.Hidden,
+                [],
                 MainScreenState.Default,
                 ScreenPanelState.None,
                 new DefaultScreenData(
@@ -101,7 +101,7 @@ public static class ConservationStateInitializationMutations
         };
     }
 
-    public static ConservationGameData WithInfoScreenState(
+    public static ConservationGameData WithPushInfoScreenState(
         this ConservationGameData state,
         InfoState infoState)
     {
@@ -109,7 +109,26 @@ public static class ConservationStateInitializationMutations
         {
             InteractionData = state.InteractionData with
             {
-                InfoState = infoState
+                InfoState = [.. state.InteractionData.InfoState, infoState]
+            }
+        };
+    }
+
+    public static ConservationGameData WithPopInfoScreenState(
+        this ConservationGameData state,
+        InfoState infoState)
+    {
+        if (state.InteractionData.InfoState.Last() != infoState)
+        {
+            Console.Error.WriteLine("CANNOT POP INFO SCREEN STATE WHEN IT MISMATCHES");
+            return state;
+        }
+
+        return state with
+        {
+            InteractionData = state.InteractionData with
+            {
+                InfoState = [.. state.InteractionData.InfoState[..^1]]
             }
         };
     }
@@ -130,22 +149,6 @@ public static class ConservationStateInitializationMutations
                 {
                     RegionId = null,
                     SelectedKakapoId = null
-                }
-            }
-        };
-    }
-
-    public static ConservationGameData WithCloseRegionSummary(
-        this ConservationGameData state)
-    {
-        return state with
-        {
-            InteractionData = state.InteractionData with
-            {
-                InfoState = InfoState.Hidden,
-                DefaultScreenData = state.InteractionData.DefaultScreenData with
-                {
-                    SelectedRegion = null
                 }
             }
         };

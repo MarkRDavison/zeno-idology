@@ -6,7 +6,6 @@ public interface IRegionStateService
     void SetActiveRegion(int regionId);
     void ClearSelectedRegion();
     void ActivateRegionScreen();
-    void SetInfoPanelToRegion();
     bool IsRegionSummaryCurrentlyActive();
     bool IsRegionScreenOpen();
     void CloseRegionScreenState();
