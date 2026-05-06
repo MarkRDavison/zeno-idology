@@ -35,6 +35,7 @@ global using Idology.UserInterface;
 global using Idology.UserInterface.Layout;
 global using Idology.UserInterface.Widgets;
 global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Logging;
 global using Raylib_cs;
 global using System.Numerics;
 global using System.Text.Json;
