@@ -1,4 +1,5 @@
 ﻿using Idology.Conservation.Core.Services.GameCommands.OpenPanelState;
+using Idology.Conservation.Core.Services.GameCommands.SetTimeMode;
 
 namespace Idology.Conservation.Core.Widgets;
 
@@ -74,8 +75,7 @@ internal sealed class TopBarWidget : PanelWidget
             Border = Color.DarkGray,
             BorderThickness = 2.0f
         });
-        // TODO: REPLACE WITH GAME COMMAND...
-        tcw.OnTimeModeChanged += (s, e) => _gameDateTimeProvider.SetTimeMode(e);
+        tcw.OnTimeModeChanged += (s, e) => _gameCommandService.HandleCommand(new SetTimeModeGameCommand(e));
         AddChild(new DateTimeWidget(
             _gameDateTimeProvider,
             _translationService)

@@ -3,7 +3,7 @@
 internal sealed class GameDateTimeProvider : IGameDateTimeProvider
 {
     private DateTime _now = DateTime.MinValue;
-    private TimeMode _lastNonPausedTimeMode = TimeMode.Play;
+    private TimeMode _lastNonPausedTimeMode = TimeMode.Play1;
     public void Increment(TimeSpan offset)
     {
         TimeIncremented?.Invoke(this, offset);
@@ -45,7 +45,7 @@ internal sealed class GameDateTimeProvider : IGameDateTimeProvider
 
     public DateTime Now => _now;
 
-    public TimeMode TimeMode { get; private set; } = TimeMode.Play;
+    public TimeMode TimeMode { get; private set; } = TimeMode.Play1;
     public bool IsPaused => TimeMode is TimeMode.Paused;
     public float TimeModeSpeed
     {
@@ -54,7 +54,7 @@ internal sealed class GameDateTimeProvider : IGameDateTimeProvider
             return TimeMode switch
             {
                 TimeMode.Paused => 0.0f,
-                TimeMode.Play => 1.0f,
+                TimeMode.Play1 => 1.0f,
                 TimeMode.Play2 => 2.0f,
                 TimeMode.Play3 => 4.0f,
                 _ => 0.0f

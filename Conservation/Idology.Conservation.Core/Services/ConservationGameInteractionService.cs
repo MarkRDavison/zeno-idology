@@ -1,4 +1,5 @@
 ﻿using Idology.Conservation.Core.Services.GameCommands.OpenPanelState;
+using Idology.Conservation.Core.Services.GameCommands.SetTimeMode;
 
 namespace Idology.Conservation.Core.Services;
 
@@ -77,7 +78,7 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
         }
         else if (_inputManager.HandleActionIfInvoked(Constants.Action_PlayPause))
         {
-            Console.Error.WriteLine("TODO: PAUSE TOGGLE");
+            _gameCommandService.HandleCommand(new SetTimeModeGameCommand(TimeMode.Paused));
         }
         else if (_inputManager.HandleActionIfInvoked(Constants.Action_CycleRegion))
         {

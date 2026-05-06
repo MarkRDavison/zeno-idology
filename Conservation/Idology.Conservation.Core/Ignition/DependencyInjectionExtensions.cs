@@ -1,6 +1,7 @@
 ﻿using Idology.Conservation.Core.Services.GameCommands.ClosePanelState;
 using Idology.Conservation.Core.Services.GameCommands.OpenPanelState;
 using Idology.Conservation.Core.Services.GameCommands.SetMainScreenState;
+using Idology.Conservation.Core.Services.GameCommands.SetTimeMode;
 
 namespace Idology.Conservation.Core.Ignition;
 
@@ -69,7 +70,8 @@ public static class DependencyInjectionExtensions
             .AddTransient<IGameCommandHandler<SetMainScreenStateGameCommand>, SetMainScreenStateGameCommandHandler>()
             .AddTransient<IGameCommandHandler<FocusRegionGameCommand>, FocusRegionGameCommandHandler>()
             .AddTransient<IGameCommandHandler<OpenPanelStateGameCommand>, OpenPanelStateGameCommandHandler>()
-            .AddTransient<IGameCommandHandler<ClosePanelStateGameCommand>, ClosePanelStateGameCommandHandler>();
+            .AddTransient<IGameCommandHandler<ClosePanelStateGameCommand>, ClosePanelStateGameCommandHandler>()
+            .AddTransient<IGameCommandHandler<SetTimeModeGameCommand>, SetTimeModeGameCommandHandler>();
 
         // Widgets
         services

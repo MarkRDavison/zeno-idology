@@ -3,7 +3,7 @@
 public enum TimeMode
 {
     Paused,
-    Play,
+    Play1,
     Play2,
     Play3
 }

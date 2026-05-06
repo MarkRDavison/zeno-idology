@@ -1,8 +1,5 @@
 ﻿namespace Idology.Conservation.Core.Widgets;
 
-// TODO: Should each part of this be a sub-widget?
-
-
 internal sealed class TimeControlWidget : PanelWidget
 {
     const int Padding = 4;
@@ -41,10 +38,10 @@ internal sealed class TimeControlWidget : PanelWidget
         var PauseStartX = startX + Padding;
         var PauseEndX = PauseStartX + 20;
 
-        var PlayStartX = PauseEndX + 8;
-        var PlayEndX = PlayStartX + 20;
+        var Play1StartX = PauseEndX + 8;
+        var Play1EndX = Play1StartX + 20;
 
-        var Play2StartX = PlayEndX + 8;
+        var Play2StartX = Play1EndX + 8;
         var Play2EndX = Play2StartX + 40;
 
         var Play3StartX = Play2EndX + 8;
@@ -53,7 +50,7 @@ internal sealed class TimeControlWidget : PanelWidget
         var regions = new[]
         {
             (index: 0, startX: PauseStartX, endX: PauseEndX, timeMode: TimeMode.Paused),
-            (index: 1, startX: PlayStartX, endX: PlayEndX, timeMode: TimeMode.Play),
+            (index: 1, startX: Play1StartX, endX: Play1EndX, timeMode: TimeMode.Play1),
             (index: 2, startX: Play2StartX, endX: Play2EndX, timeMode: TimeMode.Play2),
             (index: 3, startX: Play3StartX, endX: Play3EndX, timeMode: TimeMode.Play3)
         };
@@ -99,7 +96,7 @@ internal sealed class TimeControlWidget : PanelWidget
 
         penX += 16;
 
-        penX = DrawTriangle(penX, 1, _mouseWithinIndex == 1 ? Color.Yellow : TimeSpeedLogic(TimeMode.Play));
+        penX = DrawTriangle(penX, 1, _mouseWithinIndex == 1 ? Color.Yellow : TimeSpeedLogic(TimeMode.Play1));
         penX += 8;
 
         penX = DrawTriangle(penX, 2, _mouseWithinIndex == 2 ? Color.Yellow : TimeSpeedLogic(TimeMode.Play2));
