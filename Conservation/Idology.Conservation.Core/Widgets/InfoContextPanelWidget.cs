@@ -36,6 +36,18 @@ internal sealed class InfoContextPanelWidget : PanelWidget, IDisposable
         _eventRoutingService.PopInfoState += OnPopInfoState;
     }
 
+    public override void Update(float delta)
+    {
+        UpdateChildren(delta);
+        if (LayoutBoundsContainMousePosition())
+        {
+            // TODO: Better way of capturing actions...
+            _ = InputManager.HandleActionIfInvoked(Constants.Action_Click);
+            _ = InputManager.HandleActionIfInvoked(Constants.Action_Click_Start);
+            _ = InputManager.HandleActionIfInvoked(Constants.Action_Click_Context);
+        }
+    }
+
     private void OnPopInfoState(object? sender, PopInfoPanelPayload e)
     {
         _panelPayloadStack.Pop();
