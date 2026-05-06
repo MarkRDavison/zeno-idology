@@ -74,6 +74,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                 // Birth/death dates in order
                 // Birth of parent comes before birth of child
                 // Death of parent comes after birth of child ??? (Maybe not true if egg laid, then parent died, then baby hatched???)
+                // Given a Game start time need to modify kakapo, the seed data is a current snapshot, but back in time some are still alive, and some havent been born etc...
                 // https://encyclopedia.pub/entry/37611
 
                 kakapoData.Add(new KakapoModel(1, "Flossie", Gender.Female, null, null, new OriginInfo(new DateOnly(1982, 1, 1), OriginDateType.Discovered), null, 1));
@@ -115,6 +116,17 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                 staffData.Add(new(6, "Vol-2"));
                 staffData.Add(new(7, "Vol-3"));
                 staffData.Add(new(8, "Vol-4"));
+            }
+
+            var researchData = new List<ResearchData>();
+            // TODO: Load from files....
+            {
+                researchData.Add(new(1, "Dumb Eggs", "Eggs that are dumb!", 100, 100, []));
+                researchData.Add(new(2, "Smart Eggs", "Eggs that are smart!", 200, 0, [1]));
+                researchData.Add(new(3, "Hyper Eggs", "Eggs that are scary smart!", 400, 0, [2]));
+                researchData.Add(new(4, "Dumb Trackers", "Trackers that are dumb!", 200, 0, []));
+                researchData.Add(new(5, "Smart Trackers", "Trackers that are smart!", 400, 0, [4]));
+                researchData.Add(new(6, "Hyper Trackers", "Trackers that are scary smart!", 800, 0, [5]));
             }
 
             List<string> regionNames = ["region-1", "region-2", "region-3", "region-4"];
@@ -191,6 +203,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
 
             _gameState.SetState(_ => _
                 .WithSetStaffData(staffData)
+                .WithSetResearchData(researchData)
                 .WithSetKakapoData(kakapoData)
                 .WithSetKakapoSimulations(simulatedKakapo)
                 .WithSetRegionData(regions)

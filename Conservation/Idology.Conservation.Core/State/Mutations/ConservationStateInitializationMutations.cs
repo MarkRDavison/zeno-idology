@@ -19,6 +19,7 @@ public static class ConservationStateInitializationMutations
             [],
             [],
             [],
+            [],
             []);
     }
 
@@ -39,6 +40,16 @@ public static class ConservationStateInitializationMutations
         return state with
         {
             StaffData = [.. staff]
+        };
+    }
+
+    public static ConservationGameData WithSetResearchData(
+        this ConservationGameData state,
+        IList<ResearchData> research)
+    {
+        return state with
+        {
+            ResearchData = [.. research]
         };
     }
 

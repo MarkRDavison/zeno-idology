@@ -6,5 +6,6 @@ public record ConservationGameData(
     IReadOnlyList<RegionData> Regions,
     IReadOnlyList<KakapoModel> KakapoData,
     IReadOnlyList<StaffData> StaffData,
+    IReadOnlyList<ResearchData> ResearchData,
     IReadOnlyList<RegionSimulation> RegionSimulations,
     IReadOnlyList<KakapoSimulationData> SimulatedKakapo);
