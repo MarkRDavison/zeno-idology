@@ -26,7 +26,7 @@ internal sealed class DateTimeWidget : PanelWidget
         {
             _accumulatedRealTime += delta;
 
-            var threshold = RealSecondsPerGameTimeSpan / _gameDateTimeProvider.TimeSpeed;
+            var threshold = RealSecondsPerGameTimeSpan / _gameDateTimeProvider.TimeModeSpeed;
 
             if (_accumulatedRealTime > threshold)
             {

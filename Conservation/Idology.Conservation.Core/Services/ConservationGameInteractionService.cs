@@ -77,8 +77,7 @@ internal class ConservationGameInteractionService : IConservationGameInteraction
         }
         else if (_inputManager.HandleActionIfInvoked(Constants.Action_PlayPause))
         {
-            // TODO: To game command...
-            _gameDateTimeProvider.SetPauseState(!_gameDateTimeProvider.IsPaused);
+            Console.Error.WriteLine("TODO: PAUSE TOGGLE");
         }
         else if (_inputManager.HandleActionIfInvoked(Constants.Action_CycleRegion))
         {

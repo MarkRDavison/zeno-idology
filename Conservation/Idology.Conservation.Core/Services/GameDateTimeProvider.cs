@@ -3,7 +3,7 @@
 internal sealed class GameDateTimeProvider : IGameDateTimeProvider
 {
     private DateTime _now = DateTime.MinValue;
-
+    private TimeMode _lastNonPausedTimeMode = TimeMode.Play;
     public void Increment(TimeSpan offset)
     {
         TimeIncremented?.Invoke(this, offset);
@@ -15,13 +15,28 @@ internal sealed class GameDateTimeProvider : IGameDateTimeProvider
         _now = now;
     }
 
-    public void SetPauseState(bool paused)
+    public void SetTimeMode(TimeMode timeMode)
     {
-        IsPaused = paused;
-    }
-    public void SetTimeSpeed(int speed)
-    {
-        TimeSpeed = (float)speed;
+        // TODO: Do we want pause twice to return to last speed???
+        if (timeMode != TimeMode.Paused &&
+            TimeMode == timeMode)
+        {
+            return;
+        }
+
+        if (timeMode is not TimeMode.Paused)
+        {
+            _lastNonPausedTimeMode = timeMode;
+            TimeMode = timeMode;
+        }
+        else if (TimeMode is TimeMode.Paused)
+        {
+            TimeMode = _lastNonPausedTimeMode;
+        }
+        else
+        {
+            TimeMode = timeMode;
+        }
     }
 
     public DateOnly Date => DateOnly.FromDateTime(Now);
@@ -30,8 +45,22 @@ internal sealed class GameDateTimeProvider : IGameDateTimeProvider
 
     public DateTime Now => _now;
 
-    public float TimeSpeed { get; private set; } = 1.0f;
-    public bool IsPaused { get; private set; }
+    public TimeMode TimeMode { get; private set; } = TimeMode.Play;
+    public bool IsPaused => TimeMode is TimeMode.Paused;
+    public float TimeModeSpeed
+    {
+        get
+        {
+            return TimeMode switch
+            {
+                TimeMode.Paused => 0.0f,
+                TimeMode.Play => 1.0f,
+                TimeMode.Play2 => 2.0f,
+                TimeMode.Play3 => 4.0f,
+                _ => 0.0f
+            };
+        }
+    }
 
     public event EventHandler<TimeSpan> TimeIncremented = default!;
 }

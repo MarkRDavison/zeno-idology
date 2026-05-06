@@ -72,25 +72,10 @@ internal sealed class TopBarWidget : PanelWidget
         {
             Background = Color.Gray,
             Border = Color.DarkGray,
-            BorderThickness = 2.0f,
-            Layout = new LayoutItem
-            {
-                RequestedSize = new LayoutVector(156, 0),
-                Contain = ContainFlags.Row,
-                Behave = BehaveFlags.VFill
-            }
+            BorderThickness = 2.0f
         });
-        tcw.OnSelectSpeed += (s, e) =>
-        {
-            Console.WriteLine("Setting speed to: {0}", e);
-            _gameDateTimeProvider.SetTimeSpeed(e);
-        };
-        tcw.OnTogglePause += (s, e) =>
-        {
-            _gameDateTimeProvider.SetPauseState(!_gameDateTimeProvider.IsPaused);
-
-            Console.WriteLine(_gameDateTimeProvider.IsPaused ? "PAUSED!" : "UN-PAUSED!");
-        };
+        // TODO: REPLACE WITH GAME COMMAND...
+        tcw.OnTimeModeChanged += (s, e) => _gameDateTimeProvider.SetTimeMode(e);
         AddChild(new DateTimeWidget(
             _gameDateTimeProvider,
             _translationService)

@@ -1,6 +1,8 @@
 ﻿namespace Idology.Conservation.Core.Widgets;
 
 // TODO: Should each part of this be a sub-widget?
+
+
 internal sealed class TimeControlWidget : PanelWidget
 {
     const int Padding = 4;
@@ -14,74 +16,98 @@ internal sealed class TimeControlWidget : PanelWidget
         IGameDateTimeProvider gameDateTimeProvider)
     {
         _gameDateTimeProvider = gameDateTimeProvider;
+
+        Layout = new LayoutItem
+        {
+            RequestedSize = new LayoutVector(178, 0),
+            Contain = ContainFlags.Row,
+            Behave = BehaveFlags.VFill
+        };
     }
 
     public override void Update(float delta)
     {
-        if (LayoutBoundsContainMousePosition())
-        {
-            var mousePos = InputManager.GetMousePosition();
-
-            var startX = (int)Layout.Rect.X;
-
-            var isWithinHeight = Layout.Rect.Y <= mousePos.Y && mousePos.Y <= Layout.Rect.Y + Layout.Rect.Height;
-
-            if (isWithinHeight && startX + Padding <= mousePos.X && mousePos.X <= startX + Padding + 32)
-            {
-                _mouseWithinIndex = 0;
-
-                if (_mouseDownWithinIndex is null && InputManager.HandleActionIfInvoked(Constants.Action_Click_Start))
-                {
-                    _mouseDownWithinIndex = 0;
-                }
-                else if (_mouseDownWithinIndex is 0 && InputManager.HandleActionIfInvoked(Constants.Action_Click))
-                {
-                    OnTogglePause?.Invoke(this, EventArgs.Empty);
-                    OnSelectSpeed?.Invoke(this, 1);
-                    // TODO: SPLIT pause and play apart 
-                    _mouseDownWithinIndex = null;
-                }
-            }
-            else if (isWithinHeight && startX + Padding + 20 + 12 <= mousePos.X && mousePos.X <= startX + Padding + 32 + 20 + 20 + 12)
-            {
-                _mouseWithinIndex = 1;
-
-                if (_mouseDownWithinIndex is null && InputManager.HandleActionIfInvoked(Constants.Action_Click_Start))
-                {
-                    _mouseDownWithinIndex = 1;
-                }
-                else if (_mouseDownWithinIndex is 1 && InputManager.HandleActionIfInvoked(Constants.Action_Click))
-                {
-                    OnSelectSpeed?.Invoke(this, 2);
-                    _mouseDownWithinIndex = null;
-                }
-            }
-            else if (isWithinHeight && startX + Padding + 20 + 20 + 12 + 12 <= mousePos.X && mousePos.X <= startX + Padding + 32 + 20 + 20 + 20 + 20 + 20 + 12 + 12)
-            {
-                _mouseWithinIndex = 2;
-
-                if (_mouseDownWithinIndex is null && InputManager.HandleActionIfInvoked(Constants.Action_Click_Start))
-                {
-                    _mouseDownWithinIndex = 2;
-                }
-                else if (_mouseDownWithinIndex is 2 && InputManager.HandleActionIfInvoked(Constants.Action_Click))
-                {
-                    OnSelectSpeed?.Invoke(this, 4);
-                    _mouseDownWithinIndex = null;
-                }
-            }
-            else
-            {
-                _mouseWithinIndex = null;
-                _mouseDownWithinIndex = null;
-            }
-        }
-        else
+        if (!LayoutBoundsContainMousePosition())
         {
             _mouseWithinIndex = null;
             _mouseDownWithinIndex = null;
+            return;
+        }
+
+        var mousePos = InputManager.GetMousePosition();
+        var startX = (int)Layout.Rect.X;
+        var isWithinHeight = Layout.Rect.Y <= mousePos.Y && mousePos.Y <= Layout.Rect.Y + Layout.Rect.Height;
+
+        var PauseStartX = startX + Padding;
+        var PauseEndX = PauseStartX + 20;
+
+        var PlayStartX = PauseEndX + 8;
+        var PlayEndX = PlayStartX + 20;
+
+        var Play2StartX = PlayEndX + 8;
+        var Play2EndX = Play2StartX + 40;
+
+        var Play3StartX = Play2EndX + 8;
+        var Play3EndX = Play3StartX + 60;
+
+        var regions = new[]
+        {
+            (index: 0, startX: PauseStartX, endX: PauseEndX, timeMode: TimeMode.Paused),
+            (index: 1, startX: PlayStartX, endX: PlayEndX, timeMode: TimeMode.Play),
+            (index: 2, startX: Play2StartX, endX: Play2EndX, timeMode: TimeMode.Play2),
+            (index: 3, startX: Play3StartX, endX: Play3EndX, timeMode: TimeMode.Play3)
+        };
+
+        foreach (var region in regions)
+        {
+            if (isWithinHeight && region.startX <= mousePos.X && mousePos.X <= region.endX)
+            {
+                _mouseWithinIndex = region.index;
+
+                if (_mouseDownWithinIndex == null && InputManager.HandleActionIfInvoked(Constants.Action_Click_Start))
+                {
+                    _mouseDownWithinIndex = region.index;
+                }
+                else if (_mouseDownWithinIndex == region.index && InputManager.HandleActionIfInvoked(Constants.Action_Click))
+                {
+
+                    OnTimeModeChanged?.Invoke(this, region.timeMode);
+                    _mouseDownWithinIndex = null;
+                }
+
+                break;
+            }
         }
     }
+
+    private Color TimeSpeedLogic(TimeMode timeMode)
+    {
+        return _gameDateTimeProvider.TimeMode == timeMode ? Color.White : Color.DarkGray;
+    }
+
+    public override void Draw()
+    {
+        base.Draw();
+
+        var penX = Padding + (int)(Layout.Rect.X + BorderThickness.GetValueOrDefault());
+
+        Raylib.DrawRectangle(penX, Padding + (int)Layout.Rect.Y, 8, (int)Layout.Rect.Height - 2 * Padding, _mouseWithinIndex == 0 ? Color.Yellow : TimeSpeedLogic(TimeMode.Paused));
+
+        penX += 12;
+
+        Raylib.DrawRectangle(penX, Padding + (int)Layout.Rect.Y, 8, (int)Layout.Rect.Height - 2 * Padding, _mouseWithinIndex == 0 ? Color.Yellow : TimeSpeedLogic(TimeMode.Paused));
+
+        penX += 16;
+
+        penX = DrawTriangle(penX, 1, _mouseWithinIndex == 1 ? Color.Yellow : TimeSpeedLogic(TimeMode.Play));
+        penX += 8;
+
+        penX = DrawTriangle(penX, 2, _mouseWithinIndex == 2 ? Color.Yellow : TimeSpeedLogic(TimeMode.Play2));
+        penX += 8;
+
+        penX = DrawTriangle(penX, 3, _mouseWithinIndex == 3 ? Color.Yellow : TimeSpeedLogic(TimeMode.Play3));
+    }
+
 
     private int DrawTriangle(int penX, int amount, Color col)
     {
@@ -99,41 +125,5 @@ internal sealed class TimeControlWidget : PanelWidget
         return penX;
     }
 
-    public override void Draw()
-    {
-        base.Draw();
-
-        var col = Color.DarkGray;
-
-        int penX = Padding + (int)(Layout.Rect.X + BorderThickness.GetValueOrDefault());
-
-        if (_gameDateTimeProvider.IsPaused)
-        {
-            Raylib.DrawRectangle(penX, Padding + (int)Layout.Rect.Y, 8, (int)Layout.Rect.Height - 2 * Padding, _mouseWithinIndex == 0 ? Color.Yellow : Color.White);
-
-            penX += 12;
-
-            Raylib.DrawRectangle(penX, Padding + (int)Layout.Rect.Y, 8, (int)Layout.Rect.Height - 2 * Padding, _mouseWithinIndex == 0 ? Color.Yellow : Color.White);
-
-            penX += 12;
-
-            penX += 8;
-        }
-        else
-        {
-            penX = DrawTriangle(penX, 1, _mouseWithinIndex == 0 ? Color.Yellow : (_gameDateTimeProvider.TimeSpeed == 1.0f ? Color.White : col));
-
-            penX += 12;
-        }
-
-        penX = DrawTriangle(penX, 2, _mouseWithinIndex == 1 ? Color.Yellow : (_gameDateTimeProvider.TimeSpeed == 2.0f ? Color.White : col));
-
-        penX += 12;
-
-        penX = DrawTriangle(penX, 3, _mouseWithinIndex == 2 ? Color.Yellow : (_gameDateTimeProvider.TimeSpeed == 4.0f ? Color.White : col));
-    }
-
-    // TODO: SINGLE ENUM? Pause/ Play/ 2x/ 3x
-    public event EventHandler? OnTogglePause;
-    public event EventHandler<int>? OnSelectSpeed;
+    public event EventHandler<TimeMode>? OnTimeModeChanged;
 }

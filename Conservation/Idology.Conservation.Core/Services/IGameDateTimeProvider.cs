@@ -1,5 +1,13 @@
 ﻿namespace Idology.Conservation.Core.Services;
 
+public enum TimeMode
+{
+    Paused,
+    Play,
+    Play2,
+    Play3
+}
+
 public interface IGameDateTimeProvider
 {
     DateOnly Date { get; }
@@ -9,11 +17,11 @@ public interface IGameDateTimeProvider
     void Increment(TimeSpan offset);
     void Set(DateTime now);
 
-    float TimeSpeed { get; }
+    TimeMode TimeMode { get; }
     bool IsPaused { get; }
 
-    void SetPauseState(bool paused);
-    void SetTimeSpeed(int speed);
+    void SetTimeMode(TimeMode timeMode);
+    float TimeModeSpeed { get; }
 
     event EventHandler<TimeSpan> TimeIncremented;
 }
