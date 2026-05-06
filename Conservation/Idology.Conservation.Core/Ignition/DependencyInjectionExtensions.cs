@@ -51,6 +51,8 @@ public static class DependencyInjectionExtensions
             .AddScoped<IGameDateTimeProvider, GameDateTimeProvider>()
             .AddScoped<IGameCommandService, GameCommandService>()
             .AddScoped<IEventRoutingService, EventRoutingService>()
+            .AddScoped<SoloSimulationRoot>()
+            .AddScoped<ResearchSimulation>()
             .AddTransient<IKakapoStateService, KakapoStateService>()
             .AddTransient<IRegionStateService, RegionStateService>()
             .AddTransient<IMainScreenStateService, MainScreenStateService>()

@@ -18,6 +18,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
     private readonly IEventRoutingService _eventRoutingService;
     private readonly IGameCommandService _gameCommandService;
     private readonly ConservationGameCamera _camera;
+    private readonly SoloSimulationRoot _simulationRoot;
 
     private IWidget? _kakapoDetailsSubSceneWidget;
     private IWidget? _staffDetialsSubSceneWidget;
@@ -37,7 +38,8 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         IUserInterfaceRoot userInterfaceRoot,
         IServiceProvider serviceProvider,
         IEventRoutingService eventRoutingService,
-        IGameCommandService gameCommandService)
+        IGameCommandService gameCommandService,
+        SoloSimulationRoot simulationRoot)
     {
         _gameState = gameState;
         _game = game;
@@ -48,6 +50,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
         _serviceProvider = serviceProvider;
         _eventRoutingService = eventRoutingService;
         _gameCommandService = gameCommandService;
+        _simulationRoot = simulationRoot;
 
         _camera = camera;
     }
@@ -78,7 +81,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                 // https://encyclopedia.pub/entry/37611
 
                 kakapoData.Add(new KakapoModel(1, "Flossie", Gender.Female, null, null, new OriginInfo(new DateOnly(1982, 1, 1), OriginDateType.Discovered), null, 1));
-                kakapoData.Add(new KakapoModel(2, "Solstice", Gender.Female, null, null, new OriginInfo(new DateOnly(1989, 1, 1), OriginDateType.Discovered, "LAST_DISCOVERD_WILD"), null, 1));
+                kakapoData.Add(new KakapoModel(2, "Solstice", Gender.Female, null, null, new OriginInfo(new DateOnly(1989, 1, 1), OriginDateType.Discovered, "LAST_DISCOVERD_WILD"), new DateOnly(2025, 1, 1), 1));
                 kakapoData.Add(new KakapoModel(3, "Nora", Gender.Female, null, null, new OriginInfo(new DateOnly(1980, 1, 1), OriginDateType.Discovered), null, 1));
                 kakapoData.Add(new KakapoModel(4, "Rakiura", Gender.Female, 1, 23, new OriginInfo(new DateOnly(2002, 2, 19), OriginDateType.KnownBirth), null, 1));
                 kakapoData.Add(new KakapoModel(5, "Esperance", Gender.Female, 1, 23, new OriginInfo(new DateOnly(2002, 2, 17), OriginDateType.EstimatedBirth), null, 1));
@@ -127,6 +130,7 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                 researchData.Add(new(4, "Dumb Trackers", "Trackers that are dumb!", 200, 0, []));
                 researchData.Add(new(5, "Smart Trackers", "Trackers that are smart!", 400, 0, [4]));
                 researchData.Add(new(6, "Hyper Trackers", "Trackers that are scary smart!", 800, 0, [5]));
+                researchData.Add(new(7, "Feed Stations", "Feed stations for all kakapo!", 200, 0, []));
             }
 
             List<string> regionNames = ["region-1", "region-2", "region-3", "region-4"];
@@ -206,8 +210,9 @@ public class ConservationGameScene : ConservationScene<ConservationGameScene>
                 .WithSetResearchData(researchData)
                 .WithSetKakapoData(kakapoData)
                 .WithSetKakapoSimulations(simulatedKakapo)
-                .WithSetRegionData(regions)
-                .WithSetRegionSimulations(regionSimulations));
+                .WithSetRegionData(regions));
+
+            _simulationRoot.RegionSimulations = regionSimulations;
         }
 
         InitUserInterface();

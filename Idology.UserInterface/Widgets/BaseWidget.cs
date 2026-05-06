@@ -75,9 +75,9 @@ public abstract class BaseWidget : IWidget
 
     protected void UpdateChildren(float delta)
     {
-        for (int i = _children.Count - 1; i >= 0; --i)
+        foreach (var c in _children)
         {
-            _children[i].Update(delta);
+            c.Update(delta);
         }
     }
 

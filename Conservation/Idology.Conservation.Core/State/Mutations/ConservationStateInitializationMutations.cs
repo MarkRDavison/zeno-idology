@@ -19,7 +19,6 @@ public static class ConservationStateInitializationMutations
             [],
             [],
             [],
-            [],
             []);
     }
 
@@ -60,16 +59,6 @@ public static class ConservationStateInitializationMutations
         return state with
         {
             Regions = [.. regions]
-        };
-    }
-
-    public static ConservationGameData WithSetRegionSimulations(
-        this ConservationGameData state,
-        IList<RegionSimulation> regionSimulations)
-    {
-        return state with
-        {
-            RegionSimulations = [.. regionSimulations]
         };
     }
 

@@ -21,6 +21,7 @@ global using Idology.Conservation.Core.Services.Panel;
 global using Idology.Conservation.Core.Services.Region;
 global using Idology.Conservation.Core.Services.Routing;
 global using Idology.Conservation.Core.Simulation.Region;
+global using Idology.Conservation.Core.Simulation.Research;
 global using Idology.Conservation.Core.Simulation.SimulationData;
 global using Idology.Conservation.Core.State;
 global using Idology.Conservation.Core.State.Mutations;

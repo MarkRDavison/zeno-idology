@@ -5,23 +5,23 @@ public sealed class ConservationGame : IDisposable
     private bool _disposedValue;
     private readonly IConservationStateService _gameState;
     private readonly IGameDateTimeProvider _gameDateTimeProvider;
+    private readonly SoloSimulationRoot _simulationRoot;
 
     public ConservationGame(
         IConservationStateService gameState,
-        IGameDateTimeProvider gameDateTimeProvider)
+        IGameDateTimeProvider gameDateTimeProvider,
+        SoloSimulationRoot simulationRoot)
     {
         _gameState = gameState;
         _gameDateTimeProvider = gameDateTimeProvider;
+        _simulationRoot = simulationRoot;
 
         _gameDateTimeProvider.TimeIncremented += OnTimeIncremented;
     }
 
     private void OnTimeIncremented(object? sender, TimeSpan e)
     {
-        foreach (var rs in _gameState.State.RegionSimulations)
-        {
-            rs.Simulate(e);
-        }
+        _simulationRoot.Simulate(e);
     }
 
     public void Update(float delta)
