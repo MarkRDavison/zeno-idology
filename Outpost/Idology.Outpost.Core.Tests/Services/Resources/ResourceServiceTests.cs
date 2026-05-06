@@ -242,7 +242,7 @@ public sealed class ResourceServiceTests
     [DataRow(0, 50, 100, 50, true)]
     [DataRow(0, 50, 100, 100, false)]
     [DataRow(0, 50, 100, -100, true)]
-    [DataTestMethod]
+    [TestMethod]
     public void CanIncreaseResources_ReturnsAsExpected(
         int min,
         int current,
