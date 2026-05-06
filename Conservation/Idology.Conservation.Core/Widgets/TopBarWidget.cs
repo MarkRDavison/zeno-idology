@@ -58,16 +58,7 @@ internal sealed class TopBarWidget : PanelWidget
         AddSubWidgetButton("TOP_BAR_TECHNOLOGY_DETAILS", ScreenPanelState.Technology);
         AddSubWidgetButton("TOP_BAR_FUNDING_DETAILS", ScreenPanelState.Funding);
 
-        // SPACER
-        AddChild(new PanelWidget
-        {
-            Layout = new LayoutItem
-            {
-                RequestedSize = new LayoutVector(0, 0),
-                Contain = ContainFlags.Row,
-                Behave = BehaveFlags.Fill
-            }
-        });
+        AddChild(new SpacerWidget(ContainFlags.Row));
 
         var tcw = AddChild(new TimeControlWidget(_gameDateTimeProvider)
         {
